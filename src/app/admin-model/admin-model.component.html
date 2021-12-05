@@ -1,0 +1,5 @@
+<app-admin-model-navigation [model]="targetModelName"></app-admin-model-navigation>
+<div [ngSwitch]="targetModelName">
+    <app-admin-producers *ngSwitchCase="Model.Producer"></app-admin-producers>
+    <app-admin-wines  *ngSwitchCase="Model.Wine"></app-admin-wines>
+</div>

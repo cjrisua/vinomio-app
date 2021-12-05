@@ -1,0 +1,27 @@
+<div class="container">
+    <div [hidden]="submitted">
+        <h1>Wine Form</h1>
+        <form (ngSubmit)="onSubmit()" [formGroup]="wineForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name"
+               formControlName="name">
+            </div>
+            <div class="form-group">
+                <label for="producer">Producer</label>
+                <select class="form-control" id="producer"
+                formControlName="producer">    
+                  <option value="">Select Producer</option>
+                  <option *ngFor="let producer of selectProducer" [value]="producer.id">{{producer.name}}</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success" [disabled]="!wineForm.valid">Submit</button>
+
+            <div>
+                <hr>
+                Name via form.controls = {{showFormControls(wineForm)}}
+            </div>
+        </form>
+    </div>
+</div>
