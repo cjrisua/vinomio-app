@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Wine } from 'src/app/models/Wine';
-import { VinomioWineService } from 'src/app/service/vinomiowine.service';
-import { VinomioProducerService } from 'src/app/service/vinomioproducer.service';
 import { Producer } from 'src/app/models/Producer';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { VinomioProducerService } from 'src/app/services/vinomio-producer.service';
 
 @Component({
   selector: 'app-add-wine-form',
@@ -30,7 +29,7 @@ export class AddWineFormComponent implements OnInit {
     })
 
     this.producerService.getAll().subscribe(data =>{
-       this.selectProducer = data
+       //this.selectProducer = data
     });
   }
   onSubmit() { 

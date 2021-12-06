@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VinomioWineService } from '../service/vinomiowine.service';
+import { VinomioWineService } from '../services/vinomio-wine.service';
 import { Wine } from '../models/Wine';
 
 @Component({
@@ -9,12 +9,13 @@ import { Wine } from '../models/Wine';
 })
 export class AdminWinesComponent implements OnInit {
 
-  wines!: Wine[];
+  wines!: any;
   constructor(private wineService: VinomioWineService) { }
 
   ngOnInit(): void {
     this.wineService.getAll().subscribe(data => {
-        this.wines =data;
+      console.log(data);
+      this.wines =data;
       });
   }
 

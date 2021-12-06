@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,9 +10,13 @@ import { AdminProducersComponent } from './admin-producers/admin-producers.compo
 import { AdminWinesComponent } from './admin-wines/admin-wines.component';
 import { AdminModelNavigationComponent } from './admin-model-navigation/admin-model-navigation.component';
 import { AdminModelComponent } from './admin-model/admin-model.component';
-import { AddProducerComponent } from './admin-producers/add-producer/add-producer.component';
+import { AdminProducersFormComponent } from './admin-producers/admin-producers-form/admin-producers-form.component';
 import { AddWineFormComponent } from './admin-wines/add-wine-form/add-wine-form.component';
-import { ConfigComponent } from './config/config.component';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+import { MaterialModule } from './material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -23,9 +26,8 @@ import { ConfigComponent } from './config/config.component';
     AdminWinesComponent,
     AdminModelNavigationComponent,
     AdminModelComponent,
-    AddProducerComponent,
     AddWineFormComponent,
-    ConfigComponent
+    AdminProducersFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,11 @@ import { ConfigComponent } from './config/config.component';
     HttpClientModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CoreModule,
+    SharedModule,
+    MaterialModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

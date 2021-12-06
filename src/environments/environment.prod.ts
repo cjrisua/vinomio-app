@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl:"http://minikahda-nas.fios-router.home:3000/api"
 };

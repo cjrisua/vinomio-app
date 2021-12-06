@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VinomioService } from './vinomio.service';
+import { ErrorDialogService } from './error-dialog.service';
 
-describe('VinomioService', () => {
-  let service: VinomioService;
+describe('ErrorDialogService', () => {
+  let service: ErrorDialogService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(VinomioService);
+    service = TestBed.inject(ErrorDialogService);
   });
 
   it('should be created', () => {

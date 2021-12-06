@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VinomioService } from '../vinomio.service';
+import { VinomioProducerService } from '../services/vinomio-producer.service';
 
 @Component({
   selector: 'app-admin-producers',
@@ -8,11 +8,11 @@ import { VinomioService } from '../vinomio.service';
 })
 export class AdminProducersComponent implements OnInit {
 
-  producers: any  = [];
-  constructor(private vinomioService: VinomioService) { }
+  producers: any;
+  constructor(private producerService: VinomioProducerService) { }
 
   ngOnInit(): void {
-    this.vinomioService.sendGetRequest('producer').subscribe(data => {
+    this.producerService.getAll().subscribe(data => {
         this.producers =data;
       });
   }

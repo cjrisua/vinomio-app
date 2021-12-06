@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VinomiowineService } from './vinomiowine.service';
+import { LoadingDialogService } from './loading-dialog.service';
 
-describe('VinomiowineService', () => {
-  let service: VinomiowineService;
+describe('LoadingDialogService', () => {
+  let service: LoadingDialogService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(VinomiowineService);
+    service = TestBed.inject(LoadingDialogService);
   });
 
   it('should be created', () => {

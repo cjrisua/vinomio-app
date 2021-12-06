@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiUrl:"http://minikahda-nas.fios-router.home:3000/api"
 };
 
 /*

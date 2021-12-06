@@ -1,0 +1,18 @@
+<div class="container">
+    <div [hidden]="submitted">
+        <h1>Producer Form</h1>
+        <form (ngSubmit)="onSubmit()" [formGroup]="producerForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name"
+               formControlName="name">
+            </div>
+            <button type="submit" class="btn btn-success" [disabled]="!producerForm.valid">Submit</button>
+
+            <div>
+                <hr>
+                Name via form.controls = {{showFormControls(producerForm)}}
+            </div>
+        </form>
+    </div>
+</div>

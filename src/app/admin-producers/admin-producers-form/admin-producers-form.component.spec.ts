@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddProducerComponent } from './add-producer.component';
+import { AdminProducersFormComponent } from './admin-producers-form.component';
 
-describe('AddProducerComponent', () => {
-  let component: AddProducerComponent;
-  let fixture: ComponentFixture<AddProducerComponent>;
+describe('AdminProducersFormComponent', () => {
+  let component: AdminProducersFormComponent;
+  let fixture: ComponentFixture<AdminProducersFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddProducerComponent ]
+      declarations: [ AdminProducersFormComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddProducerComponent);
+    fixture = TestBed.createComponent(AdminProducersFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
