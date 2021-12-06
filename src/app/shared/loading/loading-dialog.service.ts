@@ -1,17 +1,33 @@
 import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LoadingDialogComponent } from './loading-dialog/loading-dialog.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LoadingDialogService {
+  private opened = false;
+  private dialogRef!: MatDialogRef<LoadingDialogComponent>;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) {}
 
   openDialog(): void {
-    console.log("LoadingDialogService openDialog()")
+    if (!this.opened) {
+      this.opened = true;
+      this.dialogRef = this.dialog.open(LoadingDialogComponent, {
+        data: undefined,
+        maxHeight: '100%',
+        width: '400px',
+        maxWidth: '100%',
+        disableClose: true,
+        hasBackdrop: true,
+      });
+
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.opened = false;
+      });
+    }
   }
-  hideDialog(): void {
-    console.log("LoadingDialogService openDialog()")
+
+  hideDialog() {
+    this.dialogRef.close();
   }
 }
