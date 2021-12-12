@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Producer } from 'src/app/models/Producer';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { VinomioProducerService } from 'src/app/services/vinomio-producer.service';
+import { map } from 'rxjs/operators'
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-producers-form',
@@ -11,7 +13,9 @@ import { VinomioProducerService } from 'src/app/services/vinomio-producer.servic
 export class AdminProducersFormComponent implements OnInit {
   submitted = false;
   producerForm!: FormGroup;
+  
   constructor(
+    private route: Router,
     private producerService: VinomioProducerService
   ) { }
 
@@ -21,11 +25,16 @@ export class AdminProducersFormComponent implements OnInit {
     })
   }
   onSubmit() { 
-    let formdata:FormData  = new FormData();
-    //formdata.append('name', this.producerForm.value.name);
-    //formdata.forEach((d) => console.log("? =>" + d));
-    console.log("name="+this.producerForm.value.name);
-    this.producerService.add({'name': this.producerForm.value.name}).subscribe((r) => console.log(r));
+    let data = {
+      'name': this.producerForm.value.name
+    };
+    this.producerService.add(data).subscribe(
+      (response) => this.route.navigateByUrl('/admin/model?id=producer')
+    );
+  }
+  private extractData(res: Response) {
+    let body = res;
+    return body || { };
   }
   showFormControls(form: any) {
     return form && form.controls.name &&

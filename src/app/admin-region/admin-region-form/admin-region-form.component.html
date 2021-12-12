@@ -1,0 +1,49 @@
+<div class="container">
+    <div [hidden]="submitted">
+        <h1>Region Form</h1>
+        <form (ngSubmit)="onSubmit()" [formGroup]="regionForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name"
+               formControlName="name">
+            </div>
+            <div class="form-group">
+              <label for="country">Country</label>
+              <select class="form-control" id="country"
+              formControlName="country" (change)="onChangeRegion($event)">    
+                <option value="">Select Country</option>
+                <option *ngFor="let country of countrySelector" [value]="country.id">{{country.name}}</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <mat-form-field class="full-width" appearance="fill">
+                  <mat-label>Parent Region</mat-label>
+                  <input type="text" id="parentregion"
+                          placeholder="Pick one"
+                          aria-label="Number"
+                          matInput
+                          [formControl]="regionDropDowmCtrl"
+                          [matAutocomplete]="auto">
+                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let region of filteredOptions | async" [value]="region">
+                      {{region.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-slide-toggle
+                  [checked]="regionDropDowmCtrl.disabled"
+                  (change)="regionDropDowmCtrl.disabled ? regionDropDowmCtrl.enable() : regionDropDowmCtrl.disable()">
+                  Disable Input?
+              </mat-slide-toggle>
+          </div>
+
+            <button type="submit" class="btn btn-success" [disabled]="!regionForm.valid">Submit</button>
+
+            <div>
+                <hr>
+                Name via form.controls = {{showFormControls(regionForm)}}
+            </div>
+        </form>
+    </div>
+</div>

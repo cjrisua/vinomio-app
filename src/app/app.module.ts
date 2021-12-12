@@ -16,6 +16,16 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdminCountryComponent } from './admin-country/admin-country.component';
+import { AdminCountryFormComponent } from './admin-country/admin-country-form/admin-country-form.component';
+import { AdminRegionComponent } from './admin-region/admin-region.component';
+import { AdminRegionFormComponent } from './admin-region/admin-region-form/admin-region-form.component';
+import { AdminMastervarietalComponent } from './admin-mastervarietal/admin-mastervarietal.component';
+import { AdminVarietyComponent } from './admin-variety/admin-variety.component';
+import { AdminVintageComponent } from './admin-vintage/admin-vintage.component';
+import { AdminVarietyFormComponent } from './admin-variety/admin-variety-form/admin-variety-form.component';
+import { AdminMastervarietalFormComponent } from './admin-mastervarietal/admin-mastervarietal-form/admin-mastervarietal-form.component';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -28,6 +38,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AdminModelComponent,
     AddWineFormComponent,
     AdminProducersFormComponent,
+    AdminCountryComponent,
+    AdminCountryFormComponent,
+    AdminRegionComponent,
+    AdminVarietyComponent,
+    AdminMastervarietalComponent,
+    AdminVintageComponent,
+    AdminRegionFormComponent,
+    AdminVarietyComponent,
+    AdminVarietyFormComponent,
+    AdminMastervarietalFormComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +60,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     MaterialModule,
     BrowserAnimationsModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -48,5 +69,10 @@ export class AppModule { }
 
 export enum MODEL {
   Producer = 'producer',
-  Wine = 'wine'
+  Wine = 'wine',
+  Country = 'country',
+  Region = 'region',
+  Variety = 'variety',
+  MasterVarietal ='mastervarietal',
+  Vintage = 'vintage'
 }

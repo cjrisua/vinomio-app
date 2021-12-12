@@ -15,6 +15,14 @@
                   <option *ngFor="let producer of selectProducer" [value]="producer.id">{{producer.name}}</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="producer">Master Varietal</label>
+                <select class="form-control" id="mastervarietal"
+                formControlName="mastervarietal">    
+                  <option value="">Select mastervarietal</option>
+                  <option *ngFor="let mastervarietal of selectMastervarietal" [value]="mastervarietal.id">{{mastervarietal.name}}</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-success" [disabled]="!wineForm.valid">Submit</button>
 

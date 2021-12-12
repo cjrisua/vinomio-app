@@ -9,12 +9,12 @@ import { Wine } from '../models/Wine';
 })
 export class AdminWinesComponent implements OnInit {
 
-  wines!: any;
+  wines!: Wine[];
   constructor(private wineService: VinomioWineService) { }
 
   ngOnInit(): void {
     this.wineService.getAll().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.wines =data;
       });
   }

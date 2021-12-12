@@ -4,6 +4,11 @@
 <div [ngSwitch]="targetModelName">
     <app-admin-producers *ngSwitchCase="Model.Producer"></app-admin-producers>
     <app-admin-wines  *ngSwitchCase="Model.Wine"></app-admin-wines>
+    <app-admin-country  *ngSwitchCase="Model.Country"></app-admin-country>
+    <app-admin-region *ngSwitchCase="Model.Region"></app-admin-region>
+    <app-admin-variety *ngSwitchCase="Model.Variety"></app-admin-variety>
+    <app-admin-mastervarietal *ngSwitchCase="Model.MasterVarietal"></app-admin-mastervarietal>
+    <app-admin-vintage *ngSwitchCase="Model.Vintage"></app-admin-vintage>
 </div>
 </div>
 </div>

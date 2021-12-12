@@ -1,0 +1,18 @@
+<div class="container">
+    <div [hidden]="submitted">
+        <h1>Variety Form</h1>
+        <form (ngSubmit)="onSubmit()" [formGroup]="varietyForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name"
+               formControlName="name">
+            </div>
+            <button type="submit" class="btn btn-success" [disabled]="!varietyForm.valid">Submit</button>
+
+            <div>
+                <hr>
+                Name via form.controls = {{showFormControls(varietyForm)}}
+            </div>
+        </form>
+    </div>
+</div>

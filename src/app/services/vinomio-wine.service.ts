@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Producer } from '../models/Producer';
 import { HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Wine } from '../models/Wine';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,11 +18,15 @@ const httpOptions = {
 })
 export class VinomioWineService {
 
-  private REST_API_SERVER = "http://minikahda-nas.fios-router.home:3000/api";
-
+  private apiUrl = environment.apiUrl + "/wine"
   constructor(private httpClient: HttpClient) { }
 
-  getAll(){
-    return  this.httpClient.get(this.REST_API_SERVER + "/wine")
+  getAll(): Observable<Wine[]>{
+    return  this.httpClient.get<Wine[]>(this.apiUrl)
+  }
+  add(data:any){
+    //console.log("data:" + data)
+    return this.httpClient
+      .post(this.apiUrl, data, {observe : 'response'})
   }
 }

@@ -6,6 +6,16 @@ import { AdminWinesComponent } from './admin-wines/admin-wines.component';
 import { AdminModelComponent } from './admin-model/admin-model.component';
 import { AdminProducersFormComponent } from './admin-producers/admin-producers-form/admin-producers-form.component';
 import { AddWineFormComponent } from './admin-wines/add-wine-form/add-wine-form.component'
+import { AdminCountryComponent } from './admin-country/admin-country.component';
+import { AdminRegionComponent } from './admin-region/admin-region.component';
+import { AdminCountryFormComponent } from './admin-country/admin-country-form/admin-country-form.component';
+import { AdminRegionFormComponent } from './admin-region/admin-region-form/admin-region-form.component';
+import { AdminVarietyFormComponent } from './admin-variety/admin-variety-form/admin-variety-form.component';
+import { AdminVarietyComponent } from './admin-variety/admin-variety.component';
+import { AdminMastervarietalComponent } from './admin-mastervarietal/admin-mastervarietal.component';
+import { AdminMastervarietalFormComponent } from './admin-mastervarietal/admin-mastervarietal-form/admin-mastervarietal-form.component';
+import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/admin-vintage-form.component';
+import { AdminVintageComponent } from './admin-vintage/admin-vintage.component';
 
 const routes: Routes = [
   {path:'admin', component:AdminComponent},
@@ -14,6 +24,16 @@ const routes: Routes = [
   {path:'admin/producer/add', component:AdminProducersFormComponent},
   {path:'admin/wines', component:AdminWinesComponent},
   {path:'admin/wine/add', component:AddWineFormComponent},
+  {path:'admin/country', component:AdminCountryComponent},
+  {path:'admin/country/add', component:AdminCountryFormComponent},
+  {path:'admin/region', component:AdminRegionComponent},
+  {path:'admin/region/add', component:AdminRegionFormComponent},
+  {path:'admin/variety', component:AdminVarietyComponent},
+  {path:'admin/variety/add', component:AdminVarietyFormComponent},
+  {path:'admin/mastervarietal', component:AdminMastervarietalComponent},
+  {path:'admin/mastervarietal/add', component:AdminMastervarietalFormComponent},
+  {path:'admin/vintage', component:AdminVintageComponent},
+  {path:'admin/vintage/add', component:AdminVintageFormComponent},
   {path:'', redirectTo:'/admin', pathMatch:'full'}
 ];
 

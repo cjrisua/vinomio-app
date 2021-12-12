@@ -3,6 +3,9 @@ import { Wine } from 'src/app/models/Wine';
 import { Producer } from 'src/app/models/Producer';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { VinomioProducerService } from 'src/app/services/vinomio-producer.service';
+import { VinomioWineService } from 'src/app/services/vinomio-wine.service';
+import {Router} from '@angular/router';
+import { MasterVarietal } from 'src/app/models/MasterVarietal';
 
 @Component({
   selector: 'app-add-wine-form',
@@ -12,13 +15,14 @@ import { VinomioProducerService } from 'src/app/services/vinomio-producer.servic
 export class AddWineFormComponent implements OnInit {
 
   selectProducer: Producer[] = [];
+  selectMastervarietal: MasterVarietal[] = []
   submitted = false;
-  model: Wine = new Wine('', new Producer())
   wineForm!: FormGroup;
 
   constructor(
-    //private wineService: VinomioWineService,
-    private producerService: VinomioProducerService
+    private route: Router,
+    private producerService: VinomioProducerService,
+    private wineService: VinomioWineService
     ) { }
 
   ngOnInit(): void {
@@ -29,16 +33,17 @@ export class AddWineFormComponent implements OnInit {
     })
 
     this.producerService.getAll().subscribe(data =>{
-       //this.selectProducer = data
+       this.selectProducer = data
     });
   }
   onSubmit() { 
-  let formdata:FormData  = new FormData();
-   console.log(this.wineForm.value) 
-   formdata.append('name', this.wineForm.value.name);
-   formdata.append('wineId', this.wineForm.value.producer);
-   //console.log(formdata.get('name')) 
-    //this.submitted = true; 
+    let data = {
+      'name': this.wineForm.value.name,
+      'producerId': this.wineForm.value.producer
+    };
+    this.wineService.add(data).subscribe(
+      (response) => this.route.navigateByUrl('/admin/model?id=wine')
+    );
     
   }
   

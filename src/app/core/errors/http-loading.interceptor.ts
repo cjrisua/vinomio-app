@@ -14,14 +14,15 @@ export class HttpLoadingInterceptor implements HttpInterceptor {
   constructor(private loadingDialogService: LoadingDialogService) {}
 
   intercept(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    this.loadingDialogService.openDialog();
+  ): Observable<HttpEvent<unknown>> {
+    console.log(`Request [${request.method}]: + ${request.url} ${JSON.stringify(request.body)}`)
+    //this.loadingDialogService.openDialog();
     return next.handle(request).pipe(
       finalize(() => {
-        this.loadingDialogService.hideDialog();
+        //this.loadingDialogService.hideDialog();
       })
-    ) as Observable<HttpEvent<any>>;
+    ) as Observable<HttpEvent<unknown>>;
   }
 }
