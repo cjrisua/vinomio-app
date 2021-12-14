@@ -26,6 +26,7 @@ import { AdminVintageComponent } from './admin-vintage/admin-vintage.component';
 import { AdminVarietyFormComponent } from './admin-variety/admin-variety-form/admin-variety-form.component';
 import { AdminMastervarietalFormComponent } from './admin-mastervarietal/admin-mastervarietal-form/admin-mastervarietal-form.component';
 import {MatIconModule} from '@angular/material/icon';
+import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/admin-vintage-form.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import {MatIconModule} from '@angular/material/icon';
     AdminRegionFormComponent,
     AdminVarietyComponent,
     AdminVarietyFormComponent,
-    AdminMastervarietalFormComponent
+    AdminMastervarietalFormComponent,
+    AdminVintageFormComponent
   ],
   imports: [
     BrowserModule,

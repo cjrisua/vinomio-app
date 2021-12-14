@@ -18,7 +18,7 @@ export class AdminProducersComponent implements OnInit {
   constructor(private producerService: VinomioProducerService) { }
 
   ngOnInit(): void {
-    this.producerService.getAll().subscribe((data) => {
+    this.producerService.get().subscribe((data) => {
         //this.producers = data;
         this.dataSource.data = data;
         //console.log(data);

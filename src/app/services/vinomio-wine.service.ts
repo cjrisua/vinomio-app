@@ -21,8 +21,8 @@ export class VinomioWineService {
   private apiUrl = environment.apiUrl + "/wine"
   constructor(private httpClient: HttpClient) { }
 
-  getAll(): Observable<Wine[]>{
-    return  this.httpClient.get<Wine[]>(this.apiUrl)
+  get(): Observable<any[]>{
+    return  this.httpClient.get<any[]>(this.apiUrl)
   }
   add(data:any){
     //console.log("data:" + data)

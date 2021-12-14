@@ -20,6 +20,7 @@ export class AdminMastervarietalFormComponent implements OnInit {
   varietyFormCtrl = new FormControl();
   filteredOptions!: Observable<Variety[]>;
   option!:Variety[]
+  varietyIdCollection:any = []
 
   constructor(
     private route: Router,
@@ -37,10 +38,16 @@ export class AdminMastervarietalFormComponent implements OnInit {
     .subscribe(data => (this.onGetVarieties(data)));
   }
   onSubmit() { 
-    let data={"name":this.mastervarietalForm.value.name}
+    let data={
+      name:this.mastervarietalForm.value.name,
+      varieties:this.varietyIdCollection
+    }
     this.mastervarietalService.add(data).subscribe(
-     (response) => this.route.navigateByUrl('/admin/model?id=country')
+     (response) => this.route.navigateByUrl('/admin/model?id=mastervarietal')
    );
+  }
+  onVarietyAdded(action:any){
+     this.varietyIdCollection.push(action.id)
   }
   onGetVarieties(data:Variety[]){
     this.option = data

@@ -11,7 +11,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(error: any) {
 
-    console.log("handleError");
+    //console.log("handleError");
     if(error?.status == 404){
     }
     else{

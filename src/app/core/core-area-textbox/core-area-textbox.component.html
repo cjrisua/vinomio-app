@@ -4,4 +4,6 @@
 <button type="button" mat-icon-button (click)="onRemove()">
     <mat-icon aria-label="Example icon-button with a heart icon">remove_circle_outline</mat-icon>
 </button>
-<div id="textarea" contenteditable>I look like an input</div>
+<div id="textarea" contenteditable>
+    <div id="item" *ngFor="let m of messages">{{m.name}}</div>
+</div>

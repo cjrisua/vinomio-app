@@ -6,6 +6,9 @@ import { VinomioProducerService } from 'src/app/services/vinomio-producer.servic
 import { VinomioWineService } from 'src/app/services/vinomio-wine.service';
 import {Router} from '@angular/router';
 import { MasterVarietal } from 'src/app/models/MasterVarietal';
+import { VinomioMastervarietalService } from 'src/app/services/vinomio-mastervarietal.service';
+import { Region } from 'src/app/models/Region';
+import { VinomioRegionService } from 'src/app/services/vinomio-region.service';
 
 @Component({
   selector: 'app-add-wine-form',
@@ -15,14 +18,18 @@ import { MasterVarietal } from 'src/app/models/MasterVarietal';
 export class AddWineFormComponent implements OnInit {
 
   selectProducer: Producer[] = [];
-  selectMastervarietal: MasterVarietal[] = []
+  selectMastervarietal: MasterVarietal[] = [];
+  selectRegion: Region[] = [];
   submitted = false;
   wineForm!: FormGroup;
 
   constructor(
     private route: Router,
     private producerService: VinomioProducerService,
-    private wineService: VinomioWineService
+    private wineService: VinomioWineService,
+    private mastervarietalService: VinomioMastervarietalService,
+    private regionService: VinomioRegionService
+
     ) { }
 
   ngOnInit(): void {
@@ -30,16 +37,28 @@ export class AddWineFormComponent implements OnInit {
     this.wineForm = new FormGroup({
       name:  new FormControl('',[Validators.required,Validators.minLength(3)]),
       producer: new FormControl('',[Validators.required]),
+      mastervarietal: new FormControl('',[Validators.required]),
+      region: new FormControl('',[Validators.required]),
     })
 
-    this.producerService.getAll().subscribe(data =>{
+    this.producerService.get().subscribe(data =>{
        this.selectProducer = data
     });
+
+    this.regionService.get().subscribe(data =>{
+      this.selectRegion = data
+    })
+
+    this.mastervarietalService.get().subscribe(data =>{
+      this.selectMastervarietal = data
+    })
   }
   onSubmit() { 
     let data = {
       'name': this.wineForm.value.name,
-      'producerId': this.wineForm.value.producer
+      'producerId': this.wineForm.value.producer,
+      'mastervarietalId': this.wineForm.value.mastervarietal,
+      'regionId': this.wineForm.value.region
     };
     this.wineService.add(data).subscribe(
       (response) => this.route.navigateByUrl('/admin/model?id=wine')
