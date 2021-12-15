@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Variety } from 'src/app/models/Variety';
 import { VinomioMastervarietalService } from 'src/app/services/vinomio-mastervarietal.service';
 import { map, startWith, tap } from 'rxjs/operators';
@@ -21,6 +21,7 @@ export class AdminMastervarietalFormComponent implements OnInit {
   filteredOptions!: Observable<Variety[]>;
   option!:Variety[]
   varietyIdCollection:any = []
+  eventsSubject:Subject<Variety[]> =  new Subject<Variety[]>(); 
 
   constructor(
     private route: Router,

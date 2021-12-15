@@ -16,6 +16,9 @@
                       {{w.name}}
                     </mat-option>
                   </mat-autocomplete>
+                  <button type="button" mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="clearTextBox()">
+                    <mat-icon>close</mat-icon>
+                  </button>
                 </mat-form-field>
                 <!--
                 <button type="button" mat-icon-button>
@@ -28,7 +31,7 @@
                formControlName="year">
              </div>
               <div class="form-group">
-              <app-core-area-textbox [item]="this.wineVintages" (addClicked)="onVintageAdded($event)" [events]="eventsSubject.asObservable()"></app-core-area-textbox>
+              <app-core-area-textbox [item]="{id:0,name:vintageForm.value.year}" (addClicked)="onVintageAdded($event)" [events]="eventsSubject.asObservable()"></app-core-area-textbox>
             </div>
                 <!--
                 <mat-slide-toggle

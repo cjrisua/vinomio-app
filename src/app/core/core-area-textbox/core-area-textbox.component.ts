@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Vintage } from 'src/app/models/Vintage';
 
 @Component({
   selector: 'app-core-area-textbox',
@@ -11,15 +10,13 @@ export class CoreAreaTextboxComponent implements OnInit {
   
   @Input() item:any  = {}
   @Output() addClicked = new EventEmitter<{id:number,name:string}>();
-  @Input() events!: Observable<Vintage[]>;
+  @Input() events!: Observable<{id:number,name:string}[]>;
   private eventsSubscription!: Subscription;
   
   messages:any = []
   constructor() { }
 
   ngOnInit(): void {
-    //console.log("init")
-    //console.log(this.messages)
     this.eventsSubscription = this.events.subscribe((d) => this.doSomething(d));
   }
   ngOnDestroy() {
@@ -27,7 +24,8 @@ export class CoreAreaTextboxComponent implements OnInit {
   }
   
   onAdd(){
-    console.log(this.item)
+    //console.log("onAdd")
+    //console.log(this.item)
     if(this.item != null){
       //populate container
       this.messages.push({id: this.item.id, name:this.item.name })
@@ -36,7 +34,7 @@ export class CoreAreaTextboxComponent implements OnInit {
     }
   }
   doSomething(data:any){
-    console.log(data)
+    //console.log(data)
     //clean textarea
     this.messages = []
     for(let i=0; i<Object.values(data).length; i++)
