@@ -53,7 +53,7 @@ export class AdminRegionFormComponent implements OnInit {
     };
     this.regionService.add(data)
     .subscribe(
-      () => this.route.navigateByUrl('/admin/model?id=region')
+      () => this.route.navigateByUrl('/admin/model?name=region')
     );
   }
   onChangeRegion(e: any){

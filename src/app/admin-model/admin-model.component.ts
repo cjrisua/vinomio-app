@@ -18,7 +18,7 @@ export class AdminModelComponent implements OnInit {
 
   ngOnInit(): void {
       this.route.queryParams.subscribe(params => {
-      this.targetModelName = params['id'];
+      this.targetModelName = params['name'];
     });
   }
   public get Model() {

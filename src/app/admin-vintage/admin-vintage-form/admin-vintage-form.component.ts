@@ -55,7 +55,7 @@ export class AdminVintageFormComponent implements OnInit {
     //let data = { id:this.vintageFromCtrl.value.id }
     this.wineVintages.forEach(vintage=>{
       this.vintageService.add({wineId:this.vintageFromCtrl.value.id, year:vintage})
-      .subscribe(()=>this.route.navigateByUrl('/admin/model?id=vintage'))
+      .subscribe(()=>this.route.navigateByUrl('/admin/model?name=vintage'))
     })
   }
   clearTextBox(){

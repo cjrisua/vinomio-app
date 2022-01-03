@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class AdminWinesComponent implements OnInit {
 
-  displayedColumns=['id','producer','name','slug','region','varietal']
+  displayedColumns=['id','producer','name','slug','region','varietal','vintages']
   dataSource = new MatTableDataSource<any>();
 
   constructor(private wineService: VinomioWineService) { }
@@ -19,7 +19,9 @@ export class AdminWinesComponent implements OnInit {
     this.wineService.get().subscribe(data => {
       this.dataSource.data = data.map(d=>
         { 
-           return {id:d.id, name:d.name, slug:d.slug, producer:d.Producer.name, region:d.Region.name, varietal:d.MasterVarietal.name  }
+           const vintages =  d.Vintages.map((u:any) =>u.year);
+           //console.log(vintages)
+           return {id:d.id, name:d.name, slug:d.slug, producer:d.Producer.name, region:d.Region.name, varietal:d.MasterVarietal.name, vintages:vintages  }
         }
       );
     });

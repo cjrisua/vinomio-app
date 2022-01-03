@@ -29,7 +29,7 @@ export class AdminProducersFormComponent implements OnInit {
       'name': this.producerForm.value.name
     };
     this.producerService.add(data).subscribe(
-      (response) => this.route.navigateByUrl('/admin/model?id=producer')
+      (response) => this.route.navigateByUrl('/admin/model?name=producer')
     );
   }
   private extractData(res: Response) {

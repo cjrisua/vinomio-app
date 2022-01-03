@@ -44,7 +44,7 @@ export class AdminMastervarietalFormComponent implements OnInit {
       varieties:this.varietyIdCollection
     }
     this.mastervarietalService.add(data).subscribe(
-     (response) => this.route.navigateByUrl('/admin/model?id=mastervarietal')
+     (response) => this.route.navigateByUrl('/admin/model?name=mastervarietal')
    );
   }
   onVarietyAdded(action:any){

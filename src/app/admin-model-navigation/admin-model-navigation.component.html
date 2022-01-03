@@ -1,17 +1,9 @@
 
 <div class="button-container">
-  <button mat-raised-button [routerLink]="'/admin'" class="button">
+  <button mat-raised-button [routerLink]="['/cellar']" [queryParams]="{'view':'dashboard'}" class="button">
    Back
   </button>
     <button mat-raised-button [routerLink]="'/admin/'+model+'/add'" class="button">
       Add data
     </button>
-    <!--
-    <button
-        mat-raised-button
-        [disabled]="!dataSource.length"
-        (click)="removeData()"
-        class="demo-button">
-      Remove data
-    </button>-->
   </div>

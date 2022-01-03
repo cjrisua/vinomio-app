@@ -61,7 +61,7 @@ export class AddWineFormComponent implements OnInit {
       'regionId': this.wineForm.value.region
     };
     this.wineService.add(data).subscribe(
-      (response) => this.route.navigateByUrl('/admin/model?id=wine')
+      (response) => this.route.navigateByUrl('/admin/model?name=wine')
     );
     
   }

@@ -1,0 +1,34 @@
+<div class="container vh-100">
+    <div [hidden]="submitted">
+        <div class="row align-items-center vh-100">
+            <div class="col-5 mx-auto">
+                <div class="justify-content-center">
+                    <!--<img
+                id="profile-img"
+                src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                class="profile-img-card"
+                /> -->
+                    <form (ngSubmit)="onSubmit()" [formGroup]="authForm">
+                        <div class="form-group mb-3">
+                            <label for="email" class="mb-2">Email</label>
+                            <input type="text" class="form-control" name="email" formControlName="email"/>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="password" class="mb-2">Password</label>
+                            <input type="password" class="form-control" name="password" formControlName="password"/>
+                        </div>
+                        <button type="submit" class="btn btn-success" [disabled]="!authForm.valid">
+                            Login
+                        </button>
+                        <div>
+                            <hr>
+                            Name via form.controls = {{showFormControls(authForm)}}
+                          </div>
+                    </form>
+                    <div class="alert alert-success" *ngIf="isLoggedIn">
+                        Logged in as {{ roles }}.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

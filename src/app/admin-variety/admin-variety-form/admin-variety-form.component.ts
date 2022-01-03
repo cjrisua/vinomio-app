@@ -25,7 +25,7 @@ export class AdminVarietyFormComponent implements OnInit {
   onSubmit() { 
     let data={"name":this.varietyForm.value.name}
     this.varietyService.add(data).subscribe(
-     (response) => this.route.navigateByUrl('/admin/model?id=variety')
+     (response) => this.route.navigateByUrl('/admin/model?name=variety')
    );
   }
   showFormControls(form: any) {

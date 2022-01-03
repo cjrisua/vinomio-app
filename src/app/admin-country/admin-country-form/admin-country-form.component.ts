@@ -26,7 +26,7 @@ export class AdminCountryFormComponent implements OnInit {
   onSubmit() { 
    let data={"name":this.countryForm.value.name}
    this.countryService.add(data).subscribe(
-    (response) => this.route.navigateByUrl('/admin/model?id=country')
+    (response) => this.route.navigateByUrl('/admin/model?name=country')
   );
 
   }

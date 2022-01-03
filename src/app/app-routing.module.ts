@@ -16,6 +16,9 @@ import { AdminMastervarietalComponent } from './admin-mastervarietal/admin-maste
 import { AdminMastervarietalFormComponent } from './admin-mastervarietal/admin-mastervarietal-form/admin-mastervarietal-form.component';
 import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/admin-vintage-form.component';
 import { AdminVintageComponent } from './admin-vintage/admin-vintage.component';
+import { AuthLoginComponent } from './auth-login/auth-login.component';
+import { CellarDashboardComponent } from './cellar-dashboard/cellar-dashboard.component';
+import { AuthGuard } from './shared/guard/auth.guard';
 
 const routes: Routes = [
   {path:'admin', component:AdminComponent},
@@ -34,6 +37,8 @@ const routes: Routes = [
   {path:'admin/mastervarietal/add', component:AdminMastervarietalFormComponent},
   {path:'admin/vintage', component:AdminVintageComponent},
   {path:'admin/vintage/add', component:AdminVintageFormComponent},
+  {path:'login', component:AuthLoginComponent},
+  {path:'cellar', component:CellarDashboardComponent, canActivate: [AuthGuard] },
   {path:'', redirectTo:'/admin', pathMatch:'full'}
 ];
 

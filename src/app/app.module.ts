@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { AdminProducersComponent } from './admin-producers/admin-producers.component';
 import { AdminWinesComponent } from './admin-wines/admin-wines.component';
@@ -25,9 +25,12 @@ import { AdminVarietyComponent } from './admin-variety/admin-variety.component';
 import { AdminVintageComponent } from './admin-vintage/admin-vintage.component';
 import { AdminVarietyFormComponent } from './admin-variety/admin-variety-form/admin-variety-form.component';
 import { AdminMastervarietalFormComponent } from './admin-mastervarietal/admin-mastervarietal-form/admin-mastervarietal-form.component';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/admin-vintage-form.component';
-
+import { AuthLoginComponent } from './auth-login/auth-login.component';
+import { AuthInterceptor } from './shared/auth.interceptor';
+import { NavbarComponent } from './core/navbar/navbar.component';
+import { CellarDashboardComponent } from './cellar-dashboard/cellar-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/ad
     AdminVarietyComponent,
     AdminVarietyFormComponent,
     AdminMastervarietalFormComponent,
-    AdminVintageFormComponent
+    AdminVintageFormComponent,
+    AuthLoginComponent,
+    NavbarComponent,
+    CellarDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +70,12 @@ import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/ad
     BrowserAnimationsModule,
     MatIconModule,
   ],
-  providers: [],
+  providers: [{
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
@@ -77,4 +88,8 @@ export enum MODEL {
   Variety = 'variety',
   MasterVarietal ='mastervarietal',
   Vintage = 'vintage'
+}
+export enum DashboardItem{
+  Dashboard ='dashboard',
+  Cellar = 'cellar'
 }
