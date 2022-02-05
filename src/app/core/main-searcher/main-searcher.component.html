@@ -1,0 +1,20 @@
+<div class="form-group has-search">
+    <!--<mat-icon aria-hidden="false" class="fa fa-search form-control-feedback">search</mat-icon>
+    <input list="vinomio-search" type="text" class="form-control" placeholder="Search">-->
+    <form class="example-form">
+      <mat-form-field class="example-full-width" appearance="fill" style="width:100%;">
+        <mat-label>Search Wine</mat-label>
+        <input type="text" 
+               placeholder="Pick One"
+               aria-label="Number"
+               matInput
+               [formControl]="Control"
+               [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="wineSelection($event)">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
+            {{option.year}} {{option.Wine.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+ </div>

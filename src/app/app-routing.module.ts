@@ -19,6 +19,9 @@ import { AdminVintageComponent } from './admin-vintage/admin-vintage.component';
 import { AuthLoginComponent } from './auth-login/auth-login.component';
 import { CellarDashboardComponent } from './cellar-dashboard/cellar-dashboard.component';
 import { AuthGuard } from './shared/guard/auth.guard';
+import { MainDashboardComponent } from './core/main-dashboard/main-dashboard.component';
+import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
+import { CellarAddWineComponent } from './cellar-add-wine/cellar-add-wine.component';
 
 const routes: Routes = [
   {path:'admin', component:AdminComponent},
@@ -38,8 +41,9 @@ const routes: Routes = [
   {path:'admin/vintage', component:AdminVintageComponent},
   {path:'admin/vintage/add', component:AdminVintageFormComponent},
   {path:'login', component:AuthLoginComponent},
-  {path:'cellar', component:CellarDashboardComponent, canActivate: [AuthGuard] },
-  {path:'', redirectTo:'/admin', pathMatch:'full'}
+  {path:'profile', component:ProfileInfoComponent, canActivate: [AuthGuard] },
+  {path:'home', component:MainDashboardComponent, canActivate: [AuthGuard]},
+  {path:'', redirectTo:'/home', pathMatch:'full'}
 ];
 
 @NgModule({

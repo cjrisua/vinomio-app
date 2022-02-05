@@ -23,7 +23,7 @@ export class AdminModelNavigationComponent implements OnInit {
 
   GoBackEvent() {
     this.newItemEvent.emit();
-    console.log("BackEvent")
+    //console.log("BackEvent")
   }
 
 }

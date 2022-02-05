@@ -1,0 +1,14 @@
+<div class="container" >
+  <h3>Add New Merchant</h3>
+  <div class="card mt-3">
+    <div class="card-body">
+      <form class="form" (ngSubmit)="onSubmit()" [formGroup]="merchantForm">
+        <div class="form-group mb-2">
+          <!--<label for="inputMerchant" class="sr-only">Merchant Name</label>-->
+          <input type="text" class="form-control" id="inputMerchant" placeholder="Merchant">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Add</button>
+      </form>
+    </div>
+  </div> 
+</div>

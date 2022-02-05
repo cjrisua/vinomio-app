@@ -29,7 +29,7 @@ export class VinomioRegionService {
     return this.httpClient.get<Region[]>(this.apiUrl,{params})
   }
   add(data:any){
-    console.log("data:" + data)
+    //console.log("data:" + data)
     return this.httpClient
       .post(this.apiUrl, data, {observe : 'response'})
   }

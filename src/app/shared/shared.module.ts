@@ -6,8 +6,10 @@ import { RouterModule } from '@angular/router';
 import { ErrorDialogService } from './errors/error-dialog.service';
 import { LoadingDialogService } from './loading/loading-dialog.service';
 import { MaterialModule } from '../material.module';
+import { AllocationDialogAddComponent } from './allocation/allocation-dialog-add/allocation-dialog-add.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-const sharedComponents = [LoadingDialogComponent, ErrorDialogComponent];
+const sharedComponents = [LoadingDialogComponent, ErrorDialogComponent, AllocationDialogAddComponent];
 
 @NgModule({
   declarations: [...sharedComponents],
@@ -15,6 +17,8 @@ const sharedComponents = [LoadingDialogComponent, ErrorDialogComponent];
     CommonModule,
     RouterModule, 
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [...sharedComponents],
   providers: [ErrorDialogService, LoadingDialogService],

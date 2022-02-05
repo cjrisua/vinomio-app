@@ -1,0 +1,26 @@
+<div class="container" >
+    <h3>Add Allocation</h3>
+    <div class="card mt-3">
+      <div class="card-body">
+        <form class="form" (ngSubmit)="onSubmit()" [formGroup]="allocationForm">
+          <div class="form-group mb-2">
+            <!--<label for="inputMerchant" class="sr-only">Merchant Name</label>-->
+            <input type="text" class="form-control" id="inputMerchant" placeholder="Merchant" formControlName="name">
+          </div>
+          <div class="form-group mb-2">
+            <!--<label for="inputMerchant" class="sr-only">Merchant Name</label>-->
+            <select class="form-select" (change)="onChange($event)" formControlName="status">
+              <option>Please Select Status</option>
+              <option *ngFor="let name of enumKeys"
+                  [value]="name">{{name}}</option>
+            </select>
+          </div>
+          <div class="form-group mb-2">
+            <!--<label for="inputMerchant" class="sr-only">Merchant Name</label>-->
+            <input type="text" class="form-control" id="inputMerchant" placeholder="Member Since" formControlName="memberSince">
+          </div>
+          <button type="submit" class="btn btn-success mb-2">Add</button>
+        </form>
+      </div>
+    </div> 
+  </div>

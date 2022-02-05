@@ -1,0 +1,21 @@
+<div class="d-flex vh-100" id="wrapper">
+    <div class="border-end bg-white" id="sidebar-wrapper">
+        <div class="sidebar-heading border-bottom bg-light"></div>
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Dashboard ? 'underline' : '' }" (click)="setActiveComponent($event)">Dashboard</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }" (click)="setActiveComponent($event)">Cellar</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" (click)="setActiveComponent($event)">Allocation</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" (click)="setActiveComponent($event)">Reviews</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Profile ? 'underline' : '' }" (click)="setActiveComponent($event)">Profile</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.WineLake ? 'underline' : '' }" (click)="setActiveComponent($event)">WineLake</a>
+        </div>
+    </div>
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper" style="position:relative;width:100%;">
+        <div class="container-fluid">
+           <app-admin *ngIf="activeListItem == dashboardItem.Dashboard"></app-admin>
+           <app-cellar-dashboard *ngIf="activeListItem === dashboardItem.Cellar"></app-cellar-dashboard>
+           <app-profile-info *ngIf="activeListItem == dashboardItem.Profile" [profile]="currentUser"></app-profile-info>
+        </div>
+    </div>
+</div>

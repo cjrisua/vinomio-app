@@ -1,0 +1,15 @@
+.aligned-with-icon{
+    position: absolute;
+   
+}
+.icon-display-overlay{
+color: #6c757d!important;
+position: relative;
+margin-left: -1.5rem;
+transform: scale(1.5);
+}
+.icon-display{
+    color: #6c757d!important;
+    position: relative;
+    transform: scale(1.5);
+}

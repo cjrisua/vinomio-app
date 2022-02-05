@@ -1,0 +1,61 @@
+<div class="container my-5" style="max-width: 65%;">
+
+    <h2>Profile</h2>
+
+    <h4>Update your account details.</h4>
+    <mat-tab-group>
+        <mat-tab label="Personal Information">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <form (ngSubmit)="onSubmit()" [formGroup]="profileForm">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label class="form-control-label" for="first_name">First Name <span
+                                            class="required">*</span></label>
+                                    <input class="form-control" id="first_name" name="data[first_name]"
+                                        type="text" placeholder="" required="" formControlName="firstname">
+                                    <div class="invalid-feedback">
+                                        First Name is required
+                                    </div>
+                                </div>
+                                <div class="col mb-3">
+                                    <label class="form-control-label" for="last_name">Last Name <span
+                                            class="required">*</span></label>
+                                    <input class="form-control" id="last_name" name="data[last_name]" formControlName="lastname" type="text"
+                                        placeholder="" required="">
+                                    <div class="invalid-feedback">
+                                        Last Name is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-control-label" for="data[email]">Primary Email <span class="required">*</span></label>
+                            <div class="controls">
+                                <input class="form-control" id="data[email]" name="data[email]" type="email" formControlName="email">
+                            </div>
+                            <small class="form-text text-muted">A personal email address is highly recommended due to work related email filtering.</small>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-control-label" for="data[handler]">Handler <span class="required">*</span></label>
+                            <div class="controls">
+                                <input class="form-control" id="data[handler]" name="data[handler]"  formControlName="handler">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Cellar">
+            <div class="card mt-3">
+                <div *ngIf="!profile.cellar_id" class="card-body">
+                    <label class="form-control-label">Cellar:</label><a class="text-decoration-none mx-2 pointer">Add Cellar</a>
+                </div>
+                <div *ngIf="profile.cellar_id" class="card-body">
+                    <app-profile-cellar [profile]="profile"></app-profile-cellar>
+                </div>
+            </div>
+        </mat-tab>
+      </mat-tab-group>
+</div>

@@ -31,6 +31,13 @@ import { AuthLoginComponent } from './auth-login/auth-login.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { NavbarComponent } from './core/navbar/navbar.component';
 import { CellarDashboardComponent } from './cellar-dashboard/cellar-dashboard.component';
+import { MainDashboardComponent } from './core/main-dashboard/main-dashboard.component';
+import { MainSearcherComponent } from './core/main-searcher/main-searcher.component';
+import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
+import { ProfileCellarComponent } from './profile/profile-cellar/profile-cellar.component';
+import { CellarAddWineComponent } from './cellar-add-wine/cellar-add-wine.component';
+import { MerchantDialogComponent } from './shared/merchant/merchant-dialog/merchant-dialog.component';
+import { CellarAddBulkTableComponent } from './cellar-add-wine/cellar-add-bulk-table/cellar-add-bulk-table.component'
 
 @NgModule({
   declarations: [
@@ -55,7 +62,14 @@ import { CellarDashboardComponent } from './cellar-dashboard/cellar-dashboard.co
     AdminVintageFormComponent,
     AuthLoginComponent,
     NavbarComponent,
-    CellarDashboardComponent
+    CellarDashboardComponent,
+    MainDashboardComponent,
+    MainSearcherComponent,
+    ProfileInfoComponent,
+    ProfileCellarComponent,
+    CellarAddWineComponent,
+    MerchantDialogComponent,
+    CellarAddBulkTableComponent
   ],
   imports: [
     BrowserModule,
@@ -91,5 +105,16 @@ export enum MODEL {
 }
 export enum DashboardItem{
   Dashboard ='dashboard',
-  Cellar = 'cellar'
+  Cellar = 'cellar',
+  Allocation = 'allocation',
+  Profile = 'profile',
+  WineLake = 'winelake',
+  Reviews = 'reviews',
+  None = 'none'
+}
+export enum CellarDashboardActiveRoute{
+  Dashboard = 'dashboard',
+  AddWine ='add-wine',
+  DrunkWine = 'remove-wine',
+  Search = 'search-wine'
 }

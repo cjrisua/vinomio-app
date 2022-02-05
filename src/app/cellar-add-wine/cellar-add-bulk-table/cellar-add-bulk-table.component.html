@@ -1,0 +1,60 @@
+<div  class="container"  [ngStyle]="{'display': dataSource.length > 0 ? 'inherit' :'none'}">
+    <!--my-table mat-elevation-z8-->
+    
+    <table mat-table [dataSource]="dataSource" #mytable class="" style="width: 100%;margin-top: -25px;">
+      <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> id </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+       <!-- Id Column -->
+       <ng-container matColumnDef="bottleCount">
+        <th mat-header-cell *matHeaderCellDef> Total </th>
+        <td mat-cell *matCellDef="let element"> {{element.bottleCount}} </td>
+      </ng-container>
+  
+      <!-- Id Vintage -->
+      <ng-container matColumnDef="vintage">
+        <th mat-header-cell *matHeaderCellDef> Vintage </th>
+        <td mat-cell *matCellDef="let element"> {{element.vintage}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Price </th>
+        <td mat-cell *matCellDef="let element"><div contentEditable="true">$0.00</div></td>
+      </ng-container>
+
+      <!-- Format Column -->
+      <ng-container matColumnDef="format">
+        <th mat-header-cell *matHeaderCellDef> Format </th>
+        <td mat-cell *matCellDef="let element"><div contentEditable="true">{{element.format}}</div></td>
+      </ng-container>
+  
+      <!-- Action Column -->
+      <div class="float-end">
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action </th>
+          <td mat-cell *matCellDef="let element"  align="right" class="action-link"> 
+            <a (click)="IncreaseRowData(element)">Add</a> | 
+            <a (click)="openDialog('Update',element)">Edit</a> | 
+            <a (click)="deleteRowData(element)">Delete</a>  
+          </td>
+        </ng-container>
+      </div>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+  </div>
