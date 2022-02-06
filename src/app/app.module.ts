@@ -38,6 +38,8 @@ import { ProfileCellarComponent } from './profile/profile-cellar/profile-cellar.
 import { CellarAddWineComponent } from './cellar-add-wine/cellar-add-wine.component';
 import { MerchantDialogComponent } from './shared/merchant/merchant-dialog/merchant-dialog.component';
 import { CellarAddBulkTableComponent } from './cellar-add-wine/cellar-add-bulk-table/cellar-add-bulk-table.component'
+import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navbar-form-signup.component';
+import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { CellarAddBulkTableComponent } from './cellar-add-wine/cellar-add-bulk-t
     ProfileCellarComponent,
     CellarAddWineComponent,
     MerchantDialogComponent,
-    CellarAddBulkTableComponent
+    CellarAddBulkTableComponent,
+    NavbarFormSignupComponent,
+    ProfileCellarAddFormComponent
   ],
   imports: [
     BrowserModule,

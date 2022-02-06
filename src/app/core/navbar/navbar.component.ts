@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
+  showRegistration: boolean = true
+
   constructor(
     public authService : AuthService,
     public router: Router
@@ -16,8 +18,14 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
 
+    console.log(this.router);
+
   }
   Logout(){
     this.authService.signOut()
+  }
+
+  SingUp(){
+    //this.router.navigateByUrl('signup')
   }
 }

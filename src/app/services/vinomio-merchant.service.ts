@@ -16,4 +16,8 @@ export class VinomioMerchantService {
   get(userid:any) : Observable<Merchant[]>{
     return this.http.get<Merchant[]>(`${this.apiUrl}?userid=${userid}`)
   }
+
+  add(data:any){
+    return this.http.post(`${this.apiUrl}`,data);
+  }
 }

@@ -22,6 +22,8 @@ import { AuthGuard } from './shared/guard/auth.guard';
 import { MainDashboardComponent } from './core/main-dashboard/main-dashboard.component';
 import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
 import { CellarAddWineComponent } from './cellar-add-wine/cellar-add-wine.component';
+import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navbar-form-signup.component';
+import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
 
 const routes: Routes = [
   {path:'admin', component:AdminComponent},
@@ -42,7 +44,9 @@ const routes: Routes = [
   {path:'admin/vintage/add', component:AdminVintageFormComponent},
   {path:'login', component:AuthLoginComponent},
   {path:'profile', component:ProfileInfoComponent, canActivate: [AuthGuard] },
+  {path:'profile/cellar/add', component:ProfileCellarAddFormComponent, canActivate: [AuthGuard] },
   {path:'home', component:MainDashboardComponent, canActivate: [AuthGuard]},
+  {path:'signup', component:NavbarFormSignupComponent},
   {path:'', redirectTo:'/home', pathMatch:'full'}
 ];
 

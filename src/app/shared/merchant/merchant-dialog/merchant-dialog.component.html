@@ -5,7 +5,7 @@
       <form class="form" (ngSubmit)="onSubmit()" [formGroup]="merchantForm">
         <div class="form-group mb-2">
           <!--<label for="inputMerchant" class="sr-only">Merchant Name</label>-->
-          <input type="text" class="form-control" id="inputMerchant" placeholder="Merchant">
+          <input type="text" class="form-control" id="inputMerchant" placeholder="Merchant" formControlName="name">
         </div>
         <button type="submit" class="btn btn-primary mb-2">Add</button>
       </form>

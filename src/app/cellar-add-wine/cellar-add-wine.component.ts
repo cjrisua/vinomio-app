@@ -223,8 +223,13 @@ export class CellarAddWineComponent implements OnInit {
     );
   }
   
-  openMerchantDialog(){
-    this.openDialog(MerchantDialogComponent,{})
+   openMerchantDialog(){
+    const merchant = this.openDialog(MerchantDialogComponent,{id:this.currentUser.id}).subscribe(
+      () => {
+        this.merchantService.get(this.currentUser.id).subscribe((m) => { 
+          this.selectMerchant = m 
+        });
+      })
   }
   openAllocationDialog()
   {

@@ -13,7 +13,7 @@ import { Profile } from 'src/app/models/Profile';
 })
 export class MainDashboardComponent implements OnInit {
   activeListItem!: DashboardItem;
-  currentUser!: Profile;
+  currentUser!: Profile
   navigationSubscription!: any;
 
   constructor(
@@ -25,19 +25,16 @@ export class MainDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((p) => {
       if ('view' in p) {
-        //const paramaction:string = p['view']
-        //const action: DashboardItem = paramaction;
-        //console.log(action);
         this.activeListItem =  p['view']
       }
     });
 
-    if (!this.currentUser?.id) {
-      const token = this.authService.getCurrentUser();
-      const user = this.authService
-        .getUserProfile(token)
-        .subscribe((u) => (this.currentUser = u));
-    }
+    const token = this.authService.getCurrentUser();
+    this.authService
+      .getUserProfile(token)
+      .subscribe((u) =>{ 
+        this.currentUser = u
+    });
   }
   ngOnDestroy(): void {
     if (this.navigationSubscription) {
@@ -48,7 +45,11 @@ export class MainDashboardComponent implements OnInit {
   public get dashboardItem(): typeof DashboardItem {
     return DashboardItem;
   }
+  get f(){
+  return JSON.stringify(this.currentUser)
+  }
   setActiveComponent(event: any) {
+    console.info("getUserProfile->" + JSON.stringify(this.currentUser))
     const action: DashboardItem = (<any>DashboardItem)[event.target.innerText];
     //console.log(action);
     if (action == this.activeListItem) {

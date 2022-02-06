@@ -1,0 +1,40 @@
+<div class="container" style="width: 50%;">
+  <div class="card m-3">
+    <h3 class="card-header">Register</h3>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
+        <div class="form-group mb-3">
+            <label for="name">Handler</label>
+            <input type="email" class="form-control" id="handler" formControlName="handler">
+          </div>
+        <div class="form-group mb-3">
+          <label for="name">Email</label>
+          <input type="email" class="form-control" id="email" formControlName="email">
+        </div>
+        <div class="form-row mb-3" style="display: flex;width: 100%;">
+          <div class="form-group col-6" style="padding-right:2%;">
+            <label for="name">First Name</label>
+            <input type="text" class="form-control" id="firstname" formControlName="firstname">
+          </div>
+          <div class="form-group col" style="padding-left:2%;">
+            <label for="name">Last Name</label>
+            <input type="text" class="form-control" id="lastname" formControlName="lastname">
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="name">Password</label>
+          <input type="password" class="form-control" id="password" formControlName="password">
+        </div>
+        <div class="form-group mb-3">
+            <label for="name">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmedpassword" formControlName="password2">
+        </div>
+        <button type="submit" class="btn btn-success" [disabled]="!signUpForm.valid">Submit</button>
+            <div>
+                <hr>
+                Name via signUpForm.controls = {{showFormControls(signUpForm)}}
+            </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<form >
+    <form (ngSubmit)="onSubmit()" [formGroup]="mainForm">
+        <div class="form-group mt-3">
+            <label for="name">Owner*</label>
+            <input readonly type="text" class="form-control" id="name" formControlName="owner">
+        </div>
+        <div class="form-group mt-3">
+            <label for="name">Role*</label>
+            <select class="form-select" aria-label="Default select example" formControlName="role"  (change)="onRoleSection($event)">
+                <option>Select Role</option>
+                <option selected value="admin">Admin</option>
+                <option value="collector">Collector</option>
+                <option value="observer">Observer</option>
+              </select>
+        </div>
+        <div class="form-group mt-3">
+            <label for="name">Size</label>
+            <input type="text" class="form-control" id="name" formControlName="size">
+        </div>
+        <div class="form-group mt-3">
+            <label for="name">Cellar Features*</label>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Select Features</option>
+                <option value="admin">Thresholds</option>
+              </select>
+        </div>
+
+        <button type="submit" class="btn btn-success my-3" [disabled]="!mainForm.valid">Submit</button>
+        <div>
+                <hr>
+                Name via form.controls = {{showFormControls(mainForm)}}
+        </div>
+    </form>
+</form>
+
+

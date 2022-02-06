@@ -28,7 +28,7 @@ export class AuthService {
   ) { }
 
   login(user: User) {
-    //console.log(user)
+    console.log(user)
     //console.log(`${this.authUrl}/login`)
     
     return this.http.post<any>(`${this.authUrl}/login`, user)
@@ -92,5 +92,8 @@ export class AuthService {
     if (removeToken == null) {
       this.router.navigate(['login']);
     }
+  }
+  signUp(data:any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/user/register`,data)
   }
 }

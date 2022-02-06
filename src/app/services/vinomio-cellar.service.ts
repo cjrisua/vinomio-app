@@ -16,4 +16,8 @@ export class VinomioCellarService {
   get(cellarid:number) : Observable<Cellar>{
     return this.httpClient.get<Cellar>(`${this.apiUrl}/${cellarid}`)
   }
+
+  add(data:any): Observable<any> {
+    return this.httpClient.post(this.apiUrl, data);
+  }
 }
