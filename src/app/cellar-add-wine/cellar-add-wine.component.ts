@@ -26,25 +26,24 @@ export interface ComponentType<T> {
   styleUrls: ['./cellar-add-wine.component.css']
 })
 export class CellarAddWineComponent implements OnInit {
-  //Control = new FormControl();
-  //activeListItem:DashboardItem = DashboardItem.Profile
+
   wineform!: FormGroup;
-  winebulkform!: FormGroup;
+
   @Input() currentUser!:Profile
   selectMerchant: Merchant[] = [];
   filteredOptions: Observable<AllocationEvent[]> | undefined;
-  //options: string[] = ['One', 'Two', 'Three'];
+  
   allocationEvents!: AllocationEvent[]
   merchant:Merchant = new Merchant()
+
   isAllocation:boolean = false;
-  //addAllocation:boolean = false;
-  merchantWithAllocation!:boolean;
+  merchantWithAllocation:boolean = false
+
   _allocationId!:number;
   wineSelection!:Vintage
   
   eventsSubject: Subject<Vintage> = new Subject<Vintage>();
   _bulkItems!:any[]
-  //showTable=false;
 
   constructor( 
     private collectionService: VinomioCollectionService,
@@ -60,8 +59,10 @@ export class CellarAddWineComponent implements OnInit {
     this.wineform = new FormGroup({
       vintageId: new FormControl('',[]),
       count: new FormControl('1',[Validators.required,Validators.minLength(1)]),
-      price: new FormControl('',[Validators.required,Validators.minLength(3)]),
-      format: new FormControl('750ml',[Validators.required,Validators.minLength(3)]),
+      //price: new FormControl('',[Validators.required,Validators.minLength(3)]),
+      //format: new FormControl('750ml',[Validators.required,Validators.minLength(3)]),
+      price: new FormControl('',[]),
+      format: new FormControl('750ml',[]),
       purchasedDate: new FormControl(formatDate(Date.now(),'MM/dd/yyyy',this.locale),[Validators.required,Validators.minLength(3)]),
       deliveryDate: new FormControl('',[Validators.required,Validators.minLength(3)]),
       source: new FormControl('',[Validators.required]),
@@ -70,7 +71,7 @@ export class CellarAddWineComponent implements OnInit {
       allocationId: new FormControl('',[]),
       allocationevent: new FormControl('',[])
     });
-
+    /*
     this.winebulkform = new FormGroup({
       vintageId: new FormControl('',[]),
       count: new FormControl('',[]),
@@ -83,7 +84,7 @@ export class CellarAddWineComponent implements OnInit {
       statusId: new FormControl('empty',[]),
       allocationId: new FormControl('',[]),
       allocationevent: new FormControl('',[])
-    })
+    })*/
 
     this.merchantService.get(this.currentUser.id).subscribe((m) => { 
       this.selectMerchant = m 
@@ -92,7 +93,6 @@ export class CellarAddWineComponent implements OnInit {
   }
   onAllocationEvent(data:AllocationEvent[])
   {
-    //alert("onAllocationEvent")  
     this.allocationEvents = data;
 
     const unique = [...new Set(data.map(item => item.allocationId))];
@@ -142,6 +142,7 @@ export class CellarAddWineComponent implements OnInit {
   }
 
   onIsViaAllocation(flag:boolean){
+    //console.log( this.wineform.value.source)
     this.isAllocation = flag;
     this.wineform.get("allocationevent")?.setValue('')
     //console.log(`Merchant allocated?: ${this.merchantWithAllocation} ${this.wineform.value.source}`)
@@ -167,22 +168,30 @@ export class CellarAddWineComponent implements OnInit {
   }
 
   AddWine(){
-    //this.wineSelection= 
-    //console.log(this.wineform.value.vintageId)
-    //console.log(JSON.stringify(this.wineform.value.vintageId))
     this.eventsSubject.next(this.wineform.value.vintageId);
   }
   actionItem(value:any){
     this._bulkItems = value;
-    //console.debug(this._bulkItems)
-    //this.showTable = this._bulkItems.length > 0 ? true : false
   }
-  onSubmit2(){
-    console.debug(this._bulkItems);
-    console.debug(this.winebulkform)
+  _mapCollection(data:any):Collection{
+    return {
+      vintageId : data.vintageId.id,
+      statusId : data.statusId,
+      cellarId : this.currentUser.cellar_id,
+      price : data.price,
+      purchaseNote : data.notes,
+      bottleSize : data.format,
+      locationId: 0 ,
+      acquiringSourceId: data.source,
+      allocationEventId: data.allocationevent?.eventId | 0,
+      merchant: this._mapMerchant(),
+      bottleCount: data.count,
+      deliverBy: data.deliveryDate,
+      purchasedOn: data.purchasedDate,
+    };
   }
-  onSubmit()
-  {
+  _mapMerchant(): Merchant{
+    //Merchant & Allocation data 
     let merchant: Merchant = {
       id: this.wineform.value?.source,
       allocationEvent: typeof this.wineform.value?.allocationevent == 'string' ?
@@ -192,28 +201,43 @@ export class CellarAddWineComponent implements OnInit {
       if(merchant.allocationEvent)
           merchant.allocationEvent.allocationId = this._allocationId;
     }
-      
-    const data: Collection = {
-      vintageId : this.wineform.value.vintageId,
-      statusId : this.wineform.value.statusId,
-      cellarId : this.currentUser.cellar_id,
-      price : this.wineform.value.price,
-      purchaseNote : this.wineform.value.notes,
-      bottleSize : this.wineform.value.format,
-      locationId: 0 ,
-      acquiringSourceId: this.wineform.value?.source,
-      allocationEventId: this.wineform.value?.allocationevent?.eventId | 0,
-      merchant: merchant,
-      bottleCount: this.wineform.value.count,
-      deliverBy: this.wineform.value.deliveryDate,
-      purchasedOn: this.wineform.value.purchasedDate,
-    };
-    //console.log(data)
-    alert(JSON.stringify(data))
-    //let datacollection:Collection[] = []
-    //for(let i=0; i<this.wineform.value.count; i++)
-    //  datacollection.push(JSON.parse(JSON.stringify(data)))
+    return merchant;
+  }
+  onSubmitWithBulk(){
+    const wines = Array
+        .from(document.getElementsByClassName("bottlePrice") as HTMLCollection)
+        .map((item:any) =>{
+          const row =  item.closest('tr');
+          return{
+            id:item.dataset.value,  
+            price:item.innerHTML, 
+            format:row.getElementsByClassName('bottleFormat')[0].innerHTML,
+            count: parseInt(row.getElementsByClassName('bottleCount')[0].innerHTML)
+          }
+        });
+    const data:any[] = wines.map(
+      (wine:any) =>{
+        let data = this.wineform.value
+        data.vintageId.id = wine.id
+        data.format = wine.format
+        data.price = wine.price
+        data.count = wine.count
+        return this._mapCollection(data)
+      }
+    );
 
+    this.collectionService.add(JSON.parse(JSON.stringify(data))).subscribe(
+      (response) => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['home'],{queryParams: { view: 'cellar'}})
+      }
+    );
+  }
+  onSubmit()
+  {
+    const data = this._mapCollection(this.wineform.value)
+    //console.log(JSON.parse(JSON.stringify(data)))
     this.collectionService.add(JSON.parse(JSON.stringify(data))).subscribe(
       (response) => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -226,7 +250,8 @@ export class CellarAddWineComponent implements OnInit {
    openMerchantDialog(){
     const merchant = this.openDialog(MerchantDialogComponent,{id:this.currentUser.id}).subscribe(
       () => {
-        this.merchantService.get(this.currentUser.id).subscribe((m) => { 
+          this.merchantWithAllocation =  false;
+          this.merchantService.get(this.currentUser.id).subscribe((m) => { 
           this.selectMerchant = m 
         });
       })

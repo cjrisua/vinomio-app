@@ -11,6 +11,7 @@ export interface UsersData {
   vintage:number;
   bottleCount: number;
   format:string;
+  cost:number;
 }
 
 const ELEMENT_DATA: UsersData[] = [];
@@ -43,10 +44,9 @@ export class CellarAddBulkTableComponent implements OnInit {
     this.eventsSubscription.unsubscribe();
   }
   tableActionEvent() {
-    console.debug("tableActionEvent")
+    //console.debug("tableActionEvent")
     this.newItemEvent.emit(this.dataSource);
   }
-  
   openDialog(action: any,obj: { action: any; }) {
     /*obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
@@ -70,7 +70,7 @@ export class CellarAddBulkTableComponent implements OnInit {
     if(this.dataSource.some(i => i.id == vintage.id))
       this.IncreaseRowData(this.dataSource.filter((i) => i.id == vintage.id)[0])
     else
-      this.dataSource.push({rowId:this._currentRowCount++, id:vintage.id, bottleCount: 1, format:"750ml", vintage:vintage.year ,name:vintage.Wine.name})
+      this.dataSource.push({rowId:this._currentRowCount++, id:vintage.id, bottleCount: 1, format:"750ml", vintage:vintage.year ,name:vintage.Wine.name, cost:0.00})
     
     this.table.renderRows();
     this.tableActionEvent()

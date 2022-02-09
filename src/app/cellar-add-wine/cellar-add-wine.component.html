@@ -209,7 +209,7 @@
         <mat-tab label="Bulk Purchase">
             <div class="card mt-3">
                 <div class="card-body">
-                    <form (ngSubmit)="onSubmit2()" [formGroup]="winebulkform">
+                    <form (ngSubmit)="onSubmitWithBulk()" [formGroup]="wineform">
                         <!-- Merchant -->
                         <div class="form-group">
                             <div class="row mb-2">
@@ -352,7 +352,7 @@
                                             <div class="input-group">
                                                 <app-main-searcher (wineEvent)="wineSearcherSelection($event)" style="width: 88%;"></app-main-searcher>
                                                 <div class="input-group-append">
-                                                    <button mat-button mat-flat-button color="primary" class="" (click)="AddWine()" style="height: 75%;">Add Wine</button>
+                                                    <button type="button" mat-button mat-flat-button color="primary" class="" (click)="AddWine()" style="height: 75%;">Add Wine</button>
                                                 </div>
                                             </div>
                                         <div class="invalid-feedback">
@@ -380,7 +380,7 @@
                             </div>
                         </div>
                         <div class="float-end">
-                            <button type="submit" class="btn btn-success" [disabled]="!winebulkform.valid">Submit</button>
+                            <button type="submit" class="btn btn-success" [disabled]="!wineform.valid">Submit</button>
                         </div>
 
                     </form>
