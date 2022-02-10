@@ -282,7 +282,7 @@ export class CellarAddWineComponent implements OnInit {
     this.wineform.patchValue({vintageId:item})
   }*/
   onAllocate(days:number){
-    const label = days == 0 ? "attached" : "pending"
+    const label = days == 0 ? "allocated" : "pending"
     this.wineform.patchValue({statusId:label})
 
     let datenow = new Date(Date.now())

@@ -37,7 +37,9 @@ export class CellarAddBulkTableComponent implements OnInit {
 
   constructor(public dialog: MatDialog) {}
   ngOnInit(): void {
-    //throw new Error('Method not implemented.');
+    if(this.dataSource.length > 0)
+      this.dataSource = []
+    
     this.eventsSubscription = this.events.subscribe((vintage) => this.addRowData(vintage));
   }
   ngOnDestroy() {
