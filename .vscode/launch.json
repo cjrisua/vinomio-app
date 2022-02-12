@@ -19,14 +19,12 @@
       "url": "http://localhost:4200/admin",
       "webRoot": "${workspaceFolder}"
     },
-    // Based on: https://github.com/microsoft/vscode-recipes/tree/master/Angular-CLI
     {
       "name": "Launch ng serve & Chrome",
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",
       "url": "http://localhost:4200/admin",
-      // Note: The ./client directory
       "webRoot": "${workspaceFolder}",
       "sourceMaps": true,
       "sourceMapPathOverrides": {
@@ -36,6 +34,13 @@
         "/*": "*",
         "/./~/*": "${webRoot}/node_modules/*"
       }
+    },
+    {
+      "name": "Docker Node.js Launch",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "docker-run: debug",
+      "platform": "node"
     }
   ]
 }
