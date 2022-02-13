@@ -85,7 +85,6 @@ export class CellarAddWineComponent implements OnInit {
       allocationId: new FormControl('',[]),
       allocationevent: new FormControl('',[])
     })*/
-
     this.merchantService.get(this.currentUser.id).subscribe((m) => { 
       this.selectMerchant = m 
     });
