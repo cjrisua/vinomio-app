@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Collection } from '../models/Collection';
 
@@ -19,6 +19,11 @@ export class VinomioCollectionService {
 
   getCollection(id:any) : Observable<Collection[]>{
     return this.httpClient.get<Collection[]>(`${this.apiUrl}?cellarId=${id}`)
+    .pipe(
+      map((res: Collection[]) => {
+        return res || []
+      }),
+      catchError(()=> of([])))
   }
 
   add(data:any){

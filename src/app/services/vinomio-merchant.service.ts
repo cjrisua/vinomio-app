@@ -14,7 +14,7 @@ export class VinomioMerchantService {
   constructor(private http: HttpClient) { }
 
   get(userid:any) : Observable<Merchant[]>{
-    return this.http.get<Merchant[]>(`${this.apiUrl}?userid=${userid}`)
+    return this.http.get<Merchant[]>(`${this.apiUrl}?userId=${userid}`)
   }
 
   add(data:any){
