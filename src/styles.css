@@ -8,3 +8,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
 a.pointer{
     cursor:pointer;
 }
+@media screen and (min-width: 900px) {
+    #test {
+       position: relative !important;
+    }
+ }
+ @media screen and (max-width: 899px) {
+    #test {
+      padding: 0px 80px !important;
+    }
+ }
