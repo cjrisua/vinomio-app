@@ -2,3 +2,10 @@ a,
 a label {
     cursor: pointer;
 }
+.list-group-item{
+    background-color: inherit !important;
+    color: #f8f9fa;
+    border-color: #f8f9fa;
+    text-align: center;
+    border-width: 0px;
+}

@@ -16,7 +16,16 @@
     </div>
     <!-- Page content wrapper-->
     <div id="page-content-wrapper" style="position:relative;width:100%;">
-        <div class="container-fluid">
+        <div class="d-sm-none">
+            <div class="list-group list-group-horizontal">
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Dashboard ? 'underline' : '' }" (click)="setActiveComponent($event)">Dashboard</a>
+                <a class="list-group-item list-group-item-action list-group-item-light text-center px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }" (click)="setActiveComponent($event)">Cellar</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" (click)="setActiveComponent($event)">Allocation</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" (click)="setActiveComponent($event)">Reviews</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.WineLake ? 'underline' : '' }" (click)="setActiveComponent($event)">WineLake</a>
+            </div>
+        </div>
+        <div class="container-fluid d-sm-block">
             <!--<b>{{activeListItem}}:{{f}}</b>-->
            <app-admin *ngIf="activeListItem == dashboardItem.Dashboard"></app-admin>
            <app-cellar-dashboard *ngIf="activeListItem === dashboardItem.Cellar"></app-cellar-dashboard>
