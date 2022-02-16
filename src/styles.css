@@ -18,3 +18,11 @@ a.pointer{
       padding: 0px 80px !important;
     }
  }
+.dialog-responsive {
+   width: 25%;
+}
+@media only screen and (max-width: 760px) {
+   .dialog-responsive {
+       width: 100%;
+   }
+}

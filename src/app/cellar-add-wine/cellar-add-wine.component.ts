@@ -270,8 +270,9 @@ export class CellarAddWineComponent implements OnInit {
   openDialog<T>(component: ComponentType<T>, data:any):Observable<any>{
     return new Observable(subscriber =>{
       const dialogRef = this.dialog.open(component, {
-        width: '25%',
+        //width: '25%',
         data: data,
+        panelClass: "dialog-responsive"
       });
       dialogRef.afterClosed().subscribe((p) => subscriber.next(p))
     })
