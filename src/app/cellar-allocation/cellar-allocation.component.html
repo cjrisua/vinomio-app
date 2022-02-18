@@ -1,0 +1,38 @@
+<div class="container my-sm-3 col-sm-8">
+    <h2>Allocation</h2>
+
+    <table mat-table [dataSource]="dataSource" #mytable style="width: 100%;margin-top: -25px;">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> name </th>
+            <td mat-cell *matCellDef="let element"> {{element.merchant.name}} <span class="material-icons-outlined" style="font-size:14pt;color:#6c757d!important;">
+                edit_note
+            </span></td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        </ng-container>
+        <ng-container matColumnDef="memberSince">
+            <th mat-header-cell *matHeaderCellDef> member since </th>
+            <td mat-cell *matCellDef="let element"> {{element.memberSince | date: 'MM/dd/yyyy'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="lastPurchase">
+            <th mat-header-cell *matHeaderCellDef> last purchase </th>
+            <td mat-cell *matCellDef="let element"> {{element.lastPurchase  | date: 'MM/dd/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Action </th>
+        <td mat-cell *matCellDef="let element; let i = index;"  align="right" class="action-link"> 
+            <button type="button" class="btn btn-link" (click)="addNewComponent(i+1,element)"><small class="status">{{status}}</small></button>
+        </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr class="row{{i+1}}" mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></tr>
+    </table>
+</div>

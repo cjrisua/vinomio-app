@@ -30,6 +30,7 @@
            <app-admin *ngIf="activeListItem == dashboardItem.Dashboard"></app-admin>
            <app-cellar-dashboard *ngIf="activeListItem === dashboardItem.Cellar"></app-cellar-dashboard>
            <app-profile-info *ngIf="activeListItem === dashboardItem.Profile" [profile]="currentUser"></app-profile-info>
+           <app-cellar-allocation  *ngIf="activeListItem === dashboardItem.Allocation && currentUser" [profile]="currentUser"></app-cellar-allocation>
         </div>
     </div>
 </div>

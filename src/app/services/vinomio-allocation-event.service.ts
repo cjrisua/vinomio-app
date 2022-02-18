@@ -12,10 +12,10 @@ export class VinomioAllocationEventService {
   private apiUrl = environment.apiUrl + "/allocationevent"
   
   constructor(private http:HttpClient) { }
-
-  get(MerchantId:number): Observable<AllocationEvent[]>{
+  
+  get(id:number): Observable<AllocationEvent[]>{
     return this.http
-            .get<AllocationEvent[]>(`${this.apiUrl}/merchant/${MerchantId}`)
+            .get<AllocationEvent[]>(`${this.apiUrl}/merchant/${id}`)
             //.pipe(
             //  skipWhile((data) => { //console.log("?:" + JSON.stringify(data)); return false}),
             //);
@@ -23,5 +23,8 @@ export class VinomioAllocationEventService {
             //  map((res) => {alert(res); return res}),
             //  catchError(err => { alert(JSON.stringify(err)); return EMPTY; })
             //);
+  }
+  put(eventId:number, data:any): Observable<any>{
+    return this.http.put(this.apiUrl+"/"+eventId, data);
   }
 }

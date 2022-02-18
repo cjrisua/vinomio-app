@@ -40,7 +40,9 @@ import { MerchantDialogComponent } from './shared/merchant/merchant-dialog/merch
 import { CellarAddBulkTableComponent } from './cellar-add-wine/cellar-add-bulk-table/cellar-add-bulk-table.component'
 import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navbar-form-signup.component';
 import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
-
+import { CellarAllocationComponent } from './cellar-allocation/cellar-allocation.component';
+import { CellarAllocationEventItemComponent } from './cellar-allocation/cellar-allocation-event-item/cellar-allocation-event-item.component';
+import { CellarAllocationEventComponent } from './cellar-allocation/cellar-allocation-event/cellar-allocation-event.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +75,10 @@ import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-
     MerchantDialogComponent,
     CellarAddBulkTableComponent,
     NavbarFormSignupComponent,
-    ProfileCellarAddFormComponent
+    ProfileCellarAddFormComponent,
+    CellarAllocationComponent,
+    CellarAllocationEventItemComponent,
+    CellarAllocationEventComponent
   ],
   imports: [
     BrowserModule,

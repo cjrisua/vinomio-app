@@ -1,0 +1,5 @@
+<div class="row mb-1">
+    <div #eventname [attr.contenteditable]="contenteditable" class="col-3 mx-5 name" [ngStyle]="styleObject()">{{event.name}}</div>
+    <div #eventmonth [attr.contenteditable]="contenteditable" class="col-2 month" [ngStyle]="styleObject()">{{event.month}}</div>
+    <div class="col-2"><a (click)="onEditSave($event,event)" class="text-decoration-none mx-2 pointer">{{contenteditable ? "save":"edit"}}</a></div>
+</div>
