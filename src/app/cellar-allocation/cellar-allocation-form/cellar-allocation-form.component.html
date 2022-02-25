@@ -1,0 +1,118 @@
+<div class="container container my-sm-3 col-sm-8">
+  <h2>Allocation</h2>
+
+  <div [hidden]="submitted">
+    <form (ngSubmit)="onSubmit()" [formGroup]="allocationForm" autocomplete="off">
+
+      <!-- Merchant -->
+      <div class="form-group mb-3">
+        <label for="merchant-name">Merchant Name: </label>
+        <!--[(ngModel)]="model"-->
+        <div class="input-group">
+          <input id="merchant-name" placeholder="Merchant name" class="form-control" type="text"
+            formControlName="merchant" [ngbTypeahead]="search" [resultFormatter]="resultFormatBandListValue"
+            [inputFormatter]="inputFormatBandListValue" [editable]='false' (selectItem)="onMerchantSelection($event)">
+          <div type="button" class="btn bg-transparent" style="margin-left: -40px; z-index: 100;"
+            (click)="onClearForm()">
+            <span class="material-icons-outlined" style="color:grey; padding-top: 5px; ">close</span>
+          </div>
+        </div>
+        <!--<input id="merchant-name" placeholder="type a merchant name..." class="form-control" type="text" formControlName="name"  
+         [ngbTypeahead]="search"  [resultFormatter]="resultFormatBandListValue"
+         [inputFormatter]="inputFormatBandListValue" [editable]='false' (selectItem)="onMerchantSelection($event)">-->
+      </div>
+
+      <!-- Allocation Status -->
+      <div class="form-group mb-3">
+        <label for="merchant-name">Status:</label>
+        <!--[(ngModel)]="model"-->
+        <select class="form-select" aria-label="Default select example" formControlName="status">
+          <option selected value="">Open this select menu</option>
+          <option value="Waiting">Waiting</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+
+      <!-- Merchant -->
+      <div class="form-group mb-3">
+        <label for="signup-data">Signup Date: </label>
+        <input id="signup-data" class="form-control" type="text" formControlName="memberSince">
+      </div>
+
+      <div class="form-group mb-3">
+        <div *ngIf="!allocationForm.value.merchant"><span>No Schedule</span></div>
+        <div *ngIf="allocationForm.value.merchant">
+          <div class="col-sm-5">
+            <button type="button" class="btn mb-3 btn-outline-success" style="width: 100%;"
+              (click)="onAddAllocationSchedule()">Add Merchant Event</button>
+          </div>
+          <div *ngIf="eventCount > 0">
+            <h3 class="m-0 p-0">Merchant Events</h3>
+            <mat-table [dataSource]="merchantAllocationEvents" class="w-100 mb-5">
+              <ng-container matColumnDef="name">
+                <th class="p-0 m-0" mat-header-cell *matHeaderCellDef> name </th>
+                <td class="p-0 m-0" mat-cell *matCellDef="let element" [formGroup]="element" style="min-width: 175px;">
+                  <div *ngIf="element.get('eventId').value > 0 else elseBlock"><a
+                      class="text-decoration-none pointer">{{element.get('name').value}}</a></div>
+                  <ng-template #elseBlock>
+                    <input matInput placeholder="[Event Name]" formControlName="name" class="input-mode">
+                  </ng-template>
+
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="month">
+                <th class="p-0 m-0" mat-header-cell *matHeaderCellDef> month </th>
+                <td class="p-0 m-0" mat-cell *matCellDef="let element" [formGroup]="element" style="min-width: 75px;">
+                  <input matInput placeholder="[Event Month]" formControlName="month" class="input-mode">
+                </td>
+              </ng-container>
+              <tr class="m-0 p-0" style="height: 35px;" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr class="m-0 p-0" style="height: 35px;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </mat-table>
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="form-group mb-3">
+        <div *ngIf="!merchantAllocationEvents"><span >No Schedule</span></div>
+        <div *ngIf="merchantAllocationEvents && (merchantAllocationEvents?.length == 0 || merchantAllocationEvents[0].eventId == null)">
+          <div class="col-sm-5">
+            <button type="button" class="btn mb-3 btn-outline-success" style="width: 100%;" (click)="onAddAllocationSchedule()">Add Merchant Event</button>
+          </div>
+        </div>
+        <div *ngIf="merchantAllocationEvents != null && merchantAllocationEvents.length > 0 && merchantAllocationEvents[0]?.eventId != null">
+          <button type="button" class="btn mb-3 btn-outline-success" style="width: 100%;" (click)="onAddAllocationSchedule()">Add Merchant Event</button>
+          <h3 class="m-0 p-0">Merchant Events</h3>
+          <table #scheduleTable mat-table [dataSource]="merchantAllocationEvents" class="w-100 mb-5">
+            <ng-container matColumnDef="name">
+                <th class="p-0 m-0" mat-header-cell *matHeaderCellDef> name </th>
+                <td class="p-0 m-0" mat-cell *matCellDef="let element" [formGroup]="element.get('events')" style="min-width: 100px;" [ngClass]="contenteditable == true ? 'input-mode':'' "> 
+                  <div *ngIf="element.eventId == -1 else elseBlock" #eventColumn [attr.contentEditable]="isContentEditable(element)" data-placeholder="[Event Name]" formControlName="name" (click)="onRowClick(eventColumn, element.rowid)">{{element.name}}</div>
+                  <ng-template #elseBlock><a class="text-decoration-none pointer">{{element.name}}</a></ng-template>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="month">
+                <th class="p-0 m-0" mat-header-cell *matHeaderCellDef> month </th>
+                <td class="p-0 m-0" mat-cell *matCellDef="let element" style="min-width: 100px;" [ngClass]="contenteditable == true ? 'input-mode':'' "> <div #eventColumn [attr.contentEditable]="isContentEditable(element)" data-placeholder="[Event Month]" (click)="onRowClick(eventColumn,element.rowid)">{{element.month}}</div></td>
+              </ng-container>
+            <tr class="m-0 p-0" style="height: 35px;" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr class="m-0 p-0" style="height: 35px;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>-->
+      <!--{{allocationForm.value | json}}-->
+      <!-- Submit buttons -->
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn btn-outline-dark" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-success" [disabled]="!allocationForm.valid">Submit</button>
+      </div>
+      <!-- Debug -->
+      <div>
+        <hr>
+        Name via form.controls = {{showFormControls(allocationForm)}}
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -43,6 +43,10 @@ import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-
 import { CellarAllocationComponent } from './cellar-allocation/cellar-allocation.component';
 import { CellarAllocationEventItemComponent } from './cellar-allocation/cellar-allocation-event-item/cellar-allocation-event-item.component';
 import { CellarAllocationEventComponent } from './cellar-allocation/cellar-allocation-event/cellar-allocation-event.component';
+import { CellarAllocationMerchantComponent } from './cellar-allocation/cellar-allocation-merchant/cellar-allocation-merchant.component';
+import { CellarAllocationFormComponent } from './cellar-allocation/cellar-allocation-form/cellar-allocation-form.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +82,9 @@ import { CellarAllocationEventComponent } from './cellar-allocation/cellar-alloc
     ProfileCellarAddFormComponent,
     CellarAllocationComponent,
     CellarAllocationEventItemComponent,
-    CellarAllocationEventComponent
+    CellarAllocationEventComponent,
+    CellarAllocationMerchantComponent,
+    CellarAllocationFormComponent
   ],
   imports: [
     BrowserModule,
@@ -92,6 +98,7 @@ import { CellarAllocationEventComponent } from './cellar-allocation/cellar-alloc
     MaterialModule,
     BrowserAnimationsModule,
     MatIconModule,
+    NgbModule,
   ],
   providers: [{
       provide: HTTP_INTERCEPTORS,

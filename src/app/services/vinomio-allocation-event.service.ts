@@ -13,9 +13,9 @@ export class VinomioAllocationEventService {
   
   constructor(private http:HttpClient) { }
   
-  get(id:number): Observable<AllocationEvent[]>{
+  get(merchantId:number): Observable<AllocationEvent[]>{
     return this.http
-            .get<AllocationEvent[]>(`${this.apiUrl}/merchant/${id}`)
+            .get<AllocationEvent[]>(`${this.apiUrl}/merchant/${merchantId}`)
             //.pipe(
             //  skipWhile((data) => { //console.log("?:" + JSON.stringify(data)); return false}),
             //);

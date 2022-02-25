@@ -21,4 +21,8 @@ export class VinomioAllocationService {
     return this.http
       .post(this.apiUrl, data, {observe : 'response'})
   }
+  patch(id:number, data:any){
+    return this.http
+      .patch(`${this.apiUrl}/${id}`, data, {observe : 'response'})
+  }
 }

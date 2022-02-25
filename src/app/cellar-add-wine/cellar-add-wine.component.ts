@@ -160,7 +160,10 @@ export class CellarAddWineComponent implements OnInit {
   
   private _filter(value: string) : AllocationEvent[] {
     const filterValue = value.toLowerCase();
-    return this.allocationEvents.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.allocationEvents.filter(option => {
+      const name = option && option.name ? option.name.toLowerCase() : ""
+      name.includes(filterValue)
+    });
   }
   wineSearcherSelection(vintage:Vintage){
     this.wineform.patchValue({vintageId:vintage})

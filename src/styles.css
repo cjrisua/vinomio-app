@@ -5,6 +5,16 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 /*html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
+.dropdown-menu.show {
+   position: absolute !important;
+   inset: 0px auto auto 0px;
+   margin: 0px;
+  /* transform: none !important; */
+   box-shadow:  0 1px 3px hsla(0,0%,0%,0.06),0 2px 6px hsla(0,0%,0%,0.06),0 3px 8px hsla(0,0%,0%,0.09);
+   border-radius: 5px;
+   width: 99% !important;
+}
+
 a.pointer{
     cursor:pointer;
 }
@@ -25,4 +35,7 @@ a.pointer{
    .dialog-responsive {
        width: 100%;
    }
+}
+[contentEditable=true]:empty:not(:focus):before{
+   content:attr(data-placeholder)
 }
