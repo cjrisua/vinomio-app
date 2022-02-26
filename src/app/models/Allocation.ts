@@ -1,3 +1,6 @@
+import { AllocationEvent } from "./AllocationEvent";
+import { Merchant } from "./Merchant";
+
 export class Allocation{
     constructor(
         public id?:number,
@@ -5,5 +8,7 @@ export class Allocation{
         public status?:string,
         public memberSince?:Date,
         public lastPurchase?:Date,
+        public merchant?:Merchant,
+        public events?:AllocationEvent[]
     ){}
 }

@@ -1,10 +1,21 @@
 import { Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Allocation } from '../models/Allocation';
+import { AllocationEvent } from '../models/AllocationEvent';
+import { Merchant } from '../models/Merchant';
 import { Profile } from '../models/Profile';
 import { VinomioAllocationService } from '../services/vinomio-allocation.service';
+import { VinomioMerchantService } from '../services/vinomio-merchant.service';
 import { CellarAllocationEventComponent } from './cellar-allocation-event/cellar-allocation-event.component';
+
+export function getMonthFromString(mon:string){
+
+  var d = Date.parse(mon + `1, ${(new Date()).getFullYear()}`);
+  if(!isNaN(d)){
+      return new Date(d)
+  }
+  return new Date();
+}
 
 export class UserEventAction{
   _action!:Action;
@@ -49,7 +60,7 @@ export class CellarAllocationComponent implements OnInit {
   @Input() profile!:Profile
   displayedColumns=['id','name','status','memberSince','lastPurchase','action']
   allocations!:Allocation[]
-  dataSource = new MatTableDataSource<Allocation>();
+  merchants!:Merchant[]
   isShow:boolean = true;
   status!:string
   //_action!:Action
@@ -60,6 +71,7 @@ export class CellarAllocationComponent implements OnInit {
   
   constructor(
     private allocation:VinomioAllocationService,
+    private merchantService:VinomioMerchantService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private viewContainerRef: ViewContainerRef,
     private router: Router,
@@ -70,13 +82,51 @@ export class CellarAllocationComponent implements OnInit {
   ngOnInit(): void {
       this.allocation.get(this.profile.id)
       .subscribe(results => { 
-        this.dataSource.data = results;
         this.allocations = results;
       });
+      this.merchantService.get(this.profile.id)
+      .subscribe(results => this.merchants = results);
       this.status = "show"
   }
+  public get MerchantCount(){
+    return this.merchants ? this.merchants.length : 0
+  }
+  public get AllocationCount(){
+    return this.allocations ? this.allocations.length : 0
+  }
+  public get ActiveAllocationCount(){
+    return this.allocations ? this.allocations.filter(a => a.status == "Active").length : 0
+  }
+  public get RollingAllocationCount(){
+    
+    let upcomingEventCollection:AllocationEvent[] = []
+
+    if(this.allocations){
+      console.log("?")
+      this.allocations
+      .filter(a => a.status == "Active" && a.events)
+      .map((a) => {
+        const upcomingEvents = a.events?.filter(e => {
+           const currentDate = getMonthFromString(new Date().toLocaleString('default', { month: 'long' }));
+           const eventDate = getMonthFromString(e.month ? e.month : "");
+           const futureDate = new Date(new Date().setDate(new Date().getDate()+90))
+           if(eventDate > currentDate && eventDate < futureDate){
+              upcomingEventCollection.push(e)
+           }
+           // console.log("future offer" + e.month)
+           // console.log(new Date().toString())
+          })
+
+      })
+    }
+    //this.allocations ? this.allocations.filter(a => {
+    //  return a.status == "Active" 
+    //})
+    return upcomingEventCollection.length;
+  }
+
   NavigateEventResponse(message:any){
-    console.debug(JSON.stringify(message))
+    //console.debug(JSON.stringify(message))
     //this._action == Action.Default
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
