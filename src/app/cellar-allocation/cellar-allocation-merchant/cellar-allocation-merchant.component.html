@@ -1,33 +1,46 @@
 <div class="my-sm-3 col-sm-8">
+  <!-- Merchant List -->
   <div *ngIf="showMerchants">
-    <h2>Merchant List</h2>
-    <div class="d-flex mb-4">
-      <form class="col-7" autocomplete="off">
-        <div class="form-group">
-          <div class="input-group">
-            <input id="merchant-name" placeholder="Merchant name" class="form-control" type="text">
-            <div type="button" class="btn bg-transparent" style="margin-left: -41px; z-index: 100;">
-              <span class="material-icons-outlined" style="color:grey;vertical-align: bottom;">close</span>
-            </div>
-          </div>
-        </div>
-      </form>
-      <button type="button" class="btn btn-primary m-0 p-0 col-5" (click)="addMerchant()">
+    <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;">
+      <p class="h2" style="padding-top: 10px;">Merchant List</p>
+      <button type="button" class="btn btn-primary my-1 btn-sm" (click)="addMerchant()">
         <div class="mx-1">
-          <span class="material-icons m-0 p-0" style="vertical-align: middle;
+          <span class="material-icons" style="vertical-align: middle;
         font-size: larger;">add_circle_outline</span>
           <small class="px-1">Add Merchant</small>
         </div>
       </button>
     </div>
-    <div>
-      <ul class="list-group">
-        <button *ngFor="let m of merchants" type="button"
-          class="list-group-item list-group-item-action">{{m.name}}</button>
-      </ul>
-    </div>
+    <!-- Add Merchant button -->
+    <!-- search merchant -->
+    <form autocomplete="off">
+      <div class="form-group mt-4 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"> 
+            <span class="material-icons" style="color: gray;">search</span>
+          </span>
+          <input [formControl]="searchControl" id="merchant-name" placeholder="Merchant name" class="form-control" type="text" style="border-left: none !important;border-right: none !important">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;" (click)="onClear()"> 
+            <span class="material-icons" style="color: gray;">close</span>
+          </span>
+      </div>
+        <!--
+        <div class="input-group">
+          <input id="merchant-name" placeholder="Merchant name" class="form-control" type="text">
+          <div type="button" class="btn bg-transparent" style="margin-left: -41px; z-index: 100;">
+            <span class="material-icons-outlined" style="color:grey;vertical-align: bottom;">close</span>
+          </div>
+        </div>-->
+      </div>
+    </form>
+    <!--List of all Merchants-->
+    <p class="h5"></p>
+    <ul class="list-group">
+      <button *ngFor="let m of merchants" type="button"
+        class="list-group-item list-group-item-action" (click)="updateMerchant(m)">{{m.name}}</button>
+    </ul>
   </div>
-
+  <!-- Merchant Add/Update -->
   <div *ngIf="!showMerchants">
     <div [hidden]="submitted">
       <form (ngSubmit)="onSubmit()" [formGroup]="merchantForm">

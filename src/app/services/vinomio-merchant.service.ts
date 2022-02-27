@@ -20,4 +20,8 @@ export class VinomioMerchantService {
   add(data:any){
     return this.http.post(`${this.apiUrl}`,data);
   }
+
+  put(id:string, data:any){
+    return this.http.put(`${this.apiUrl}/${id}`,data);
+  }
 }
