@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, OperatorFunction } from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { Merchant } from 'src/app/models/Merchant';
 import { Profile } from 'src/app/models/Profile';
 import { VinomioMerchantService } from 'src/app/services/vinomio-merchant.service';
@@ -19,6 +21,7 @@ export class CellarAllocationMerchantComponent implements OnInit {
   submitted = false;
   showMerchants = true;
   isAddMode!:boolean
+  search!: OperatorFunction<string, readonly Merchant[]>
 
   constructor(
     private route: Router,
@@ -32,8 +35,41 @@ export class CellarAllocationMerchantComponent implements OnInit {
       userId: new FormControl(this.userProfile.id),
     });
     this.merchantService
-      .get(this.userProfile.id)
-      .subscribe((r) => (this.merchants = r));
+    .get(this.userProfile.id)
+    .subscribe(res => this.merchants=res);
+    /*
+    */
+  }
+  resultFormatListValue(value: any) {            
+    return value.name;
+  }
+  onFilterMerchantList(){
+    this.merchantService
+    .get(this.userProfile.id)
+    .subscribe(res =>{
+      if(res.length > 0){
+        this.search = (text$: Observable<string>) =>
+        text$.pipe(
+          debounceTime(200),
+          distinctUntilChanged(),
+          map(term => { 
+            const matches = term.length < 1 ? []
+            : res.filter(v => v.name && v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
+            this.merchants = matches
+            console.log(matches)
+            return matches
+          })
+        )
+      }
+    });
+  }
+  inputFormatListValue(value: any)   {
+    if(value.name)
+      return value.name
+    return value;
+  }
+  onMerchantSelection(selection:any){
+    
   }
   onSubmit() {
     let data: { userId: string; name: string };
@@ -56,7 +92,7 @@ export class CellarAllocationMerchantComponent implements OnInit {
     }
   }
   onClear(){
-    this.searchControl.reset()
+    this.ngOnInit()
   }
   onCancel() {
     //this.EmitEvent();
