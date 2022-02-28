@@ -102,7 +102,7 @@ export class CellarAllocationComponent implements OnInit {
     let upcomingEventCollection:AllocationEvent[] = []
 
     if(this.allocations){
-      console.log("?")
+      //console.log("?")
       this.allocations
       .filter(a => a.status == "Active" && a.events)
       .map((a) => {

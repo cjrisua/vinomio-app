@@ -21,6 +21,7 @@ export class CellarAllocationMerchantComponent implements OnInit {
   submitted = false;
   showMerchants = true;
   isAddMode!:boolean
+  totalCount:number = 0
   search!: OperatorFunction<string, readonly Merchant[]>
 
   constructor(
@@ -36,7 +37,10 @@ export class CellarAllocationMerchantComponent implements OnInit {
     });
     this.merchantService
     .get(this.userProfile.id)
-    .subscribe(res => this.merchants=res);
+    .subscribe(res => {
+      this.merchants=res
+      this.totalCount = res.length
+    });
     /*
     */
   }
@@ -56,7 +60,10 @@ export class CellarAllocationMerchantComponent implements OnInit {
             const matches = term.length < 1 ? []
             : res.filter(v => v.name && v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
             this.merchants = matches
-            console.log(matches)
+            
+            if(term.trim() == "")
+              this.merchants = res
+            
             return matches
           })
         )

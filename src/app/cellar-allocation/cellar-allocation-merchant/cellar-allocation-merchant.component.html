@@ -14,7 +14,7 @@
     <!-- Add Merchant button -->
     <!-- search merchant -->
     <form autocomplete="off">
-      <div class="form-group mt-4 mb-3">
+      <div class="form-group mt-4">
         <div class="input-group">
           <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"> 
             <span class="material-icons" style="color: gray;">search</span>
@@ -26,14 +26,10 @@
           <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;" (click)="onClear()"> 
             <span class="material-icons" style="color: gray;">close</span>
           </span>
+        </div>
       </div>
-        <!--
-        <div class="input-group">
-          <input id="merchant-name" placeholder="Merchant name" class="form-control" type="text">
-          <div type="button" class="btn bg-transparent" style="margin-left: -41px; z-index: 100;">
-            <span class="material-icons-outlined" style="color:grey;vertical-align: bottom;">close</span>
-          </div>
-        </div>-->
+      <div class="d-flex" style="justify-content: end; padding-right: 5px;">
+        <p class="h6"><small class="text-muted">showing {{merchants ? merchants.length :0 }} of {{totalCount}}</small></p>
       </div>
     </form>
     <!--List of all Merchants-->
@@ -42,6 +38,9 @@
       <button *ngFor="let m of merchants" type="button"
         class="list-group-item list-group-item-action" (click)="updateMerchant(m)">{{m.name}}</button>
     </ul>
+  </div>
+  <div *ngIf="merchants && merchants.length == 0">
+    <p>No merchants found</p>
   </div>
   <!-- Merchant Add/Update -->
   <div *ngIf="!showMerchants">
