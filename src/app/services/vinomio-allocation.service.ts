@@ -13,7 +13,9 @@ export class VinomioAllocationService {
 
   constructor(private http:HttpClient) { }
 
-  get(userId:any):Observable<Allocation[]>{
+  get(userId:any, upcoming:boolean = false):Observable<Allocation[]>{
+    if(upcoming)
+      return this.http.get<Allocation[]>(`${this.apiUrl}/events/${userId}`);
     return this.http.get<Allocation[]>(this.apiUrl);
   }
   add(data:any){

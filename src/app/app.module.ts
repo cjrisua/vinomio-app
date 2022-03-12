@@ -45,6 +45,7 @@ import { CellarAllocationEventItemComponent } from './cellar-allocation/cellar-a
 import { CellarAllocationEventComponent } from './cellar-allocation/cellar-allocation-event/cellar-allocation-event.component';
 import { CellarAllocationMerchantComponent } from './cellar-allocation/cellar-allocation-merchant/cellar-allocation-merchant.component';
 import { CellarAllocationFormComponent } from './cellar-allocation/cellar-allocation-form/cellar-allocation-form.component';
+import { CellarAllocationViewComponent } from './cellar-allocation/cellar-allocation-view/cellar-allocation-view.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -84,7 +85,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CellarAllocationEventItemComponent,
     CellarAllocationEventComponent,
     CellarAllocationMerchantComponent,
-    CellarAllocationFormComponent
+    CellarAllocationFormComponent,
+    CellarAllocationViewComponent
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,7 @@ import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.se
 import { VinomioMerchantService } from 'src/app/services/vinomio-merchant.service';
 import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
+import { Allocation } from 'src/app/models/Allocation';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class CellarAllocationFormComponent implements OnInit {
   eventName!:any
   @Output() ItemEvent = new EventEmitter<any>();
   @Input() userProfile!:Profile
+  @Input() allocation!:Allocation
   allocationForm!:FormGroup
   submitted = false;
   merchantAllocationEvents = new MatTableDataSource<any>()
@@ -74,7 +76,7 @@ export class CellarAllocationFormComponent implements OnInit {
         text$.pipe(
           debounceTime(200),
           distinctUntilChanged(),
-          map(term => term.length < 2 ? []
+          map(term => term.length < 1 ? []
             : res.filter(v => v.name && v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
         )
       }
@@ -131,7 +133,7 @@ export class CellarAllocationFormComponent implements OnInit {
     return element.eventId == -1 ? true : false;
   }
   onSubmit() { 
-    console.log(JSON.stringify(this.allocationForm.value))
+    //console.log(JSON.stringify(this.allocationForm.value))
     let eventdata:{id:number, name:string,month:string}
     let data:{merchantId:number,status:String,userId:number,memberSince:string,events?: typeof eventdata[]};
 
@@ -149,15 +151,9 @@ export class CellarAllocationFormComponent implements OnInit {
       events: eventItemCollection
     }
     if(!this.allocationForm.value.allocationId)
-      this.allocationService.add(data).subscribe((p) => console.log(p));
+      this.allocationService.add(data).subscribe((p) =>  this.EmitEvent(p));
     else
-      this.allocationService.patch(this.allocationForm.value.allocationId,data).subscribe((p) => console.log(p));
-    //data = this.merchantForm.value
-    //alert(JSON.stringify(data))
-    //this.merchantService.add(data).subscribe(result => {
-      //alert("Added")
-    //  this.EmitEvent(result)
-    //})
+      this.allocationService.patch(this.allocationForm.value.allocationId,data).subscribe((p) => this.EmitEvent(p));
   }
   onCancel(){
     this.EmitEvent()

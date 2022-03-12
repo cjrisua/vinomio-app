@@ -1,0 +1,56 @@
+<div *ngIf="showView">
+    <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;">
+        <p class="h2" style="padding-top: 10px;">Allocation List</p>
+        <button type="button" class="btn btn-primary my-1 btn-sm" (click)="onAddAllocation()" style="border-radius: 100px;">
+          <div class="mx-1">
+            <span class="material-icons" style="vertical-align: middle;
+          font-size: larger;">add_circle_outline</span>
+            <small class="px-1">Add Allocation</small>
+          </div>
+        </button>
+      </div>
+      <form autocomplete="off">
+        <div class="form-group mt-4">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"> 
+              <span class="material-icons" style="color: gray;">search</span>
+            </span>
+            <input [formControl]="searchControl" id="merchant-name" placeholder="Allocation name" class="form-control" type="text" 
+            [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+            [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onSearchSelection($event)" (click)="onFilterList()"
+            style="border-left: none !important;border-right: none !important">
+            <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;" (click)="onClear()"> 
+              <span class="material-icons" style="color: gray;">close</span>
+            </span>
+          </div>
+        </div>
+        <div class="d-flex" style="justify-content: end; padding-right: 5px;">
+          <p class="h6"><small class="text-muted">showing {{allocations ? allocations.length :0 }} of {{totalCount}}</small></p>
+        </div>
+      </form>
+      <div *ngFor="let allocation of allocations">
+        <div class="d-block" style="background-color: rgba(0,0,0,.03);height: 30px; padding: 6px;margin: 5px 0px;">
+          <a  class="text-decoration-none pointer" href="#">{{allocation.merchant?.name}}</a>
+        </div>
+        
+        <div class="row" style="padding-left: 10px;">
+          <div class="col-6"><p><strong>Name</strong></p></div>
+          <div class="col"><p><strong>Month</strong></p></div>
+          <div class="col"><p><strong>Cost</strong></p></div>
+        </div>
+        <div class="row" *ngFor="let event of allocation.events" style="padding-left: 0px; margin: 3px 0px;" >
+          <div class="col-6">
+            {{event.name}}
+          </div>
+          <div class="col">
+            {{event.month}}
+          </div>
+          <div class="col">
+           $999.99
+          </div>
+        </div>
+      </div>
+</div>
+<div *ngIf="!showView">
+  <app-cellar-allocation-form (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile"></app-cellar-allocation-form>
+</div>

@@ -43,7 +43,7 @@ export class UserEventAction{
 export enum Action{
   Add ='Add',
   Edit ='Edit',
-  Default ='Default'
+  List ='List'
 }
 export enum Module{
   Merchant = 'Merchant',
@@ -88,6 +88,9 @@ export class CellarAllocationComponent implements OnInit {
       .subscribe(results => this.merchants = results);
       this.status = "show"
   }
+  public get Action(): typeof Action {
+    return Action;
+  }
   public get MerchantCount(){
     return this.merchants ? this.merchants.length : 0
   }
@@ -126,6 +129,7 @@ export class CellarAllocationComponent implements OnInit {
   }
 
   NavigateEventResponse(message:any){
+    //alert("?")
     //console.debug(JSON.stringify(message))
     //this._action == Action.Default
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -134,12 +138,12 @@ export class CellarAllocationComponent implements OnInit {
         queryParams: { view: 'allocation' },
       });
   }
-  onMerchantAction(){
-    this.userSelectionEvent = new UserEventAction(Action.Add,Module.Merchant)
+  onMerchantAction(action:Action){
+    this.userSelectionEvent = new UserEventAction(Action[action],Module.Merchant)
     
   }
-  onAllocationAction(){
-    this.userSelectionEvent = new UserEventAction(Action.Add,Module.Allocation)
+  onAllocationAction(action:Action){
+    this.userSelectionEvent = new UserEventAction(Action[action],Module.Allocation)
   }
   addNewComponent(event:any,data:any){
     console.debug(JSON.stringify(data));
