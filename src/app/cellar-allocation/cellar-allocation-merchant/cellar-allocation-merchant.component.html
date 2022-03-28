@@ -44,21 +44,6 @@
   </div>
   <!-- Merchant Add/Update -->
   <div *ngIf="!showMerchants">
-    <div [hidden]="submitted">
-      <form (ngSubmit)="onSubmit()" [formGroup]="merchantForm">
-        <div class="form-group mb-3">
-          <label for="merchant-name">Merchant Name: </label>
-          <input id="merchant-name" class="form-control" type="text" formControlName="name">
-        </div>
-        <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn btn-outline-dark" (click)="onCancel()">Cancel</button>
-          <button type="submit" class="btn btn-success" [disabled]="!merchantForm.valid">Submit</button>
-        </div>
-        <div>
-          <hr>
-          Name via form.controls = {{showFormControls(merchantForm)}}
-        </div>
-      </form>
-    </div>
+   <app-cellar-merchant-form  (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile"></app-cellar-merchant-form>
   </div>
 </div>

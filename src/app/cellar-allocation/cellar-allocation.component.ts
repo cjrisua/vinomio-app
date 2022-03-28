@@ -1,5 +1,6 @@
 import { Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { Action, Module, UserEventAction } from '../app.module';
 import { Allocation } from '../models/Allocation';
 import { AllocationEvent } from '../models/AllocationEvent';
 import { Merchant } from '../models/Merchant';
@@ -17,38 +18,7 @@ export function getMonthFromString(mon:string){
   return new Date();
 }
 
-export class UserEventAction{
-  _action!:Action;
-  _module!:Module;
-  constructor(
-    private action:Action,
-    private module:Module
-  ){
-    this._action = action;
-    this._module = module;
-  }
-  public get EnumAction(): typeof Action{
-    return Action
-  }
-  public get Action(): Action{
-    return this._action;
-  } 
-  public get EnumModule(): typeof Module{
-    return Module
-  }
-  public get Module(): Module{
-    return this._module;
-  }
-}
-export enum Action{
-  Add ='Add',
-  Edit ='Edit',
-  List ='List'
-}
-export enum Module{
-  Merchant = 'Merchant',
-  Allocation = 'Allocation'
-}
+
 
 @Component({
   selector: 'app-cellar-allocation',

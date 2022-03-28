@@ -46,6 +46,8 @@ import { CellarAllocationEventComponent } from './cellar-allocation/cellar-alloc
 import { CellarAllocationMerchantComponent } from './cellar-allocation/cellar-allocation-merchant/cellar-allocation-merchant.component';
 import { CellarAllocationFormComponent } from './cellar-allocation/cellar-allocation-form/cellar-allocation-form.component';
 import { CellarAllocationViewComponent } from './cellar-allocation/cellar-allocation-view/cellar-allocation-view.component';
+import { CellarAllocationEventViewComponent } from './cellar-allocation/cellar-allocation-event-view/cellar-allocation-event-view.component';
+import { CellarMerchantFormComponent } from './cellar-allocation/cellar-merchant-form/cellar-merchant-form.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -86,7 +88,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CellarAllocationEventComponent,
     CellarAllocationMerchantComponent,
     CellarAllocationFormComponent,
-    CellarAllocationViewComponent
+    CellarAllocationViewComponent,
+    CellarAllocationEventViewComponent,
+    CellarMerchantFormComponent
   ],
   imports: [
     BrowserModule,
@@ -135,4 +139,37 @@ export enum CellarDashboardActiveRoute{
   AddWine ='add-wine',
   DrunkWine = 'remove-wine',
   Search = 'search-wine'
+}
+export class UserEventAction{
+  _action!:Action;
+  _module!:Module;
+  constructor(
+    private action:Action,
+    private module:Module
+  ){
+    this._action = action;
+    this._module = module;
+  }
+  public get EnumAction(): typeof Action{
+    return Action
+  }
+  public get Action(): Action{
+    return this._action;
+  } 
+  public get EnumModule(): typeof Module{
+    return Module
+  }
+  public get Module(): Module{
+    return this._module;
+  }
+}
+export enum Action{
+  Add ='Add',
+  Edit ='Edit',
+  List ='List'
+}
+export enum Module{
+  Merchant = 'Merchant',
+  Allocation = 'Allocation',
+  AllocationEvent = 'AllocationEvent'
 }

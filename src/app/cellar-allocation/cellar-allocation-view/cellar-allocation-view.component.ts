@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, Observable, OperatorFunction } from 'rxjs';
+import { Action, Module, UserEventAction } from 'src/app/app.module';
 import { Allocation } from 'src/app/models/Allocation';
+import { AllocationEvent } from 'src/app/models/AllocationEvent';
+import { Merchant } from 'src/app/models/Merchant';
 import { Profile } from 'src/app/models/Profile';
 import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.service';
-import { Action, UserEventAction } from '../cellar-allocation.component';
 
 @Component({
   selector: 'app-cellar-allocation-view',
@@ -21,6 +23,8 @@ export class CellarAllocationViewComponent implements OnInit {
   search!: OperatorFunction<string, readonly Allocation[]>
   totalCount:number = 0
   allocations:Allocation[] = []
+  allocationSelection!:Allocation
+  merchantSelection!:Merchant
 
   constructor(
     private allocationService:VinomioAllocationService
@@ -35,6 +39,16 @@ export class CellarAllocationViewComponent implements OnInit {
         //console.log(allocations)
       })
   }
+  onEventView(allocation:Allocation, event:AllocationEvent){
+    this.showView = false
+    this.action =  new UserEventAction(Action.List,Module.AllocationEvent)
+    const tempAllocation:Allocation = {...allocation}
+    tempAllocation.events = [];
+    tempAllocation.events.push(event);
+    this.allocationSelection = tempAllocation
+   
+    //this.merchantSelection = merchant
+  }
   onAddAllocation(){
     this.showView = false
   }
@@ -42,6 +56,7 @@ export class CellarAllocationViewComponent implements OnInit {
     return value.merchant.name;
   }
   NavigateEventResponse(event:any){
+  this.action =  new UserEventAction(Action.List,Module.Allocation)
    this.showView = !this.showView
 
   }

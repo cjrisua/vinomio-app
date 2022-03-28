@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { fromEvent, EMPTY, Observable, OperatorFunction, Subscription } from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
@@ -38,6 +38,7 @@ export class CellarAllocationFormComponent implements OnInit {
   @Output() ItemEvent = new EventEmitter<any>();
   @Input() userProfile!:Profile
   @Input() allocation!:Allocation
+  //@Input() eventItem!:AllocationEvent
   allocationForm!:FormGroup
   submitted = false;
   merchantAllocationEvents = new MatTableDataSource<any>()
@@ -59,6 +60,14 @@ export class CellarAllocationFormComponent implements OnInit {
   ngAfterViewInit() {
     this.clickedElement = fromEvent(this.container.nativeElement, 'click').subscribe(() => console.log('element clicked'));
   }*/
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+   //if(changes?.['eventItem'].currentValue){
+   //  const eventItem = changes?.['eventItem'].currentValue;
+   //  alert(eventItem.id)
+   //}
+  }
   ngOnInit(): void {
     this.allocationForm = new FormGroup({
       allocationId: new FormControl([]),

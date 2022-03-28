@@ -125,4 +125,9 @@ export class CellarAllocationMerchantComponent implements OnInit {
   showFormControls(form: any) {
     return form && form.controls.name && form.controls.name.value; // Dr. IQ
   }
+  NavigateEventResponse(message:any){
+    if(message?.action && message.action == 'cancel'){
+      this.onCancel()
+    }
+  }
 }

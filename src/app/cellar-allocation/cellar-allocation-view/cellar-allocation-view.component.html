@@ -1,3 +1,9 @@
+<!--{{action.Module| json}}
+{{showView}}-->
+<div *ngIf="!showView">
+  <app-cellar-allocation-form *ngIf="action.Module == action.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile"></app-cellar-allocation-form>
+  <app-cellar-allocation-event-view *ngIf="action.Module == action.EnumModule.AllocationEvent"  (ItemEvent)="NavigateEventResponse($event)" [allocation]="allocationSelection"></app-cellar-allocation-event-view>
+</div>
 <div *ngIf="showView">
     <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;">
         <p class="h2" style="padding-top: 10px;">Allocation List</p>
@@ -28,29 +34,37 @@
           <p class="h6"><small class="text-muted">showing {{allocations ? allocations.length :0 }} of {{totalCount}}</small></p>
         </div>
       </form>
-      <div *ngFor="let allocation of allocations">
+      <div *ngFor="let allocation of allocations"  class="card mb-2">
+          <div class="card-header">
+           {{allocation.merchant?.name}}
+          </div>
+          <ul class="list-group list-group-flush" *ngFor="let event of allocation.events">
+            <li class="list-group-item d-flex" (click)="onEventView(allocation, event)">
+              <div><span class="material-icons">event</span></div>
+              <div class="mx-3">
+                  <div>
+                    <div>{{event.name}}<span class="text-muted mx-1"><small>&#8212; {{event.month}}</small></span></div>
+                    <div class="text-muted small">Last purchase(s): Jan 1, 2022</div>
+                    <div class="text-muted small">Average Cost: $999.99</div>
+                    <div class="text-muted small">Offering: 2 bottle(s)</div>
+                  </div>
+              </div>
+            </li>
+          </ul>
+        <!--
         <div class="d-block" style="background-color: rgba(0,0,0,.03);height: 30px; padding: 6px;margin: 5px 0px;">
           <a  class="text-decoration-none pointer" href="#">{{allocation.merchant?.name}}</a>
         </div>
-        
-        <div class="row" style="padding-left: 10px;">
-          <div class="col-6"><p><strong>Name</strong></p></div>
-          <div class="col"><p><strong>Month</strong></p></div>
-          <div class="col"><p><strong>Cost</strong></p></div>
-        </div>
+       -->
+        <!--
         <div class="row" *ngFor="let event of allocation.events" style="padding-left: 0px; margin: 3px 0px;" >
-          <div class="col-6">
-            {{event.name}}
-          </div>
           <div class="col">
-            {{event.month}}
-          </div>
-          <div class="col">
-           $999.99
+            <a  class="text-decoration-none pointer" href="#">{{event.name}}</a>
+            Month:{{event.month}}
+            Average Cost: $999.99
+            something
           </div>
         </div>
+      -->
       </div>
-</div>
-<div *ngIf="!showView">
-  <app-cellar-allocation-form (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile"></app-cellar-allocation-form>
 </div>
