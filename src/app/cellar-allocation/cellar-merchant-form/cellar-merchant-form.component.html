@@ -1,16 +1,20 @@
 <div [hidden]="submitted">
-    <form (ngSubmit)="onSubmit()" [formGroup]="merchantForm" autocomplete="off">
-      <div class="form-group mb-3">
-        <label for="merchant-name">Merchant Name: </label>
-        <input id="merchant-name" class="form-control" type="text" formControlName="name">
-      </div>
-      <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn btn-outline-dark" (click)="onCancel()">Cancel</button>
-        <button type="submit" class="btn btn-success" [disabled]="!merchantForm.valid">Submit</button>
-      </div>
-      <div>
-        <hr>
-        Name via form.controls = {{showFormControls(merchantForm)}}
-      </div>
-    </form>
-  </div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="merchantForm" autocomplete="off">
+    <div class="form-group mb-3">
+      <label class="mb-2" for="merchant-name">Merchant Name: </label>
+      <!--<input id="merchant-name" class="form-control" type="text" formControlName="name">-->
+      <input formControlName="name" id="merchant-name" class="form-control" type="text" 
+          [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+          [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onMerchantSelection($event)" (click)="onFilterMerchantList()"
+          style="border-left: none !important;border-right: none !important">
+    </div>
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn btn-outline-dark" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-success" [disabled]="!merchantForm.valid">Submit</button>
+    </div>
+    <div>
+      <hr>
+      Name via form.controls = {{showFormControls(merchantForm)}}
+    </div>
+  </form>
+</div>

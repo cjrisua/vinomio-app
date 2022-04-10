@@ -13,8 +13,10 @@ export class VinomioMerchantService {
 
   constructor(private http: HttpClient) { }
 
-  get(userid:any) : Observable<Merchant[]>{
-    return this.http.get<Merchant[]>(`${this.apiUrl}?userId=${userid}`)
+  get(userid:any,name:any="") : Observable<Merchant[]>{
+    const query_params = [`userId=${userid}`,`name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
+    console.log(query_params)
+    return this.http.get<Merchant[]>(`${this.apiUrl}?${query_params}`)
   }
 
   add(data:any){
