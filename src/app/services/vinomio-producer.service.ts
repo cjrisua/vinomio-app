@@ -21,8 +21,10 @@ export class VinomioProducerService {
   private apiUrl = environment.apiUrl + "/producer"
   constructor(private httpClient: HttpClient) { }
 
-  get() : Observable<Producer[]>{
-    return this.httpClient.get<Producer[]>(this.apiUrl)
+  get(name:string="") : Observable<Producer[]>{
+    const query_params = [`name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
+    //console.log(query_params)
+    return this.httpClient.get<Producer[]>(`${this.apiUrl}?${query_params}`)
   }
   add(data:any){
     //console.log("data:" + data)

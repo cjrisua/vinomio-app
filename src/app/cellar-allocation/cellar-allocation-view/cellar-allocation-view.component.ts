@@ -33,6 +33,9 @@ export class CellarAllocationViewComponent implements OnInit {
   ngOnInit(): void {
     this.searchControl = new FormControl();
     this.showView = this.action.Action == Action.List ? true : false
+    this._getAllocation();
+  }
+  _getAllocation(){
     this.allocationService.get(this.userProfile.id).subscribe(
       (allocations)=>{
         this.allocations = allocations
@@ -56,9 +59,9 @@ export class CellarAllocationViewComponent implements OnInit {
     return value.merchant.name;
   }
   NavigateEventResponse(event:any){
-  this.action =  new UserEventAction(Action.List,Module.Allocation)
+   this.action =  new UserEventAction(Action.List,Module.Allocation)
    this.showView = !this.showView
-
+   this._getAllocation();
   }
   inputFormatListValue(value: any)   { 
     if(value.merchant.name)

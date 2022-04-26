@@ -35,14 +35,17 @@ export class CellarAllocationMerchantComponent implements OnInit {
       name: new FormControl('', [Validators.required]),
       userId: new FormControl(this.userProfile.id),
     });
+    this.getUserMerchant();
+    /*
+    */
+  }
+  getUserMerchant(){
     this.merchantService
     .get(this.userProfile.id)
     .subscribe(res => {
       this.merchants=res
       this.totalCount = res.length
     });
-    /*
-    */
   }
   resultFormatListValue(value: any) {            
     return value.name;
@@ -77,7 +80,7 @@ export class CellarAllocationMerchantComponent implements OnInit {
   }
   onMerchantSelection(selection:any){
     
-  }
+  }/*
   onSubmit() {
     let data: { userId: string; name: string };
     data = this.merchantForm.value;
@@ -97,7 +100,7 @@ export class CellarAllocationMerchantComponent implements OnInit {
         this.EmitEvent(result);
       });
     }
-  }
+  }*/
   onClear(){
     this.ngOnInit()
   }
@@ -120,14 +123,19 @@ export class CellarAllocationMerchantComponent implements OnInit {
     });
   }
   EmitEvent(message: any = {}) {
+    console.debug("EmitEvent")
     this.ItemEvent.emit(message);
   }
   showFormControls(form: any) {
     return form && form.controls.name && form.controls.name.value; // Dr. IQ
   }
   NavigateEventResponse(message:any){
-    if(message?.action && message.action == 'cancel'){
+   
+    if(message?.action && message.action == 'cancel')
       this.onCancel()
+    else{
+      this.getUserMerchant(); //Update Merchants
+      this.addMerchant()
     }
   }
 }
