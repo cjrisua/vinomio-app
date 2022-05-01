@@ -4,6 +4,7 @@ export class Wine {
     constructor(
         public name : string,
         public producername:string,
-        public producer?: Producer
+        public producer?: Producer,
+        public id?:number
     ){}
 }

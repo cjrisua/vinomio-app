@@ -86,8 +86,8 @@ export class CellarAllocationComponent implements OnInit {
            if(eventDate > currentDate && eventDate < futureDate){
               upcomingEventCollection.push(e)
            }
-           // console.log("future offer" + e.month)
-           // console.log(new Date().toString())
+           //console.log("future offer" + e.month)
+           //console.log(new Date().toString())
           })
 
       })

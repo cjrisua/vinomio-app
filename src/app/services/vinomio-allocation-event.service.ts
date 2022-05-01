@@ -24,7 +24,7 @@ export class VinomioAllocationEventService {
             //  catchError(err => { alert(JSON.stringify(err)); return EMPTY; })
             //);
   }
-  put(eventId:number, data:any): Observable<any>{
+  put(eventId:number, data:any){
     return this.http.put(this.apiUrl+"/"+eventId, data);
   }
 }

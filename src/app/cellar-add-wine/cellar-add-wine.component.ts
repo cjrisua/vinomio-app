@@ -281,7 +281,7 @@ export class CellarAddWineComponent implements OnInit {
     })
   }
   /*onSelection(item:Vintage){
-    console.log(item)
+    //console.log(item)
     this.wineform.patchValue({vintageId:item})
   }*/
   onAllocate(days:number){
