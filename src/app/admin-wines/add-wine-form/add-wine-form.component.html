@@ -36,7 +36,7 @@
         
             <button type="submit" class="btn btn-success" [disabled]="!wineForm.valid">Submit</button>
 
-            <div>
+            <div (click)="debug()">
                 <hr>
                 Name via form.controls = {{showFormControls(wineForm)}}
             </div>

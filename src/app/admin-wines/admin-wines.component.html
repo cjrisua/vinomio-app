@@ -3,7 +3,7 @@
 <app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" 
   [ModelItems]="dataSource.data"
   [exclusionColumns]="exclusionColumns"
-  (viewDetailsEvent)="ViewEditModelItem($event)"
+  (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"
   ></app-admin-model-table>
 <!--
 <table mat-table [dataSource]="dataSource" class="table-responsive" style="min-width: fit-content !important;">

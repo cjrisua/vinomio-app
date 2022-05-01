@@ -11,6 +11,7 @@ export class AllocationEvent{
         public createdAt?:Date,
         public updatedAt?:Date,
         public allocation?:Allocation,
-        public month?:string
+        public month?:string,
+        public lastPurchase?:Date
     ){}
 }

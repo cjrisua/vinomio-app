@@ -75,7 +75,7 @@ export class CellarMerchantFormComponent implements OnInit {
             return this.producerService.get(searchText.replace('@',''))
               .pipe(
                 map((producers) => {
-                  return producers.filter(producer => producer.name
+                  return producers.filter(producer => producer.name && producer.name
                     .toLowerCase().startsWith(searchText.replace('@','').toLowerCase()))
                 }),
                 map((p)=> {

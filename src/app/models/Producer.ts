@@ -1,7 +1,9 @@
 export class Producer {
-    public id!:number;
-    public name!:string;
-    public slug!:string;
-    constructor(){}
+    
+    className:string = "hello"
 
+    constructor(
+        public id?:number,
+        public name?:string,
+        public slug?:string){}
 }

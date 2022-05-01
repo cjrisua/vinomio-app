@@ -44,7 +44,9 @@
               <div class="mx-3">
                   <div>
                     <div>{{event.name}}<span class="text-muted mx-1"><small>&#8212; {{event.month}}</small></span></div>
-                    <div class="text-muted small">Last purchase(s): Jan 1, 2022</div>
+                    <div class="text-muted small">Last purchase(s):
+                      <span class="mx-1" *ngIf="!event.lastPurchase" style="color: crimson;">No Purchase made!</span>
+                      <span class="mx-1" *ngIf="event.lastPurchase">{{event.lastPurchase | date}}</span></div>
                     <div class="text-muted small">Average Cost: {{offerPriceAverage(event) | currency}}</div>
                     <div class="text-muted small">Offering: {{bottleCount(event)}} bottle(s)</div>
                   </div>

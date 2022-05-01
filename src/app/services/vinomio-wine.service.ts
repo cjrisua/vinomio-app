@@ -26,10 +26,15 @@ export class VinomioWineService {
       return  this.httpClient.get<any[]>(`${this.apiUrl}?producerId=${producerId}`)
     return  this.httpClient.get<any[]>(this.apiUrl)
   }
-
+  put(id:any, data:any){
+    return this.httpClient.put(`${this.apiUrl}/${id}`,data);
+  }
   add(data:any){
     //console.log("data:" + data)
     return this.httpClient
       .post(this.apiUrl, data, {observe : 'response'})
+  }
+  delete(id:any){
+    return this.httpClient.delete(`${this.apiUrl}/${id}`)
   }
 }

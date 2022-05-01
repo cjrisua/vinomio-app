@@ -42,7 +42,7 @@ export class CellarAllocationViewComponent implements OnInit {
     this.allocationService.get(this.userProfile.id).subscribe(
       (allocations)=>{
         this.allocations = allocations
-        //console.log(allocations)
+        console.log(allocations)
       })
   }
   public offerPriceAverage(event:any){
