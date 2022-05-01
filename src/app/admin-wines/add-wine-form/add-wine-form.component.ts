@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Wine } from 'src/app/models/Wine';
 import { Producer } from 'src/app/models/Producer';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
@@ -9,6 +9,7 @@ import { MasterVarietal } from 'src/app/models/MasterVarietal';
 import { VinomioMastervarietalService } from 'src/app/services/vinomio-mastervarietal.service';
 import { Region } from 'src/app/models/Region';
 import { VinomioRegionService } from 'src/app/services/vinomio-region.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-wine-form',
@@ -16,7 +17,7 @@ import { VinomioRegionService } from 'src/app/services/vinomio-region.service';
   styleUrls: ['./add-wine-form.component.css']
 })
 export class AddWineFormComponent implements OnInit {
-
+  @Input() wineItem!:Wine
   selectProducer: Producer[] = [];
   selectMastervarietal: MasterVarietal[] = [];
   selectRegion: Region[] = [];
@@ -24,7 +25,8 @@ export class AddWineFormComponent implements OnInit {
   wineForm!: FormGroup;
 
   constructor(
-    private route: Router,
+    private router: Router,
+    private location:Location,
     private producerService: VinomioProducerService,
     private wineService: VinomioWineService,
     private mastervarietalService: VinomioMastervarietalService,
@@ -34,14 +36,18 @@ export class AddWineFormComponent implements OnInit {
 
   ngOnInit(): void {
 
+    const state:any = this.location.getState();
+    if(state)
+      this.wineItem = state
+
     this.wineForm = new FormGroup({
-      name:  new FormControl('',[Validators.required,Validators.minLength(3)]),
+      name:  new FormControl(this.wineItem?.name || '',[Validators.required,Validators.minLength(3)]),
       producer: new FormControl('',[Validators.required]),
       mastervarietal: new FormControl('',[Validators.required]),
       region: new FormControl('',[Validators.required]),
     })
 
-    this.producerService.get().subscribe(data =>{
+    this.producerService.get(this.wineItem?.producername).subscribe(data =>{
        this.selectProducer = data
     });
 
@@ -52,6 +58,9 @@ export class AddWineFormComponent implements OnInit {
     this.mastervarietalService.get().subscribe(data =>{
       this.selectMastervarietal = data
     })
+
+
+
   }
   onSubmit() { 
     let data = {
@@ -61,7 +70,7 @@ export class AddWineFormComponent implements OnInit {
       'regionId': this.wineForm.value.region
     };
     this.wineService.add(data).subscribe(
-      (response) => this.route.navigateByUrl('/admin/model?name=wine')
+      (response) => this.router.navigateByUrl('/admin/model?name=wine')
     );
     
   }

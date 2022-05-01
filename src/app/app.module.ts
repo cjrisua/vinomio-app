@@ -49,7 +49,9 @@ import { CellarAllocationViewComponent } from './cellar-allocation/cellar-alloca
 import { CellarAllocationEventViewComponent } from './cellar-allocation/cellar-allocation-event-view/cellar-allocation-event-view.component';
 import { CellarMerchantFormComponent } from './cellar-allocation/cellar-merchant-form/cellar-merchant-form.component';
 import { CellarAllocationEventOfferComponent } from './cellar-allocation/cellar-allocation-event-offer/cellar-allocation-event-offer.component';
+import { AdminOrderByPipe } from './admin-order-by.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AdminModelTableComponent } from './core/admin-model-table/admin-model-table.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +94,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CellarAllocationViewComponent,
     CellarAllocationEventViewComponent,
     CellarMerchantFormComponent,
-    CellarAllocationEventOfferComponent
+    CellarAllocationEventOfferComponent,
+    AdminOrderByPipe,
+    AdminModelTableComponent
   ],
   imports: [
     BrowserModule,

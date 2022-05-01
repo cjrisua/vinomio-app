@@ -33,6 +33,7 @@ const routes: Routes = [
   {path:'admin/producer/add', component:AdminProducersFormComponent},
   {path:'admin/wines', component:AdminWinesComponent},
   {path:'admin/wine/add', component:AddWineFormComponent},
+  {path:'admin/wine/:id', component:AddWineFormComponent},
   {path:'admin/country', component:AdminCountryComponent},
   {path:'admin/country/add', component:AdminCountryFormComponent},
   {path:'admin/region', component:AdminRegionComponent},

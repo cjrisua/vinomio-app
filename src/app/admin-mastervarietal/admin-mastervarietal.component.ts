@@ -11,6 +11,7 @@ import { VinomioMastervarietalService } from '../services/vinomio-mastervarietal
 export class AdminMastervarietalComponent implements OnInit {
 
   displayedColumns=['id','name','varieties']
+  exclusionColumns=['varieties']
   dataSource = new MatTableDataSource<MasterVarietal>();
   
   constructor(

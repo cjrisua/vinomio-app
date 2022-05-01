@@ -1,7 +1,7 @@
 <div class="container">
     <div [hidden]="submitted">
         <h1>Producer Form</h1>
-        <form (ngSubmit)="onSubmit()" [formGroup]="producerForm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="producerForm" autocomplete="off">
             <div class="form-group mb-3">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name"

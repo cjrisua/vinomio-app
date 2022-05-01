@@ -11,7 +11,7 @@ import { VinomioRegionService } from '../services/vinomio-region.service';
 export class AdminRegionComponent implements OnInit {
 
   //wines!: Region[];
-  displayedColumns=['id','name','slug','terroir']
+  exclusionColumns=['country','regions','parent']
   dataSource = new MatTableDataSource<Region>();
 
   constructor(

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { VinomioProducerService } from '../services/vinomio-producer.service';
 import {MatTableDataSource} from "@angular/material/table";
 import { Producer } from '../models/Producer';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-producers',
@@ -12,7 +11,7 @@ import { map } from 'rxjs';
 export class AdminProducersComponent implements OnInit {
 
   producers: Producer[] = [];
-  displayedColumns=['id','name','slug']
+  exclusionColumns=[]
   dataSource = new MatTableDataSource<Producer>();
 
   constructor(private producerService: VinomioProducerService) { }
@@ -21,8 +20,7 @@ export class AdminProducersComponent implements OnInit {
     this.producerService.get().subscribe((data) => {
         //this.producers = data;
         this.dataSource.data = data;
-        //console.log(data);
       });
   }
-
+  
 }

@@ -11,6 +11,7 @@ import { VinomioCountryService } from '../services/vinomio-country.service';
 export class AdminCountryComponent implements OnInit {
 
   displayedColumns=['id','name','slug']
+  exclusionColumns=[]
   dataSource = new MatTableDataSource<Country>();
 
   constructor(

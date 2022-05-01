@@ -1,0 +1,14 @@
+
+<div class="card my-2" *ngFor="let modelItem of ModelItems">
+    <div class="card-header">
+      <a href="javascript:void(0);" (click)="onViewItem(modelItem)">{{modelItem.name}}</a>
+    </div>
+    <div class="card-body">
+      <div *ngFor="let item of modelItem | keyvalue | adminOrderBy">
+        <div class="d-flex" *ngIf="displayColumn(item.key)">
+          <div class=""><strong>{{item.key}}</strong><span class="mx-1">:</span></div>
+          <div class="">{{item.value}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
