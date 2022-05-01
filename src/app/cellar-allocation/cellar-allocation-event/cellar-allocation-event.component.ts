@@ -17,7 +17,7 @@ export class CellarAllocationEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.allocationEvent.get(this.MerchantId).subscribe((results) =>{
-      console.debug(results)
+      //console.debug(results)
       this.events = results
     })
   }

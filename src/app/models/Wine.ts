@@ -5,6 +5,7 @@ export class Wine {
         public name : string,
         public producername:string,
         public producer?: Producer,
-        public id?:number
+        public id?:number,
+        //public releaseprice?:number
     ){}
 }

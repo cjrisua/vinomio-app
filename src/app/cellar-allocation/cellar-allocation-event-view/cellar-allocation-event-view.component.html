@@ -44,7 +44,7 @@
               <div class="col"><strong class="text-muted">Wine Name</strong></div>
             </div>
             <hr>
-            <app-cellar-allocation-event-offer *ngFor="let offer of offerBottle" [wineItem]="offer" (deleteItemEvent)="removalOfferEvent($event)"></app-cellar-allocation-event-offer>
+            <app-cellar-allocation-event-offer *ngFor="let offer of offerBottle" [wineItem]="offer" (deleteItemEvent)="removalOfferEvent($event)" (setPriceEvent)="setPriceUpdate($event)"></app-cellar-allocation-event-offer>
         </div>
         <!--
         <div class="form-group" style="margin-top: -15px;">

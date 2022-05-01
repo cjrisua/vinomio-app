@@ -45,8 +45,8 @@
                   <div>
                     <div>{{event.name}}<span class="text-muted mx-1"><small>&#8212; {{event.month}}</small></span></div>
                     <div class="text-muted small">Last purchase(s): Jan 1, 2022</div>
-                    <div class="text-muted small">Average Cost: $999.99</div>
-                    <div class="text-muted small">Offering: 2 bottle(s)</div>
+                    <div class="text-muted small">Average Cost: {{offerPriceAverage(event) | currency}}</div>
+                    <div class="text-muted small">Offering: {{bottleCount(event)}} bottle(s)</div>
                   </div>
               </div>
             </li>

@@ -1,4 +1,9 @@
 <div class="row my-1">
-    <div class="col-9 my-1">{{wineItem.name}}</div>
+    <div class="col-9 my-1" style="display: grid;">
+        <div class="d-inline">{{wineItem.name}}</div>
+        <div class="d-inline text-muted">Release Price:<span class="mx-1">$</span>
+            <div #releasePrice class="d-inline" contenteditable (keyup)="onKeyUp($event)">{{wineItem.price}}</div>
+        </div>
+    </div>
     <div class="col-3 p-0"><button type="button" class="btn btn-outline-primary btn-sm" (click)="onDelete(wineItem)">Remove</button></div>
 </div>

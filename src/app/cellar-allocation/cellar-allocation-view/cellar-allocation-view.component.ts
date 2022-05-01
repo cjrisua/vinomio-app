@@ -7,6 +7,7 @@ import { AllocationEvent } from 'src/app/models/AllocationEvent';
 import { Merchant } from 'src/app/models/Merchant';
 import { Profile } from 'src/app/models/Profile';
 import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.service';
+import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 
 @Component({
   selector: 'app-cellar-allocation-view',
@@ -27,20 +28,32 @@ export class CellarAllocationViewComponent implements OnInit {
   merchantSelection!:Merchant
 
   constructor(
-    private allocationService:VinomioAllocationService
+    private allocationService:VinomioAllocationService,
+    //private collectionService:VinomioCellarService,
+
   ) { }
 
   ngOnInit(): void {
     this.searchControl = new FormControl();
     this.showView = this.action.Action == Action.List ? true : false
-    this._getAllocation();
+    this.getAllocation();
   }
-  _getAllocation(){
+  private getAllocation(){
     this.allocationService.get(this.userProfile.id).subscribe(
       (allocations)=>{
         this.allocations = allocations
         //console.log(allocations)
       })
+  }
+  public offerPriceAverage(event:any){
+    return event.AllocationEventOffers.reduce((sum:number,current:any)=>{
+      const total = Number(sum) + Number(current.releasePrice)
+      return total
+    },0)
+  } 
+  public bottleCount(event:any){
+    //console.log()
+    return event.AllocationEventOffers.length;
   }
   onEventView(allocation:Allocation, event:AllocationEvent){
     this.showView = false
@@ -61,7 +74,7 @@ export class CellarAllocationViewComponent implements OnInit {
   NavigateEventResponse(event:any){
    this.action =  new UserEventAction(Action.List,Module.Allocation)
    this.showView = !this.showView
-   this._getAllocation();
+   this.getAllocation();
   }
   inputFormatListValue(value: any)   { 
     if(value.merchant.name)
