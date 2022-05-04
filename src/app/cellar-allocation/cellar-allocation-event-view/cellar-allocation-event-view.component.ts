@@ -198,6 +198,6 @@ export class CellarAllocationEventViewComponent implements OnInit {
           };
         })
       )
-      .subscribe(() => console.debug('done'));
+      .subscribe((r) => { console.debug('done'); this.ItemEvent.emit();});
   }
 }

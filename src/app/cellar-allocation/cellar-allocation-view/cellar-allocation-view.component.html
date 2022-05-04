@@ -1,7 +1,7 @@
 <!--{{action.Module| json}}
 {{showView}}-->
 <div *ngIf="!showView">
-  <app-cellar-allocation-form *ngIf="action.Module == action.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile"></app-cellar-allocation-form>
+  <app-cellar-allocation-form *ngIf="action.Module == action.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocation]="allocationSelection"></app-cellar-allocation-form>
   <app-cellar-allocation-event-view *ngIf="action.Module == action.EnumModule.AllocationEvent"  (ItemEvent)="NavigateEventResponse($event)" [allocation]="allocationSelection"></app-cellar-allocation-event-view>
 </div>
 <div *ngIf="showView">
@@ -36,7 +36,10 @@
       </form>
       <div *ngFor="let allocation of allocations"  class="card mb-2">
           <div class="card-header">
-           {{allocation.merchant?.name}}
+            <div class="d-flex justify-content-between align-items-center">
+              <div><a href="javascript:void(0);" (click)="onViewItem(allocation)"> {{allocation.merchant?.name}}</a></div>
+              <div><span class="material-icons-outlined" (click)="onDelete(allocation)" style="cursor:pointer;"  >delete_forever</span></div>
+            </div>
           </div>
           <ul class="list-group list-group-flush" *ngFor="let event of allocation.events">
             <li class="list-group-item d-flex" (click)="onEventView(allocation, event)">

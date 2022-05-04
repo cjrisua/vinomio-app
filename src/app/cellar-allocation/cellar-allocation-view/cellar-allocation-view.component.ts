@@ -28,9 +28,7 @@ export class CellarAllocationViewComponent implements OnInit {
   merchantSelection!:Merchant
 
   constructor(
-    private allocationService:VinomioAllocationService,
-    //private collectionService:VinomioCellarService,
-
+    private allocationService:VinomioAllocationService
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +40,6 @@ export class CellarAllocationViewComponent implements OnInit {
     this.allocationService.get(this.userProfile.id).subscribe(
       (allocations)=>{
         this.allocations = allocations
-        console.log(allocations)
       })
   }
   public offerPriceAverage(event:any){
@@ -52,7 +49,6 @@ export class CellarAllocationViewComponent implements OnInit {
     },0)
   } 
   public bottleCount(event:any){
-    //console.log()
     return event.AllocationEventOffers.length;
   }
   onEventView(allocation:Allocation, event:AllocationEvent){
@@ -62,7 +58,7 @@ export class CellarAllocationViewComponent implements OnInit {
     tempAllocation.events = [];
     tempAllocation.events.push(event);
     this.allocationSelection = tempAllocation
-   
+    //console.log("onEventView")
     //this.merchantSelection = merchant
   }
   onAddAllocation(){
@@ -72,6 +68,13 @@ export class CellarAllocationViewComponent implements OnInit {
     return value.merchant.name;
   }
   NavigateEventResponse(event:any){
+
+  if(event?.action && event.action === 'redirect'){
+    this.onEventView(event.allocation, event.event)
+    return
+  }
+
+   this.allocationSelection = {}
    this.action =  new UserEventAction(Action.List,Module.Allocation)
    this.showView = !this.showView
    this.getAllocation();
@@ -106,5 +109,14 @@ export class CellarAllocationViewComponent implements OnInit {
   }
   onClear(){
     this.ngOnInit();
+  }
+  onDelete(allocation:any){
+    console.log(allocation)
+  }
+  onViewItem(allocation:any){
+    //console.log(allocation)
+    this.allocationSelection = allocation
+    this.showView = !this.showView
+    
   }
 }

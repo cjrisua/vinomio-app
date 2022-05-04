@@ -11,7 +11,7 @@
         <div class="input-group">
           <input id="merchant-name" placeholder="Merchant name" class="form-control" type="text"
             formControlName="merchant" [ngbTypeahead]="search" [resultFormatter]="resultFormatBandListValue"
-            [inputFormatter]="inputFormatBandListValue" [editable]='false' (selectItem)="onMerchantSelection($event)">
+            [inputFormatter]="inputFormatBandListValue" [editable]='false' (selectItem)="onMerchantSelection($event)"  (click)="onFilterMerchantList()">
           <div type="button" class="btn bg-transparent" style="margin-left: -40px; z-index: 100;"
             (click)="onClearForm()">
             <span class="material-icons-outlined" style="color:grey; padding-top: 5px; ">close</span>
@@ -51,11 +51,10 @@
                 <th class="p-0 m-0" mat-header-cell *matHeaderCellDef> name </th>
                 <td class="p-0 m-0" mat-cell *matCellDef="let element" [formGroup]="element" style="min-width: 175px;">
                   <div *ngIf="element.get('eventId').value > 0 else elseBlock"><a
-                      class="text-decoration-none pointer">{{element.get('name').value}}</a></div>
+                      class="text-decoration-none pointer" (click)="onViewEventClick(element.get('eventId').value)">{{element.get('name').value}}</a></div>
                   <ng-template #elseBlock>
                     <input matInput placeholder="[Event Name]" formControlName="name" class="input-mode">
                   </ng-template>
-
                 </td>
               </ng-container>
               <ng-container matColumnDef="month">
