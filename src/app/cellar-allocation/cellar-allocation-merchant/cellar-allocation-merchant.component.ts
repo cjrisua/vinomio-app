@@ -18,6 +18,7 @@ export class CellarAllocationMerchantComponent implements OnInit {
   merchantForm!: FormGroup;
   searchControl!: FormControl;
   merchants!: Merchant[];
+  merchantSelection!: Merchant
   submitted = false;
   showMerchants = true;
   isAddMode!:boolean
@@ -113,17 +114,23 @@ export class CellarAllocationMerchantComponent implements OnInit {
     //this.isAddMode = true
     this.showMerchants = !this.showMerchants
   }
+  deleteMerchant(merchant:any){
+    this.merchantService.delete(merchant.id).subscribe(()=>console.log("done!"))
+    this.getUserMerchant();
+  }
   updateMerchant(merchant:any){
+    //console.log(JSON.stringify(merchant))
     //this.isAddMode = false
+    this.merchantSelection = merchant
     this.showMerchants = !this.showMerchants
+    /*
     this.merchantForm = new FormGroup({
       id: new FormControl(merchant.id, [Validators.required]),
       name: new FormControl(merchant.name, [Validators.required]),
       userId: new FormControl(this.userProfile.id),
-    });
+    });*/
   }
   EmitEvent(message: any = {}) {
-    console.debug("EmitEvent")
     this.ItemEvent.emit(message);
   }
   showFormControls(form: any) {
@@ -131,6 +138,8 @@ export class CellarAllocationMerchantComponent implements OnInit {
   }
   NavigateEventResponse(message:any){
    
+    this.merchantSelection = {}
+
     if(message?.action && message.action == 'cancel')
       this.onCancel()
     else{

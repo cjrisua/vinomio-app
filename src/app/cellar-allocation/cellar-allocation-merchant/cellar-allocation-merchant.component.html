@@ -34,9 +34,18 @@
     </form>
     <!--List of all Merchants-->
     <p class="h5"></p>
+    <div *ngFor="let m of merchants"  class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <div><a href="javascript:void(0);" (click)="updateMerchant(m)">{{m.name}}</a></div>
+          <div><span class="material-icons-outlined"  (click)="deleteMerchant(m)" style="cursor:pointer;">delete_forever</span></div>
+        </div>
+      </div>
+    </div>
     <ul class="list-group">
-      <button *ngFor="let m of merchants" type="button"
-        class="list-group-item list-group-item-action" (click)="updateMerchant(m)">{{m.name}}</button>
+      <!--<button *ngFor="let m of merchants" type="button" class="list-group-item list-group-item-action" (click)="updateMerchant(m)">{{m.name}}</button>-->
+      
+      
     </ul>
   </div>
   <div *ngIf="merchants && merchants.length == 0">
@@ -44,6 +53,6 @@
   </div>
   <!-- Merchant Add/Update -->
   <div *ngIf="!showMerchants">
-   <app-cellar-merchant-form  (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile"></app-cellar-merchant-form>
+   <app-cellar-merchant-form  (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [merchant]="merchantSelection"></app-cellar-merchant-form>
   </div>
 </div>

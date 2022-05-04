@@ -18,12 +18,13 @@ export class VinomioMerchantService {
     console.log(query_params)
     return this.http.get<Merchant[]>(`${this.apiUrl}?${query_params}`)
   }
-
   add(data:any){
     return this.http.post(`${this.apiUrl}`,data);
   }
-
-  put(id:string, data:any){
+  put(id:any, data:any){
     return this.http.put(`${this.apiUrl}/${id}`,data);
+  }
+  delete(id:any){
+    return this.http.delete(`${this.apiUrl}/${id}`)
   }
 }

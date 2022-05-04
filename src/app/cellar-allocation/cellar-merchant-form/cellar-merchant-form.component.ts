@@ -27,6 +27,7 @@ import { VinomioProducerService } from 'src/app/services/vinomio-producer.servic
 })
 export class CellarMerchantFormComponent implements OnInit {
   @Input() userProfile!: Profile;
+  @Input() merchant!: Merchant
   @Output() ItemEvent = new EventEmitter<any>();
   submitted = false;
   merchantForm!: FormGroup;
@@ -41,15 +42,16 @@ export class CellarMerchantFormComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-
+    //console.log(this.merchant)
     this.merchantForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      id: new FormControl(this.merchant?.id || 0),
+      name: new FormControl(this.merchant?.name || "", [Validators.required]),
       userId: new FormControl(this.userProfile.id),
+      producerId: new FormControl(this.merchant?.producerId || 0),
     });
   }
   onCancel() {
     this.EmitEvent({ action: 'cancel' });
-    //this.addMerchant();
   }
   EmitEvent(message: any = {}) {
     this.ItemEvent.emit(message);
@@ -102,14 +104,15 @@ export class CellarMerchantFormComponent implements OnInit {
     data = { 
       userId: this.merchantForm.value.userId, 
       name:this.merchantForm.value.name?.name || this.merchantForm.value.name,
-      producerId:this.merchantForm.value.name?.producerId}
-    data.producerId =  this.merchantForm.value.name.producerId;
-
-    //console.log(data)
+      producerId:this.merchantForm.value.name?.producerId
+    }
     
-    this.merchantService.add(data).subscribe(
-      (response) =>  this.EmitEvent(response)
-    );
+    if(this.merchant?.id)//update
+    {
+      this.merchantService.put(this.merchant.id,data).subscribe((response) =>  this.EmitEvent(response));
+    }
+    else
+      this.merchantService.add(data).subscribe((response) =>  this.EmitEvent(response));
   }
   showFormControls(form: any) {
     return form && form.controls.name && form.controls.name.value; // Dr. IQ
