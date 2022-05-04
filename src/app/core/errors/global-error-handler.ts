@@ -17,6 +17,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     else if(error?.code == 100){}
     else{
 
+      console.log(error);
       let errorMsg = '';
       // Check if it's an error from an HTTP response
       if (!(error instanceof HttpErrorResponse)) {
