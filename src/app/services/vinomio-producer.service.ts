@@ -31,4 +31,10 @@ export class VinomioProducerService {
     return this.httpClient
       .post(this.apiUrl, data, {observe : 'response'})
   }
+  delete(id:any){
+    return this.httpClient.delete(`${this.apiUrl}/${id}`)
+  }
+  put(id:any, data:any){
+    return this.httpClient.put(`${this.apiUrl}/${id}`,data);
+  }
 }

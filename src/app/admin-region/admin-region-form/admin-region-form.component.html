@@ -30,7 +30,10 @@
           Disable Input?
         </mat-slide-toggle>
       </div>
-      <button type="submit" class="btn btn-success" [disabled]="!regionForm.valid">Submit</button>
+      <div class="d-flex justify-content-between">
+        <button type="button" [routerLink]="['/admin/model']" [queryParams]="{name:'region'}" class="btn btn btn-outline-dark">Cancel</button>
+        <button type="submit" class="btn btn-success" [disabled]="!regionForm.valid">Submit</button>
+      </div>  
       <div>
         <hr>
         Name via form.controls = {{showFormControls(regionForm)}}

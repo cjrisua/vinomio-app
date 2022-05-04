@@ -27,4 +27,7 @@ export class VinomioVintageService {
     return this.httpClient
     .post(this.apiUrl, data, {observe : 'response'})
   }
+  delete(id:any){
+    return this.httpClient.delete(`${this.apiUrl}/${id}`)
+  }
 }

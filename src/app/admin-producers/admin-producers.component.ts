@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VinomioProducerService } from '../services/vinomio-producer.service';
 import {MatTableDataSource} from "@angular/material/table";
 import { Producer } from '../models/Producer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-producers',
@@ -14,7 +15,9 @@ export class AdminProducersComponent implements OnInit {
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Producer>();
 
-  constructor(private producerService: VinomioProducerService) { }
+  constructor(
+    private producerService: VinomioProducerService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.producerService.get().subscribe((data) => {
@@ -22,5 +25,11 @@ export class AdminProducersComponent implements OnInit {
         this.dataSource.data = data;
       });
   }
-  
+  public ViewOrDeleteModelItem(wine: any) {
+    //console.log(`naviage to id ${JSON.stringify(wine.event)}`);
+    if(wine.action=='view')
+      this.router.navigateByUrl('/admin/producer/' + wine.event.id, { state: wine.event });
+    else if(wine.action=='delete')
+      this.producerService.delete(wine.event.id).subscribe(() => this.ngOnInit())
+  }
 }

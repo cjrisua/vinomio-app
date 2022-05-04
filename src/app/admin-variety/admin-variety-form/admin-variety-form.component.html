@@ -7,8 +7,10 @@
                 <input type="text" class="form-control" id="name"
                formControlName="name">
             </div>
-            <button type="submit" class="btn btn-success" [disabled]="!varietyForm.valid">Submit</button>
-
+            <div class="d-flex justify-content-between">
+                <button type="button" [routerLink]="['/admin/model']" [queryParams]="{name:'variety'}" class="btn btn btn-outline-dark">Cancel</button>
+                <button type="submit" class="btn btn-success" [disabled]="!varietyForm.valid">Submit</button>
+            </div>
             <div>
                 <hr>
                 Name via form.controls = {{showFormControls(varietyForm)}}

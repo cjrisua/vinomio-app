@@ -1,18 +1,21 @@
 <div class="container">
-    <div [hidden]="submitted">
-        <h1>Producer Form</h1>
-        <form (ngSubmit)="onSubmit()" [formGroup]="producerForm" autocomplete="off">
-            <div class="form-group mb-3">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name"
-               formControlName="name">
-            </div>
-            <button type="submit" class="btn btn-success" [disabled]="!producerForm.valid">Submit</button>
-
-            <div>
-                <hr>
-                Name via form.controls = {{showFormControls(producerForm)}}
-            </div>
-        </form>
-    </div>
+  <div [hidden]="submitted">
+    <h1>Producer Form</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="producerForm" autocomplete="off">
+      <div class="form-group mb-3">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" [routerLink]="['/admin/model']" [queryParams]="{name:'producer'}"
+          class="btn btn btn-outline-dark">Cancel</button>
+        <button type="submit" class="btn btn-success" [disabled]="!producerForm.valid">Submit</button>
+      </div>
+      <div>
+        <hr>
+        <p *ngIf="producer">State = {{producer | json}}</p>
+        Name via form.controls = {{showFormControls(producerForm)}}
+      </div>
+    </form>
+  </div>
 </div>

@@ -30,6 +30,7 @@ const routes: Routes = [
  
   {path:'admin/model', component:AdminModelComponent},
   {path:'admin/producers', component:AdminProducersComponent},
+  {path:'admin/producer/:id', component:AdminProducersFormComponent},
   {path:'admin/producer/add', component:AdminProducersFormComponent},
   {path:'admin/wines', component:AdminWinesComponent},
   {path:'admin/wine/add', component:AddWineFormComponent},
