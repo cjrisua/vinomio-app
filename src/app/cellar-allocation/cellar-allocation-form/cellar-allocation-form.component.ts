@@ -77,7 +77,7 @@ export class CellarAllocationFormComponent implements OnInit {
 
   initFormGroup(){
     this.allocationForm = new FormGroup({
-      allocationId: new FormControl([]),
+      //allocationId: new FormControl(),
       merchant: new FormControl('', [Validators.required]),
       userId: new FormControl(this.userProfile.id),
       status: new FormControl('', [Validators.required]),
@@ -208,6 +208,7 @@ export class CellarAllocationFormComponent implements OnInit {
     return element.eventId == -1 ? true : false;
   }
   onSubmit() {
+    //alert("?")
     //console.log(JSON.stringify(this.allocationForm.value))
     let eventdata: { id: number; name: string; month: string };
     let data: {
