@@ -40,7 +40,7 @@ export class AdminMastervarietalFormComponent implements OnInit {
   }
   onSubmit() { 
     let data={
-      name:this.mastervarietalForm.value.name,
+      name:this.mastervarietalForm.value.name.trim(),
       varieties:this.varietyIdCollection
     }
     this.mastervarietalService.add(data).subscribe(

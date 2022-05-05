@@ -1,6 +1,7 @@
 <app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" 
   [ModelItems]="dataSource.data"
   [exclusionColumns]="exclusionColumns"
+  (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"
   ></app-admin-model-table>
   
 <!--<table mat-table [dataSource]="dataSource" class="mat-elevation-z4 demo-table">

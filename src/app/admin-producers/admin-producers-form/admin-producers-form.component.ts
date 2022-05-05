@@ -40,7 +40,7 @@ export class AdminProducersFormComponent implements OnInit {
   }
   onSubmit() { 
     let data = {
-      'name': this.producerForm.value.name
+      'name': this.producerForm.value.name.trim()
     };
     if(this.producer){
       this.producerService.put(this.producer.id, data).subscribe(

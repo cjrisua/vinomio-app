@@ -20,4 +20,7 @@ export class VinomioAllocationEventOfferService {
     console.debug(data)
     return this.http.post(`${this.apiUrl}`,data)
   }
+  delete(id:any){
+    return this.http.delete(`${this.apiUrl}/${id}`)
+  }
 }

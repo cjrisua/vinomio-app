@@ -23,7 +23,7 @@ export class AdminVarietyFormComponent implements OnInit {
     })
   }
   onSubmit() { 
-    let data={"name":this.varietyForm.value.name}
+    let data={"name":this.varietyForm.value.name.trim()}
     this.varietyService.add(data).subscribe(
      (response) => this.route.navigateByUrl('/admin/model?name=variety')
    );

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Variety } from '../models/Variety';
 import { VinomioVarietyService } from '../services/vinomio-variety.service';
 
@@ -15,6 +16,7 @@ export class AdminVarietyComponent implements OnInit {
   dataSource = new MatTableDataSource<Variety>();
   
   constructor(
+    private router:Router,
     private varietyService: VinomioVarietyService
   ) { }
 
@@ -23,5 +25,10 @@ export class AdminVarietyComponent implements OnInit {
       this.dataSource.data = data;
     });
   }
-
+  public ViewOrDeleteModelItem(wine: any) {
+    if(wine.action=='view')
+    this.router.navigateByUrl('/admin/variety/' + wine.event.id, { state: wine.event });
+  else if(wine.action=='delete')
+    this.varietyService.delete(wine.event.id).subscribe(() => this.ngOnInit())
+  }
 }

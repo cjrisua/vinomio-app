@@ -47,7 +47,7 @@ export class AdminRegionFormComponent implements OnInit {
   }
   onSubmit() {
     let data = {
-      name: this.regionForm.value.name,
+      name: this.regionForm.value.name.trim(),
       countryId: this.regionForm.value.country,
       parentId: this.regionDropDowmCtrl.value?.id
     };

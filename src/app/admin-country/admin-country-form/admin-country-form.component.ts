@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VinomioCountryService } from 'src/app/services/vinomio-country.service';
+import { Location } from '@angular/common';
+import { Country } from 'src/app/models/Country';
 
 @Component({
   selector: 'app-admin-country-form',
@@ -12,22 +14,37 @@ export class AdminCountryFormComponent implements OnInit {
 
   submitted = false;
   countryForm!: FormGroup;
+  country!: Country
 
   constructor(
     private route: Router,
+    private location: Location,
     private countryService: VinomioCountryService
   ) { }
 
   ngOnInit(): void {
+    const state: any = this.location.getState();
+    if(state.id)
+      this.country=state
+
     this.countryForm = new FormGroup({
       name:  new FormControl('',[Validators.required,Validators.minLength(3)]),
     })
+
+    if(this.country){
+      this.countryForm.patchValue({
+        id: this.country.id,
+        name: this.country.name,
+      });
+    }
   }
   onSubmit() { 
-   let data={"name":this.countryForm.value.name}
-   this.countryService.add(data).subscribe(
-    (response) => this.route.navigateByUrl('/admin/model?name=country')
-  );
+   let data={"name":this.countryForm.value.name.trim()}
+
+   if(this.country)
+    this.countryService.put(this.country.id,data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=country'));
+   else
+    this.countryService.add(data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=country'));
 
   }
   private extractData(res: Response) {

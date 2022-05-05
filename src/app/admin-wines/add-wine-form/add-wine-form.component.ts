@@ -93,7 +93,7 @@ export class AddWineFormComponent implements OnInit {
   }
   onSubmit() {
     let data = {
-      name: this.wineForm.value.name,
+      name: this.wineForm.value.name.trim(),
       producerId: this.wineForm.value.producer,
       mastervarietalId: this.wineForm.value.mastervarietal,
       regionId: this.wineForm.value.region,

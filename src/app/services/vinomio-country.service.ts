@@ -23,4 +23,10 @@ export class VinomioCountryService {
     return this.httpClient
       .post(this.apiUrl, data, {observe : 'response'})
   }
+  put(id:any, data:any){
+    return this.httpClient.put(`${this.apiUrl}/${id}`,data);
+  }
+  delete(id:any){
+    return this.httpClient.delete(`${this.apiUrl}/${id}`)
+  }
 }
