@@ -77,7 +77,7 @@ export class CellarAllocationFormComponent implements OnInit {
 
   initFormGroup(){
     this.allocationForm = new FormGroup({
-      //allocationId: new FormControl(),
+      allocationId: new FormControl(),
       merchant: new FormControl('', [Validators.required]),
       userId: new FormControl(this.userProfile.id),
       status: new FormControl('', [Validators.required]),
@@ -102,17 +102,20 @@ export class CellarAllocationFormComponent implements OnInit {
   ngOnInit(): void {
     //console.log(this.allocation)
     this.initFormGroup();
-
+    
     if (this.allocation) {
       const date:string = this.datePipe.transform(this.allocation?.memberSince,'MM/dd/yyyy') || ''
       console.log(this.allocation.events)
       this.allocationForm.patchValue({
-        merchant:this.allocation.merchant?.name,
+        allocationId:this.allocation.id,
+        userId:this.userProfile.id,
+        merchant:this.allocation.merchant,
         status: this.allocation.status,
         memberSince: date,
         //events: this.allocation.events
       });
     }else {
+      
       /*
       this.merchantService.get(this.userProfile.id).subscribe((res) => {
         if (res.length > 0) {
@@ -161,6 +164,7 @@ export class CellarAllocationFormComponent implements OnInit {
   }
   onMerchantSelection(selection: any) 
   {
+    //console.log("???")
     /*
     this.allocationForm.reset();
     this.merchantAllocationEvents = new MatTableDataSource<any>();
@@ -220,7 +224,8 @@ export class CellarAllocationFormComponent implements OnInit {
     };
 
     let eventItems = this.allocationForm.get('events') as FormArray;
-    const eventItemCollection = eventItems.controls.map((i: any) => {
+    //console.log(eventItems)
+    const eventItemCollection = eventItems.controls.filter(i => !i.value.eventId).map((i: any) => {
       //const data: typeof eventdata
       return {
         id: i.value.eventId,
@@ -228,14 +233,15 @@ export class CellarAllocationFormComponent implements OnInit {
         month: <string>i.value.month,
       };
     });
-    //console.log(eventItemCollection);
     data = {
       merchantId: this.allocationForm.value.merchant.id,
       status: this.allocationForm.value.status,
-      userId: this.allocationForm.value.merchant.userId,
+      userId: this.allocationForm.value.userId,
       memberSince: this.allocationForm.value.memberSince,
       events: eventItemCollection,
     };
+    console.log(data)
+    
     if (!this.allocationForm.value.allocationId)
       this.allocationService.add(data).subscribe((p) => this.EmitEvent(p));
     else
@@ -257,6 +263,7 @@ export class CellarAllocationFormComponent implements OnInit {
     this.ItemEvent.emit({action:'redirect',allocation:this.allocation, event:this.allocation.events?.filter(i => i.id === selection)[0]});
   }
   onAddAllocationSchedule() {
+    //console.log(this.allocationForm.value)
     let formArray = this.allocationForm.get('events') as FormArray;
     formArray.push(
       new FormGroup({

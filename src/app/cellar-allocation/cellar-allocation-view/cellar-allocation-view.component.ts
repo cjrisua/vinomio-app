@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, Observable, OperatorFunction } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, map, Observable, of, OperatorFunction } from 'rxjs';
 import { Action, Module, UserEventAction } from 'src/app/app.module';
 import { Allocation } from 'src/app/models/Allocation';
 import { AllocationEvent } from 'src/app/models/AllocationEvent';
@@ -28,7 +28,8 @@ export class CellarAllocationViewComponent implements OnInit {
   merchantSelection!:Merchant
 
   constructor(
-    private allocationService:VinomioAllocationService
+    private allocationService:VinomioAllocationService,
+    //private allocation
   ) { }
 
   ngOnInit(): void {
@@ -37,8 +38,14 @@ export class CellarAllocationViewComponent implements OnInit {
     this.getAllocation();
   }
   private getAllocation(){
-    this.allocationService.get(this.userProfile.id).subscribe(
+    
+    this.allocationService.get(this.userProfile.id)
+    .pipe(
+      map((d:Allocation[])=> d),
+      catchError((val)=> of([])))
+    .subscribe(
       (allocations)=>{
+        console.debug("setting allocations...")
         this.allocations = allocations
       })
   }
@@ -68,7 +75,7 @@ export class CellarAllocationViewComponent implements OnInit {
     return value.merchant.name;
   }
   NavigateEventResponse(event:any){
-
+    //alert("?")
   if(event?.action && event.action === 'redirect'){
     this.onEventView(event.allocation, event.event)
     return
@@ -112,6 +119,10 @@ export class CellarAllocationViewComponent implements OnInit {
   }
   onDelete(allocation:any){
     console.log(allocation)
+    this.allocationService.delete(allocation.id).subscribe((e)=> { 
+      console.log("done...now refresh")
+      this.getAllocation() 
+    })
   }
   onViewItem(allocation:any){
     //console.log(allocation)

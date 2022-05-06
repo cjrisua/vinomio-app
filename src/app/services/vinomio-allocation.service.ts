@@ -27,4 +27,7 @@ export class VinomioAllocationService {
     return this.http
       .patch(`${this.apiUrl}/${id}`, data, {observe : 'response'})
   }
+  delete(id:number){
+    return this.http.delete(`${this.apiUrl}/${id}`)
+  }
 }
