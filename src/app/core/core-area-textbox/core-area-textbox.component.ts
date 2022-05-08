@@ -8,40 +8,45 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class CoreAreaTextboxComponent implements OnInit {
   
-  @Input() item:any  = {}
-  @Output() addClicked = new EventEmitter<{id:number,name:string}>();
+  @Input() item!:{id:number,name:string}
+  @Input() allowDuplictes = false
+  @Output() addOrRemovedClicked = new EventEmitter<{status:string ,id:number,name:string}>();
   @Input() events!: Observable<{id:number,name:string}[]>;
   private eventsSubscription!: Subscription;
+  selectedItem:any={}
   
-  messages:any = []
+  messages!:{id:number,name:string}[]
+
   constructor() { }
 
   ngOnInit(): void {
-    this.eventsSubscription = this.events.subscribe((d) => this.doSomething(d));
+    this.eventsSubscription = this.events.subscribe((d) => this.initTextArea(d));
   }
   ngOnDestroy() {
     this.eventsSubscription.unsubscribe();
   }
   
   onAdd(){
-    //console.log("onAdd")
-    //console.log(this.item)
-    if(this.item != null){
+    if(this.item != null && !this.allowDuplictes && !this.messages.some(i=>i.id == this.item.id)){
       //populate container
+      //console.log(this.messages)
       this.messages.push({id: this.item.id, name:this.item.name })
       //emit event 
-      this.addClicked.emit({id: this.item.id, name:this.item.name });
+      this.addOrRemovedClicked.emit({status:'added', id: this.item.id, name:this.item.name });
     }
+    else
+      console.debug("items already exits")
   }
-  doSomething(data:any){
-    //console.log(data)
-    //clean textarea
+  initTextArea(data:any){
     this.messages = []
     for(let i=0; i<Object.values(data).length; i++)
       this.messages.push({id: data[i].id, name:data[i].name })
   }
-  onRemove(){
-    
-    //this.addremoveClicked.emit("removed")
+  onRemove(selectedItem:any){
+    this.messages = this.messages.filter((i:any) => i !== selectedItem)
+    this.addOrRemovedClicked.emit({status:'removed', id: this.selectedItem.id, name:this.selectedItem.name });
+  }
+  onSelect(item:any){
+    this.selectedItem = item;
   }
 }

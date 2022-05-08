@@ -1,9 +1,11 @@
 <button type="button" mat-icon-button (click)="onAdd()">
     <mat-icon aria-label="Example icon-button with a heart icon">add_circle_outline</mat-icon>
 </button>
-<button type="button" mat-icon-button (click)="onRemove()">
+<button type="button" mat-icon-button (click)="onRemove(selectedItem)">
     <mat-icon aria-label="Example icon-button with a heart icon">remove_circle_outline</mat-icon>
 </button>
-<div id="textarea" contenteditable>
-    <div id="item" *ngFor="let m of messages">{{m.name}}</div>
+<div class="mb-3">
+    <ul class="list-group">
+        <button *ngFor="let i of messages" type="button" (click)="onSelect(i)" [class.active]="i === selectedItem" class="list-group-item list-group-item-action">{{i.name}}</button>
+    </ul>
 </div>
