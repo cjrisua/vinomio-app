@@ -23,4 +23,10 @@ export class VinomioMastervarietalService {
   delete(id:any){
     return this.httpClient.delete(`${this.apiUrl}/${id}`)
   }
+  deleteVariety(slug:string, varietyId:number){
+    return this.httpClient.delete(`${this.apiUrl}/${slug}/${varietyId}`)
+  }
+  put(id:any, data:any){
+    return this.httpClient.put(`${this.apiUrl}/${id}`,data);
+  }
 }

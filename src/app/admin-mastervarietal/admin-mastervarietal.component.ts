@@ -26,7 +26,7 @@ export class AdminMastervarietalComponent implements OnInit {
     });
   }
   public ViewOrDeleteModelItem(wine: any) {
-    console.log(`naviage to id ${JSON.stringify(wine.event)}`);
+    console.log(`naviage action: ${wine.action} with event of ${JSON.stringify(wine.event)}`);
     if(wine.action=='view')
       this.router.navigateByUrl('/admin/mastervarietal/' + wine.event.id, { state: wine.event });
     else if(wine.action=='delete')
