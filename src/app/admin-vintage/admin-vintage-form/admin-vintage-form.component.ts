@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, startWith, Subject, tap } from 'rxjs';
@@ -19,31 +20,47 @@ export class AdminVintageFormComponent implements OnInit {
   vintageFromCtrl = new FormControl();
   filteredOptions!: Observable<Wine[]>;
   option!:any[]
-  wineVintages: Vintage[] = []
+  vintage:any
+  //wineVintages: Vintage[] = []
   eventsSubject:Subject<Vintage[]> =  new Subject<Vintage[]>(); 
-
+  addedItemCollection:string[] = []
+  removedItemCollection:string[] = []
   value:string =''
   
   //@Output() updateControl = new EventEmitter<Vintage[]>();
   
   constructor(
     private route: Router,
+    private location: Location,
     private vintageService: VinomioVintageService,
     private wineService: VinomioWineService
   ) { }
 
   ngOnInit(): void {
+    //console.log(this.location.getState())
+    const state: any = this.location.getState();
+    if(state.id)
+      this.vintage=state
+
     this.vintageForm = new FormGroup({
       wine: new FormControl('', [Validators.required]),
       year: new FormControl('', [Validators.required])
     });
-    this.wineService.get()
-    .pipe(
-      map((d: Wine[])=>d))
-    .subscribe(data => (this.getVintage(data)));
+
+    if(!this.vintage){
+      this.wineService.get()
+      .pipe(
+        map((d: Wine[])=>d))
+      .subscribe(data => { this.getWines(data)});
+    }
+    else{
+      this.vintageFromCtrl.patchValue({id:this.vintage.Wine.id, name:this.vintage.Wine.name})
+      this.getVintages(this.vintage.Wine.id,)
+    }
+
   }
 
-  getVintage(data: Wine[]): void {
+  getWines(data: Wine[]): void {
     this.option = data
     this.filteredOptions = this.vintageFromCtrl.valueChanges
       .pipe(
@@ -51,11 +68,33 @@ export class AdminVintageFormComponent implements OnInit {
         map(value => value.length >= 1 ? this._filter(value) : this.displayVintages(data))
       );
   }
+  getVintages(WineId:number){
+    this.vintageService.getByWineId(WineId)
+    .pipe(
+      map((vintages:Vintage[]) => { 
+        let results = []
+        for(var vintage of vintages)
+          results.push({id:vintage.id, name:`${vintage.year}`})
+        return results
+      }))
+    .subscribe((d:any[])=> this.eventsSubject.next(d));
+  }
   onSubmit() {
-    //let data = { id:this.vintageFromCtrl.value.id }
-    this.wineVintages.forEach(vintage=>{
-      this.vintageService.add({wineId:this.vintageFromCtrl.value.id, year:vintage})
-      .subscribe(()=>this.route.navigateByUrl('/admin/model?name=vintage'))
+
+    this.removedItemCollection.forEach((i,x) =>{
+      console.log(`removedItemCollection => ${x}, ${i}`)
+      //this.vintageService.delete(this.vintage.id)
+      //.subscribe(()=>console.log("done"))
+    })
+    //console.log(this.wineVintages)
+    this.addedItemCollection.forEach((year,index)=>{
+      //if(index+1 == this.addedItemCollection.length)
+      //  console.log("done!")
+      this.vintageService.add({wineId:this.vintageFromCtrl.value.id, year:year})
+      .subscribe(()=>{
+        if(index+1 == this.addedItemCollection.length)
+          this.route.navigateByUrl('/admin/model?name=vintage')
+      })
     })
   }
   clearTextBox(){
@@ -68,25 +107,25 @@ export class AdminVintageFormComponent implements OnInit {
     return this.option = data
   }
   onWineSelection(data:any){
-    if(data.isUserInput){
-      const id:number = data.source.value.id
-      this.vintageService.getByWineId(id)
-      .pipe(
-        map((vintages:Vintage[]) => { 
-          let results = []
-          for(var vintage of vintages)
-            results.push({id:vintage.id, name:vintage.year})
-          return results
-        }))
-      .subscribe((d:any[])=> this.eventsSubject.next(d));
+    if(data.isUserInput)
+      this.getVintages(data.source.value.id)
+    
+  }
+  onVarietyActionEvent(event:any){
+    //console.log(event)
+    if(event.status ==='added'){
+      if(this.removedItemCollection.includes(event.name))
+        this.removedItemCollection =  this.removedItemCollection.filter(i => i != event.name)
+      else
+        this.addedItemCollection.push(`${event.name}`)
+    }
+    else if(event.status ==='removed'){
+      if(this.addedItemCollection.includes(event.name))
+        this.addedItemCollection =  this.addedItemCollection.filter(i => i != event.name)
+      else
+        this.removedItemCollection.push(`${event.name}`) 
     }
   }
-  onVintageAdded(data:any){
-    //console.log("onVintageAdded")
-    //console.log(data)
-    this.wineVintages.push(data.name)
-  }
-
   displayFn(region: Vintage):string {
     return region && region.name ? region.name : ''
   }

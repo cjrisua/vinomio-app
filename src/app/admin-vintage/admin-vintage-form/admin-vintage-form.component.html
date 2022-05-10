@@ -31,7 +31,7 @@
                formControlName="year">
              </div>
               <div class="form-group">
-              <app-core-area-textbox [item]="{id:0,name:vintageForm.value.year}" (addOrRemovedClicked)="onVintageAdded($event)" [events]="eventsSubject.asObservable()"></app-core-area-textbox>
+              <app-core-area-textbox [item]="{id:0,name:vintageForm.value.year}" (addOrRemovedClicked)="onVarietyActionEvent($event)" [events]="eventsSubject.asObservable()"></app-core-area-textbox>
             </div>
                 <!--
                 <mat-slide-toggle

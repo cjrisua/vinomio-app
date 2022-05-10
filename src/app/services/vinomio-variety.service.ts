@@ -24,4 +24,7 @@ export class VinomioVarietyService {
   delete(id:any){
     return this.httpClient.delete(`${this.apiUrl}/${id}`)
   }
+  put(id:any, data:any){
+    return this.httpClient.put(`${this.apiUrl}/${id}`,data);
+  }
 }

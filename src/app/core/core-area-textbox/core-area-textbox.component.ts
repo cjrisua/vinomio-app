@@ -14,7 +14,7 @@ export class CoreAreaTextboxComponent implements OnInit {
   @Input() events!: Observable<{id:number,name:string}[]>;
   private eventsSubscription!: Subscription;
   selectedItem:any={}
-  
+  private slugify = (str: string): string => str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
   messages!:{id:number,name:string}[]
 
   constructor() { }
@@ -27,7 +27,10 @@ export class CoreAreaTextboxComponent implements OnInit {
   }
   
   onAdd(){
-    if(this.item != null && !this.allowDuplictes && !this.messages.some(i=>i.id == this.item.id)){
+    
+    console.log(this.item)
+    console.log(this.messages)
+    if(this.item != null && !this.allowDuplictes && !this.messages.some(i=> this.slugify(i.name) == this.slugify(this.item.name))){
       //populate container
       //console.log(this.messages)
       this.messages.push({id: this.item.id, name:this.item.name })

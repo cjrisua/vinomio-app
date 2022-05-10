@@ -30,4 +30,7 @@ export class VinomioVintageService {
   delete(id:any){
     return this.httpClient.delete(`${this.apiUrl}/${id}`)
   }
+  //deleteVintage(slug:string,id:number){
+  //  return this.httpClient.delete(`${this.apiUrl}/${slug}/${id}`)
+  //}
 }

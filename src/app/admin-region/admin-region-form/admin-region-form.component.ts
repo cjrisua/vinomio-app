@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, pipe } from 'rxjs';
@@ -21,14 +22,20 @@ export class AdminRegionFormComponent implements OnInit {
   filteredOptions!: Observable<Region[]>;
   countryFilterOption!: Observable<Country>;
   option!:Region[]
+  region!:any
 
   constructor(
     private route: Router,
+    private location: Location,
     private countryService: VinomioCountryService,
     private regionService: VinomioRegionService
   ) {}
 
   async ngOnInit(): Promise<void> {
+    const state: any = this.location.getState();
+    if(state.id)
+      this.region=state
+
     this.regionForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       country: new FormControl('', [Validators.required]),
@@ -37,7 +44,18 @@ export class AdminRegionFormComponent implements OnInit {
     this.countryService.get()
     .pipe(
       map((c: Country[]) =>c))
-    .subscribe( (data: Country[]) =>  this.countrySelector = data );
+    .subscribe( (data: Country[]) =>  {
+      this.countrySelector = data
+      if(this.region){
+        this.GetRegionsForCountry(this.region.country.id)
+        this.regionForm.patchValue({
+          country:this.region.country.id,
+          name: this.region.name
+        })
+        if(this.region.parent?.id)
+          this.regionDropDowmCtrl.patchValue({id:this.region.parent.id, name:this.region.parent.name})
+      }
+    })
     /*
     this.regionService.get(false,2)
     .pipe(
@@ -46,32 +64,35 @@ export class AdminRegionFormComponent implements OnInit {
     */
   }
   onSubmit() {
-    let data = {
+    let data:{name:string, countryId:number,parentId:any} = {
       name: this.regionForm.value.name.trim(),
       countryId: this.regionForm.value.country,
       parentId: this.regionDropDowmCtrl.value?.id
     };
-    this.regionService.add(data)
-    .subscribe(
-      () => this.route.navigateByUrl('/admin/model?name=region')
-    );
+    if(this.region)
+      this.regionService.put(this.region.id, data).subscribe(() => this.route.navigateByUrl('/admin/model?name=region'));
+    else
+      this.regionService.add(data).subscribe(() => this.route.navigateByUrl('/admin/model?name=region'));
   }
   onChangeRegion(e: any){
-
-    this.regionService.get(false,e.target.value)
+    this.GetRegionsForCountry(e.target.value)
+  }
+  GetRegionsForCountry(countryId:number){
+    this.regionService.get(false,countryId)
     .pipe(
       map((d: Region[])=>d))
-    .subscribe(data => (this.onGetParentRegion(data)));
-    
+    .subscribe(data => {
+      this.onGetParentRegion(data)
+    });
   }
   onGetParentRegion(data:Region[]){
-  
     this.option = data
-    this.filteredOptions = this.regionDropDowmCtrl.valueChanges
+    this.filteredOptions = 
+      this.regionDropDowmCtrl.valueChanges
       .pipe(
         startWith(''),
         map(value => value.length >= 1 ? this._filter(value) : this.option)
-      );
+      )
   }
   displayFn(region: Region):string {
     return region && region.name ? region.name : ''
