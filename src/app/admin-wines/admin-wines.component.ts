@@ -33,7 +33,7 @@ export class AdminWinesComponent implements OnInit {
   }
 
   private getSourceData(text?:string){
-    this.wineService.get().subscribe((data) => {
+    this.wineService.get(undefined,text).subscribe((data) => {
       this.dataSource.data = data.map((d) => {
         const vintages = d.Vintages.map((u: any) => u.year);
         const result: Wine = {
