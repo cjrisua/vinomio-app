@@ -1,0 +1,18 @@
+<form [formGroup]="adminForm" autocomplete="off">
+    <div class="input-group my-2">
+      <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
+        <span class="material-icons" style="color: gray;">search</span>
+      </span>
+      <input formControlName="name" id="merchant-name" placeholder="" class="form-control" type="text"
+       (keyup)="onKeyUp()" (keydown)="onKeyDown()"
+        style="border-left: none !important;border-right: none !important">
+      <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+        (click)="onClear()">
+        <span class="material-icons" style="color: gray;">close</span>
+      </span>
+    </div>
+</form>
+<!--
+<form [formGroup]="formGroup">
+  <input type="text" formControlName="name" (keyup)="onKeyUp()" (keydown)="onKeyDown()">
+</form>-->

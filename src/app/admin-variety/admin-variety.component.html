@@ -1,3 +1,4 @@
+<app-admin-model-searcher (searchEvent)="searchEvent($event)"></app-admin-model-searcher>
 <h3><strong>Variety Table</strong></h3>
 <app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" 
   [ModelItems]="dataSource.data"

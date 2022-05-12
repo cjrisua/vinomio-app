@@ -19,6 +19,9 @@ export class AdminVintageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getSourceData()
+  }
+  private getSourceData(text?:string){
     this.vintageService.get().subscribe((data) => {
       //this.dataSource.data = data;
       
@@ -28,6 +31,9 @@ export class AdminVintageComponent implements OnInit {
         return m;
       })
     });
+  }
+  public searchEvent(keyword:string){
+    this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
     if(wine.action=='view')

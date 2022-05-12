@@ -21,9 +21,15 @@ export class AdminRegionComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.getSourceData()
+  }
+  private getSourceData(text?:string){
     this.regionService.get(true).subscribe(data => {
       this.dataSource.data = data;
       });
+  }
+  public searchEvent(keyword:string){
+    this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
     console.log(`naviage to id ${JSON.stringify(wine.event)}`);

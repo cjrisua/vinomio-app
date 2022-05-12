@@ -21,9 +21,15 @@ export class AdminVarietyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+   this.getSourceData()
+  }
+  private getSourceData(text?:string){
     this.varietyService.get().subscribe((data) => {
       this.dataSource.data = data;
     });
+  }
+  public searchEvent(keyword:string){
+    this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
     if(wine.action=='view')

@@ -21,9 +21,15 @@ export class AdminCountryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getSourceData()
+  }
+  private getSourceData(text?:string){
     this.countryService.get().subscribe((data) => {
       this.dataSource.data = data;
     });
+  }
+  public searchEvent(keyword:string){
+    this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(item: any) {
     console.log(`naviage to id ${JSON.stringify(item.event)}`);

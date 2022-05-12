@@ -29,6 +29,10 @@ export class AdminWinesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getSourceData()
+  }
+
+  private getSourceData(text?:string){
     this.wineService.get().subscribe((data) => {
       this.dataSource.data = data.map((d) => {
         const vintages = d.Vintages.map((u: any) => u.year);
@@ -44,6 +48,9 @@ export class AdminWinesComponent implements OnInit {
         return result;
       });
     });
+  }
+  public searchEvent(keyword:string){
+    this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
     //console.log(`naviage to id ${JSON.stringify(wine.event)}`);

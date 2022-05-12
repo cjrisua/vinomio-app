@@ -20,10 +20,17 @@ export class AdminProducersComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.producerService.get().subscribe((data) => {
-        //this.producers = data;
-        this.dataSource.data = data;
-      });
+    this.getSourceData()
+  }
+
+  private getSourceData(text?:string){
+    this.producerService.get(text).subscribe((data) => {
+      //this.producers = data;
+      this.dataSource.data = data;
+    });
+  }
+  public searchEvent(keyword:string){
+    this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
     //console.log(`naviage to id ${JSON.stringify(wine.event)}`);

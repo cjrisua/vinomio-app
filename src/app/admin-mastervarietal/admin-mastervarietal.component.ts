@@ -21,9 +21,15 @@ export class AdminMastervarietalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getSourceData()
+  }
+  private getSourceData(text?:string){
     this.mastervarietalService.get().subscribe((data) => {
       this.dataSource.data = data;
     });
+  }
+  public searchEvent(keyword:string){
+    this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
     console.log(`naviage action: ${wine.action} with event of ${JSON.stringify(wine.event)}`);

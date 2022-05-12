@@ -22,6 +22,8 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 -->
+<app-admin-model-searcher (searchEvent)="searchEvent($event)"></app-admin-model-searcher>
+<h2>Producers Table</h2>
 <app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" 
   [ModelItems]="dataSource.data"
   [exclusionColumns]="exclusionColumns"
