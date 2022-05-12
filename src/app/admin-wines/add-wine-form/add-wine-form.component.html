@@ -9,11 +9,23 @@
             </div>
             <div class="form-group">
                 <label for="producer">Producer</label>
-                <select class="form-control" id="producer"
+                <!--<select class="form-control" id="producer"
                 formControlName="producer">    
                   <option value="">Select Producer</option>
                   <option *ngFor="let producer of selectProducer" [value]="producer.id">{{producer.name}}</option>
-                </select>
+                </select>-->
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"> 
+                      <span class="material-icons" style="color: gray;">search</span>
+                    </span>
+                    <input formControlName="producer" id="merchant-name" placeholder="" class="form-control" type="text" 
+                    [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+                    [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onSearchSelection($event)" (click)="onFilterList()"
+                    style="border-left: none !important;border-right: none !important">
+                    <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;" (click)="onClear()"> 
+                      <span class="material-icons" style="color: gray;">close</span>
+                    </span>
+                </div>
             </div>
             
             <div class="form-group">

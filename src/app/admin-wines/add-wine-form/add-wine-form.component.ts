@@ -10,6 +10,7 @@ import { VinomioMastervarietalService } from 'src/app/services/vinomio-mastervar
 import { Region } from 'src/app/models/Region';
 import { VinomioRegionService } from 'src/app/services/vinomio-region.service';
 import { Location } from '@angular/common';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, map, Observable, of, OperatorFunction, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-add-wine-form',
@@ -23,7 +24,8 @@ export class AddWineFormComponent implements OnInit {
   selectRegion: Region[] = [];
   submitted = false;
   wineForm!: FormGroup;
-
+  search!: OperatorFunction<string, readonly {name:string, id:number}[]>;
+  
   constructor(
     private router: Router,
     private location: Location,
@@ -46,7 +48,7 @@ export class AddWineFormComponent implements OnInit {
       mastervarietal: new FormControl('', [Validators.required]),
       region: new FormControl('', [Validators.required]),
     });
-
+    /*
     this.producerService.get().subscribe((data) => {
       this.selectProducer = data;
       if (this.wineItem) {
@@ -58,7 +60,7 @@ export class AddWineFormComponent implements OnInit {
             producer: selected.id,
           });
       }
-    });
+    });*/
 
     this.regionService.get().subscribe((data) => {
       this.selectRegion = data;
@@ -88,17 +90,74 @@ export class AddWineFormComponent implements OnInit {
       }
     });
   }
+  resultFormatListValue(value: any) {
+    return value.name;
+  }
+  inputFormatListValue(value: any) {
+    if (value.name) return value.name;
+    return value;
+  }
+  onSearchSelection(event:any){
+    console.log("onSearchSelection")
+  }
+  onFilterList() {
+
+    this.search = (text$: Observable<string>) =>
+      text$.pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        switchMap((searchText: string ) => {
+          //return of([])
+          return this.producerService.get(searchText)
+            .pipe(
+              map((producers) => {
+                return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
+              }),
+              map((p)=>{
+                console.log(p)
+                let names:any[] = []
+                p.map(p => names.push({name:p.name, id:p.id}))
+                return names
+              }),
+              catchError(()=> EMPTY)
+            )
+          /*
+          if(searchText.startsWith('@') && searchText.length>1)
+            return this.producerService.get(searchText.replace('@',''))
+              .pipe(
+                map((producers) => {
+                  return producers.filter(producer => producer.name && producer.name
+                    .toLowerCase().startsWith(searchText.replace('@','').toLowerCase()))
+                }),
+                map((p)=> {
+                  let names:any[] = []
+                  p.map(p => names.push({name:p.name, producerId:p.id}))
+                  return names
+                }),
+                catchError(()=> {console.log("continue.."); return EMPTY}))
+          else if (searchText == "@")
+            return of([])
+          else
+              return EMPTY */
+        }),
+        catchError((e)=>{ console .log(e); return []})
+      )
+  }
+  onClear(){
+    //console.log("onClear")
+    this.wineForm.patchValue({producer:""})
+  }
   debug() {
     console.debug(this.wineForm);
   }
   onSubmit() {
     let data = {
       name: this.wineForm.value.name.trim(),
-      producerId: this.wineForm.value.producer,
+      producerId: this.wineForm.value.producer.id,
       mastervarietalId: this.wineForm.value.mastervarietal,
       regionId: this.wineForm.value.region,
     };
-    console.log(this.wineItem.id)
+    console.log(data)
     if (this.wineItem.id) {
       this.wineService
         .put(this.wineItem.id, data)
