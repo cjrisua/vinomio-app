@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MODEL } from '../app.module';
-import { ActivatedRoute, Router } from '@angular/router';
+//import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-admin-model-navigation',
@@ -12,18 +13,17 @@ export class AdminModelNavigationComponent implements OnInit {
   @Input() model!: MODEL;
   @Output() newItemEvent = new EventEmitter<void>();
 
+  
   constructor(
-    private router: Router,
+    //private router: Router,
     
     ) { }
 
   ngOnInit(): void {
-   
+    
   }
 
   GoBackEvent() {
     this.newItemEvent.emit();
-    //console.log("BackEvent")
   }
-
 }

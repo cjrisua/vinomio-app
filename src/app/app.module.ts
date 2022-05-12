@@ -52,6 +52,7 @@ import { CellarAllocationEventOfferComponent } from './cellar-allocation/cellar-
 import { AdminOrderByPipe } from './admin-order-by.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminModelTableComponent } from './core/admin-model-table/admin-model-table.component';
+import { AdminModelSearcherComponent } from './core/admin-model-searcher/admin-model-searcher.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { AdminModelTableComponent } from './core/admin-model-table/admin-model-t
     CellarMerchantFormComponent,
     CellarAllocationEventOfferComponent,
     AdminOrderByPipe,
-    AdminModelTableComponent
+    AdminModelTableComponent,
+    AdminModelSearcherComponent
   ],
   imports: [
     BrowserModule,

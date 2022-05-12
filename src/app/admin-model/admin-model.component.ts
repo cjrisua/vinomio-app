@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MODEL } from '../app.module';
 
 @Component({
@@ -11,18 +11,17 @@ import { MODEL } from '../app.module';
 export class AdminModelComponent implements OnInit {
 
   targetModelName!: MODEL;
-  
+
   constructor(
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-      this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.targetModelName = params['name'];
     });
   }
   public get Model() {
     return MODEL; 
   }
-
 }
