@@ -3,6 +3,7 @@ import { VinomioProducerService } from '../services/vinomio-producer.service';
 import {MatTableDataSource} from "@angular/material/table";
 import { Producer } from '../models/Producer';
 import { Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-admin-producers',
@@ -14,7 +15,7 @@ export class AdminProducersComponent implements OnInit {
   producers: Producer[] = [];
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Producer>();
-
+  isEmpty!:string
   constructor(
     private producerService: VinomioProducerService,
     private router: Router) { }
@@ -24,9 +25,14 @@ export class AdminProducersComponent implements OnInit {
   }
 
   private getSourceData(text?:string){
-    this.producerService.get(text).subscribe((data) => {
+    this.producerService.get(text)
+    .pipe(
+      catchError(()=>of([]))
+    )
+    .subscribe((data) => {
       //this.producers = data;
       this.dataSource.data = data;
+      this.isEmpty= data.length == 0 ? 'true':'false';
     });
   }
   public searchEvent(keyword:string){

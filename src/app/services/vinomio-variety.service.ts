@@ -13,9 +13,9 @@ export class VinomioVarietyService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(): Observable<Variety[]>{
-
-    return this.httpClient.get<Variety[]>(this.apiUrl)
+  get(name?:string): Observable<Variety[]>{
+    const query_params = !name && name == undefined ? [] : [`?name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
+    return this.httpClient.get<Variety[]>(`${this.apiUrl}${query_params}`)
   }
   add(data:any){
     return this.httpClient

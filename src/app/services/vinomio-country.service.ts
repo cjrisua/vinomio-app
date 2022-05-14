@@ -15,7 +15,11 @@ export class VinomioCountryService {
   
   constructor(private httpClient: HttpClient) { }
 
-  get() : Observable<Country[]>{
+  get(namefilter?:string) : Observable<Country[]>{
+    if(namefilter){
+      const query_params = [`name__iLike=${encodeURI((<string>namefilter).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
+      return this.httpClient.get<Country[]>(`${this.apiUrl}?${query_params}`)
+    }
     return this.httpClient.get<Country[]>(this.apiUrl)
   }
   add(data:any){

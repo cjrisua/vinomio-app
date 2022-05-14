@@ -14,7 +14,7 @@ export class AdminMastervarietalComponent implements OnInit {
   displayedColumns=['id','name','varieties']
   exclusionColumns=['varieties']
   dataSource = new MatTableDataSource<MasterVarietal>();
-  
+  isEmpty!:string
   constructor(
     private mastervarietalService: VinomioMastervarietalService,
     private router: Router
@@ -24,8 +24,9 @@ export class AdminMastervarietalComponent implements OnInit {
     this.getSourceData()
   }
   private getSourceData(text?:string){
-    this.mastervarietalService.get().subscribe((data) => {
+    this.mastervarietalService.get(text).subscribe((data) => {
       this.dataSource.data = data;
+      this.isEmpty= data.length == 0 ? 'true':'false';
     });
   }
   public searchEvent(keyword:string){

@@ -1,10 +1,12 @@
-<app-admin-model-searcher (searchEvent)="searchEvent($event)"></app-admin-model-searcher>
-<h3><strong>Master Varietal Table</strong></h3>
-<app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" 
-  [ModelItems]="dataSource.data"
-  [exclusionColumns]="exclusionColumns"
-  (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"
-  ></app-admin-model-table>
+<app-admin-model-searcher (searchEvent)="searchEvent($event)" [noMatch]="isEmpty"></app-admin-model-searcher>
+<div *ngIf="dataSource.data && dataSource.data.length > 0">
+  <h3><strong>Master Varietal Table</strong></h3>
+  <app-admin-model-table 
+    [ModelItems]="dataSource.data"
+    [exclusionColumns]="exclusionColumns"
+    (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"
+    ></app-admin-model-table>
+</div>
 <!--<table mat-table [dataSource]="dataSource" class="mat-elevation-z4 demo-table">
     <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> Id </th>

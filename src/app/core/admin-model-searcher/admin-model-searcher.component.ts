@@ -1,4 +1,4 @@
-import { Component, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter, Input } from '@angular/core';
 import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, OperatorFunction, Subject, switchMap } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./admin-model-searcher.component.css']
 })
 export class AdminModelSearcherComponent implements OnInit {
-
+  @Input() noMatch!:string
   @Output() searchEvent = new EventEmitter<any>();
   search!: OperatorFunction<string, readonly any[]>;
   adminForm!: FormGroup;
@@ -34,12 +34,11 @@ export class AdminModelSearcherComponent implements OnInit {
   onKeyUp(): void {
     this.subject.next('');
   }
-
   onKeyDown(): void {
-    //console.log("%")
-      // When the user starts to type, remove the validator
       //this.formGroup.controls.name.clearValidators();
-      
+  }
+  public get setStyles(){
+    return this.noMatch === 'true' ? {'border-style':'solid','border-color':'red'} : {}
   }
   onClear(){
     this.adminForm.patchValue({name:''})

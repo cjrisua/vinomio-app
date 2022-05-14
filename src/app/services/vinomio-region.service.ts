@@ -13,7 +13,20 @@ export class VinomioRegionService {
   constructor(private httpClient: HttpClient) { 
   }
 
-  get(IncludeTerroir:boolean = false, filterCountryId:number = -1): Observable<Region[]>{
+  get(IncludeTerroir:boolean = false, filterCountryId:number = -1, name?:string): Observable<Region[]>{
+    
+    let paramdict:{includeparent?:boolean,countryId?:number,name__iLike?:string} = {
+      includeparent : IncludeTerroir
+    }
+
+    if(filterCountryId>=0)
+      paramdict.countryId = filterCountryId
+      
+    if(name !== undefined)
+      paramdict.name__iLike =`${encodeURI((<string>name).trim())}`
+
+    const params:any[] = Object.entries(paramdict).map((p) => `${p[0]}=${p[1]}`)
+    /*
     let params!:HttpParams;
 
     if(filterCountryId >= 0){
@@ -25,8 +38,9 @@ export class VinomioRegionService {
       params = new HttpParams()
       .set('includeparent', IncludeTerroir)
     }
-
-    return this.httpClient.get<Region[]>(this.apiUrl,{params})
+    */
+    //const query_params = !name && name == undefined ? [] : [`?name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
+    return this.httpClient.get<Region[]>(`${this.apiUrl}?${params.filter(p => p.match(".+?\=.+?")).join("&")}`)
   }
   add(data:any){
     //console.log("data:" + data)

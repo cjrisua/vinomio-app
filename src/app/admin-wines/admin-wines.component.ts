@@ -4,6 +4,7 @@ import { Wine } from '../models/Wine';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Producer } from '../models/Producer';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-admin-wines',
@@ -22,7 +23,8 @@ export class AdminWinesComponent implements OnInit {
   ];
   exclusionColumns = [];
   dataSource = new MatTableDataSource<any>();
-
+  isEmpty!:string
+  
   constructor(
     private wineService: VinomioWineService,
     private router: Router
@@ -33,7 +35,12 @@ export class AdminWinesComponent implements OnInit {
   }
 
   private getSourceData(text?:string){
-    this.wineService.get(undefined,text).subscribe((data) => {
+    this.wineService.get(undefined,text)
+    .pipe(
+      catchError(()=>of([]))
+    )
+    .subscribe((data) => {
+      this.isEmpty= data.length == 0 ? 'true':'false';
       this.dataSource.data = data.map((d) => {
         const vintages = d.Vintages.map((u: any) => u.year);
         const result: Wine = {

@@ -1,5 +1,5 @@
 <form [formGroup]="adminForm" autocomplete="off">
-    <div class="input-group my-2">
+    <div class="input-group my-2" [ngStyle]=setStyles>
       <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
         <span class="material-icons" style="color: gray;">search</span>
       </span>
@@ -12,6 +12,9 @@
       </span>
     </div>
 </form>
+<div *ngIf="this.noMatch === 'true'">
+  <p class="h4"><strong class="">keyword '{{adminForm.value.name}}' not found!</strong></p>
+</div>
 <!--
 <form [formGroup]="formGroup">
   <input type="text" formControlName="name" (keyup)="onKeyUp()" (keydown)="onKeyDown()">

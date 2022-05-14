@@ -13,8 +13,9 @@ export class VinomioMastervarietalService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(): Observable<MasterVarietal[]>{
-    return this.httpClient.get<MasterVarietal[]>(this.apiUrl)
+  get(name?:string): Observable<MasterVarietal[]>{
+    const query_params = !name && name == undefined ? [] : [`?name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
+    return this.httpClient.get<MasterVarietal[]>(`${this.apiUrl}${query_params}`)
   }
   add(data:any){
     return this.httpClient

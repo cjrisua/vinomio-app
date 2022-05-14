@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 import { Region } from '../models/Region';
 import { VinomioRegionService } from '../services/vinomio-region.service';
 
@@ -14,6 +15,7 @@ export class AdminRegionComponent implements OnInit {
   //wines!: Region[];
   exclusionColumns=['country','regions','parent']
   dataSource = new MatTableDataSource<Region>();
+  isEmpty!:string
 
   constructor(
     private router: Router,
@@ -24,8 +26,13 @@ export class AdminRegionComponent implements OnInit {
     this.getSourceData()
   }
   private getSourceData(text?:string){
-    this.regionService.get(true).subscribe(data => {
+    this.regionService.get(true,-1,text)
+    .pipe(
+      catchError(()=>of([]))
+    )
+    .subscribe(data => {
       this.dataSource.data = data;
+      this.isEmpty= data.length == 0 ? 'true':'false';
       });
   }
   public searchEvent(keyword:string){
