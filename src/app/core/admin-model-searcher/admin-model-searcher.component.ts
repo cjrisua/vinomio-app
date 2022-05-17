@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./admin-model-searcher.component.css']
 })
 export class AdminModelSearcherComponent implements OnInit {
+  
+  @Input() showing!:{limit:number, count:number}
   @Input() noMatch!:string
   @Output() searchEvent = new EventEmitter<any>();
   search!: OperatorFunction<string, readonly any[]>;

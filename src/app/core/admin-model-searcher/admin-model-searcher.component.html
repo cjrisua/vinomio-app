@@ -12,6 +12,10 @@
       </span>
     </div>
 </form>
+<div *ngIf="showing" class="d-flex flex-row-reverse m-0 p-0">
+  <p class="text-right text-muted  m-0 p-0">showing: {{showing.limit}} of {{showing.count}}</p>
+</div>
+
 <div *ngIf="this.noMatch === 'true'">
   <p class="h4"><strong class="">keyword '{{adminForm.value.name}}' not found!</strong></p>
 </div>

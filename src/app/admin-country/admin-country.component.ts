@@ -16,7 +16,7 @@ export class AdminCountryComponent implements OnInit {
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Country>();
   isEmpty!:string
-
+  showing!:{limit:number, count:number}
   constructor(
     private router:Router,
     private countryService: VinomioCountryService
