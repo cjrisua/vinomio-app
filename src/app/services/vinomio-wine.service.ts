@@ -22,7 +22,7 @@ export class VinomioWineService {
   constructor(private httpClient: HttpClient) { }
   count!:number
 
-private responsemapper(result:{count:number, rows:Wine[]}): Wine[]{
+private map(result:{count:number, rows:Wine[]}): Wine[]{
   this.count = result.count;
   return result.rows
 }
@@ -30,12 +30,12 @@ private responsemapper(result:{count:number, rows:Wine[]}): Wine[]{
   get(producerId?:number, name?:string): Observable<any[]>{
     if(name){
       const query_params = [`name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
-      return this.httpClient.get<any>(`${this.apiUrl}?${query_params}`).pipe(map(res => this.responsemapper(res)))
+      return this.httpClient.get<any>(`${this.apiUrl}?${query_params}`).pipe(map(res => this.map(res)))
     }
     if(producerId)
-      return  this.httpClient.get<any>(`${this.apiUrl}?producerId=${producerId}`).pipe(map(res => this.responsemapper(res)))
+      return  this.httpClient.get<any>(`${this.apiUrl}?producerId=${producerId}`).pipe(map(res => this.map(res)))
 
-    return  this.httpClient.get<any>(this.apiUrl).pipe(map(res => this.responsemapper(res)))
+    return  this.httpClient.get<any>(this.apiUrl).pipe(map(res => this.map(res)))
   }
   put(id:any, data:any){
     return this.httpClient.put(`${this.apiUrl}/${id}`,data);

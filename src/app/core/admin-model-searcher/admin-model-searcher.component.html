@@ -15,6 +15,9 @@
 <div *ngIf="showing" class="d-flex flex-row-reverse m-0 p-0">
   <p class="text-right text-muted  m-0 p-0">showing: {{showing.limit}} of {{showing.count}}</p>
 </div>
+<div *ngIf="showing" class="d-flex flex-row-reverse m-0 p-0">
+  <p class="text-right text-muted  m-0 p-0"><span class="mx-1"><a class="link" (click)="onNextPage()" href="javascript:void(0)">Previous</a></span>|<span class="mx-1"><a class="link" (click)="onNextPage()" href="javascript:void(0)">Next</a></span></p>
+</div>
 
 <div *ngIf="this.noMatch === 'true'">
   <p class="h4"><strong class="">keyword '{{adminForm.value.name}}' not found!</strong></p>

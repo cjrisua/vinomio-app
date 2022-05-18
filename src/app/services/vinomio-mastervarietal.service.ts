@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MasterVarietal } from '../models/MasterVarietal';
 
@@ -10,12 +10,17 @@ import { MasterVarietal } from '../models/MasterVarietal';
 export class VinomioMastervarietalService {
 
   private apiUrl = environment.apiUrl + "/mastervarietal"
+  count!: number;
 
   constructor(private httpClient: HttpClient) { }
 
+  private map(result:{count:number, rows:MasterVarietal[]}): MasterVarietal[]{
+    this.count = result.count;
+    return result.rows
+  }
   get(name?:string): Observable<MasterVarietal[]>{
     const query_params = !name && name == undefined ? [] : [`?name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
-    return this.httpClient.get<MasterVarietal[]>(`${this.apiUrl}${query_params}`)
+    return this.httpClient.get<any>(`${this.apiUrl}${query_params}`).pipe(map(res => this.map(res)))
   }
   add(data:any){
     return this.httpClient

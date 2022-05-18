@@ -48,7 +48,7 @@ export class AddWineFormComponent implements OnInit {
       mastervarietal: new FormControl('', [Validators.required]),
       region: new FormControl('', [Validators.required]),
     });
-    /*
+    
     this.producerService.get().subscribe((data) => {
       this.selectProducer = data;
       if (this.wineItem) {
@@ -57,10 +57,10 @@ export class AddWineFormComponent implements OnInit {
         )[0];
         if (selected)
           this.wineForm.patchValue({
-            producer: selected.id,
+            producer: {name:selected.name,id:selected.id},
           });
       }
-    });*/
+    });
 
     this.regionService.get().subscribe((data) => {
       this.selectRegion = data;
@@ -71,7 +71,7 @@ export class AddWineFormComponent implements OnInit {
         )[0];
         if (selected)
           this.wineForm.patchValue({
-            region: selected.id,
+            region: {name:selected.name,id:selected.id}
           });
       }
     });
@@ -85,7 +85,7 @@ export class AddWineFormComponent implements OnInit {
         )[0];
         if (selected)
           this.wineForm.patchValue({
-            mastervarietal: selected.id,
+            mastervarietal: {name:selected.name,id:selected.id}
           });
       }
     });
@@ -100,52 +100,72 @@ export class AddWineFormComponent implements OnInit {
   onSearchSelection(event:any){
     console.log("onSearchSelection")
   }
-  onFilterList() {
-
+  onMasterVarietalFilterList(searchText:string){
+    return this.mastervarietalService.get(searchText)
+          .pipe(
+            map((producers) => {
+              return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
+            }),
+            map((p)=>{
+              console.log(p)
+              let names:any[] = []
+              p.map(p => names.push({name:p.name, id:p.id}))
+              return names
+            }),
+            catchError(()=> EMPTY)
+          )
+  }
+  onRegionFilterList(searchText:string){
+    return this.regionService.get(false,-1,searchText)
+          .pipe(
+            map((producers) => {
+              return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
+            }),
+            map((p)=>{
+              console.log(p)
+              let names:any[] = []
+              p.map(p => names.push({name:p.name, id:p.id}))
+              return names
+            }),
+            catchError(()=> EMPTY)
+          )
+  }
+  onProducerFilterList(searchText:string) {
+    return this.producerService.get(searchText)
+          .pipe(
+            map((producers) => {
+              return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
+            }),
+            map((p)=>{
+              console.log(p)
+              let names:any[] = []
+              p.map(p => names.push({name:p.name, id:p.id}))
+              return names
+            }),
+            catchError(()=> EMPTY)
+          )
+  }
+  onFilterList(control?:any){
     this.search = (text$: Observable<string>) =>
       text$.pipe(
         debounceTime(200),
         distinctUntilChanged(),
         switchMap((searchText: string ) => {
-          //return of([])
-          return this.producerService.get(searchText)
-            .pipe(
-              map((producers) => {
-                return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
-              }),
-              map((p)=>{
-                console.log(p)
-                let names:any[] = []
-                p.map(p => names.push({name:p.name, id:p.id}))
-                return names
-              }),
-              catchError(()=> EMPTY)
-            )
-          /*
-          if(searchText.startsWith('@') && searchText.length>1)
-            return this.producerService.get(searchText.replace('@',''))
-              .pipe(
-                map((producers) => {
-                  return producers.filter(producer => producer.name && producer.name
-                    .toLowerCase().startsWith(searchText.replace('@','').toLowerCase()))
-                }),
-                map((p)=> {
-                  let names:any[] = []
-                  p.map(p => names.push({name:p.name, producerId:p.id}))
-                  return names
-                }),
-                catchError(()=> {console.log("continue.."); return EMPTY}))
-          else if (searchText == "@")
-            return of([])
+          if(control === 'producer')
+            return this.onProducerFilterList(searchText)
+          else if(control === 'mastervarietal')
+            return this.onMasterVarietalFilterList(searchText)
+          else if(control === 'region')
+            return this.onRegionFilterList(searchText)
           else
-              return EMPTY */
+            return of([])
         }),
         catchError((e)=>{ console .log(e); return []})
       )
   }
-  onClear(){
-    //console.log("onClear")
-    this.wineForm.patchValue({producer:""})
+  onClear(control:any ="test"){
+    //console.log()
+    this.wineForm.get(control)?.patchValue("")
   }
   debug() {
     console.debug(this.wineForm);
@@ -154,8 +174,8 @@ export class AddWineFormComponent implements OnInit {
     let data = {
       name: this.wineForm.value.name.trim(),
       producerId: this.wineForm.value.producer.id,
-      mastervarietalId: this.wineForm.value.mastervarietal,
-      regionId: this.wineForm.value.region,
+      mastervarietalId: this.wineForm.value.mastervarietal.id,
+      regionId: this.wineForm.value.region.id,
     };
     console.log(data)
     if (this.wineItem.id) {

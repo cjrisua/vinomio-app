@@ -22,7 +22,7 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 -->
-<app-admin-model-searcher (searchEvent)="searchEvent($event)" [noMatch]="isEmpty"></app-admin-model-searcher>
+<app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty"></app-admin-model-searcher>
 <div *ngIf="dataSource.data && dataSource.data.length > 0">
 <h2>Producers Table</h2>
 <app-admin-model-table 

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Region } from '../models/Region';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,37 +11,29 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class VinomioRegionService {
 
   private apiUrl = environment.apiUrl + "/region"
+  count!: number;
   constructor(private httpClient: HttpClient) { 
   }
-
+  private map(result:{count:number, rows:Region[]}): Region[]{
+    this.count = result.count;
+    return result.rows
+  }
+  
   get(IncludeTerroir:boolean = false, filterCountryId:number = -1, name?:string): Observable<Region[]>{
     
-    let paramdict:{includeparent?:boolean,countryId?:number,name__iLike?:string} = {
+    let query:{includeparent?:boolean,countryId?:number,name__iLike?:string} = 
+    {
       includeparent : IncludeTerroir
     }
 
     if(filterCountryId>=0)
-      paramdict.countryId = filterCountryId
+      query.countryId = filterCountryId
       
     if(name !== undefined)
-      paramdict.name__iLike =`${encodeURI((<string>name).trim())}`
+      query.name__iLike =`${encodeURI((<string>name).trim())}`
 
-    const params:any[] = Object.entries(paramdict).map((p) => `${p[0]}=${p[1]}`)
-    /*
-    let params!:HttpParams;
-
-    if(filterCountryId >= 0){
-      params = new HttpParams()
-        .set('includeparent', IncludeTerroir)
-        .set('countryId', filterCountryId)
-    }
-    else{
-      params = new HttpParams()
-      .set('includeparent', IncludeTerroir)
-    }
-    */
-    //const query_params = !name && name == undefined ? [] : [`?name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
-    return this.httpClient.get<Region[]>(`${this.apiUrl}?${params.filter(p => p.match(".+?\=.+?")).join("&")}`)
+    const params:any[] = Object.entries(query).map((p) => `${p[0]}=${p[1]}`)
+    return this.httpClient.get<any>(`${this.apiUrl}?${params.filter(p => p.match(".+?\=.+?")).join("&")}`).pipe(map(res => this.map(res)))
   }
   add(data:any){
     //console.log("data:" + data)

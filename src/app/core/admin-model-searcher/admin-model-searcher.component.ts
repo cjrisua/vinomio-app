@@ -46,4 +46,7 @@ export class AdminModelSearcherComponent implements OnInit {
     this.adminForm.patchValue({name:''})
     this.searchEvent.emit(this.adminForm.value.name)
   }
+  onNextPage(){
+    //this.searchEvent.emit()
+  }
 }
