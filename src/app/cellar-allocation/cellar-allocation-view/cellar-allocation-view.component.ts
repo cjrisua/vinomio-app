@@ -47,6 +47,7 @@ export class CellarAllocationViewComponent implements OnInit {
       (allocations)=>{
         console.debug("setting allocations...")
         this.allocations = allocations
+        this.totalCount = allocations.length
       })
   }
   public offerPriceAverage(event:any){
@@ -75,16 +76,14 @@ export class CellarAllocationViewComponent implements OnInit {
     return value.merchant.name;
   }
   NavigateEventResponse(event:any){
-    //alert("?")
-  if(event?.action && event.action === 'redirect'){
-    this.onEventView(event.allocation, event.event)
-    return
-  }
-
-   this.allocationSelection = {}
-   this.action =  new UserEventAction(Action.List,Module.Allocation)
-   this.showView = !this.showView
-   this.getAllocation();
+    if(event?.action && event.action === 'redirect'){
+      this.onEventView(event.allocation, event.event)
+      return
+    }
+    this.allocationSelection = {}
+    this.action =  new UserEventAction(Action.List,Module.Allocation)
+    this.showView = !this.showView
+    this.getAllocation();
   }
   inputFormatListValue(value: any)   { 
     if(value.merchant.name)
