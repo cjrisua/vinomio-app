@@ -10,15 +10,20 @@ import { Vintage } from '../models/Vintage';
 export class VinomioVintageService {
 
   private apiUrl = environment.apiUrl + "/vintage"
+  count!: number;
 
   constructor(private httpClient: HttpClient) { }
 
+  private map(result:{count:number, rows:Vintage[]}): Vintage[]{
+    this.count = result.count;
+    return result.rows
+  }
   get(): Observable<Vintage[]>{
-    return this.httpClient.get<Vintage[]>(this.apiUrl)
+    return this.httpClient.get<any>(this.apiUrl).pipe(map(res => this.map(res)))
   }
   getByWineId(id:number): Observable<Vintage[]>{
-    const results  = this.httpClient.get<Vintage[]>(`${this.apiUrl}?wineId=${id}`).pipe(
-      map((r) => {return r}),
+    const results  = this.httpClient.get<any>(`${this.apiUrl}?wineId=${id}`).pipe(
+      map(r => this.map(r)),
       catchError((val)=> of([]))
     )
     return results

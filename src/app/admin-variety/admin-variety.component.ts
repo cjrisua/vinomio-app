@@ -44,4 +44,7 @@ export class AdminVarietyComponent implements OnInit {
   else if(wine.action=='delete')
     this.varietyService.delete(wine.event.id).subscribe(() => this.ngOnInit())
   }
+  public get showing(){
+    return {limit:this.dataSource.data.length,count:this.varietyService.count}
+  }
 }

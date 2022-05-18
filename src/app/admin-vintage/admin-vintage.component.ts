@@ -47,5 +47,7 @@ export class AdminVintageComponent implements OnInit {
   else if(wine.action=='delete')
     this.vintageService.delete(wine.event.id).subscribe(() => this.ngOnInit())
   }
-
+  public get showing(){
+    return {limit:this.dataSource.data.length,count:this.vintageService.count}
+  }
 }

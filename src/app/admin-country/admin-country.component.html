@@ -1,4 +1,4 @@
-<app-admin-model-searcher (searchEvent)="searchEvent($event)" [noMatch]="isEmpty"></app-admin-model-searcher>
+<app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty"></app-admin-model-searcher>
 <div *ngIf="dataSource.data && dataSource.data.length > 0">
   <h3><strong>Country Table</strong></h3>
   <app-admin-model-table

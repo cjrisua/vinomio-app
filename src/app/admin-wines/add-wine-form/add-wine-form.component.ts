@@ -163,7 +163,7 @@ export class AddWineFormComponent implements OnInit {
         catchError((e)=>{ console .log(e); return []})
       )
   }
-  onClear(control:any ="test"){
+  onClear(control:any){
     //console.log()
     this.wineForm.get(control)?.patchValue("")
   }
