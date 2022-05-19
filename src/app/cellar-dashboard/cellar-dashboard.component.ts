@@ -63,6 +63,9 @@ export class CellarDashboardComponent implements OnInit {
     //this.activeListItem = DashboardItem.Profile;
     this.cellarActiveRoute = CellarDashboardActiveRoute.AddWine
   }
+  onWineAllocation(){
+    this.cellarActiveRoute = CellarDashboardActiveRoute.WineAllocation
+  }
   public get activeRoute(): typeof CellarDashboardActiveRoute {
     return CellarDashboardActiveRoute; 
   }

@@ -1,0 +1,183 @@
+<div class="container my-sm-3 col-sm-8">
+    <h2>Purchases</h2>
+    <h3>Add new wine to your inventory</h3>
+    <div class="card mt-3">
+        <div class="card-body">
+            <form (ngSubmit)="onSubmitWithBulk()" [formGroup]="wineform">
+                <!-- Merchant -->
+                <div class="form-group">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label for="source">Merchant</label>
+                            <div class="input-group mb-2">
+                                <select class="form-control" id="source"
+                                formControlName="source" (change)="onMerchantChange($event)">    
+                                    <option value="">Select a Merchant</option>
+                                    <option *ngFor="let merchant of selectMerchant" [value]="merchant.id">{{merchant.name}}</option>
+                                </select>
+                                <div class="input-group-append">
+                                  <!--<button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>-->
+                                  <button type="button" class="btn btn-link text-decoration-none" style="background-color: #e9ecef;border: 1px solid #ced4da;" (click)="openMerchantDialog()">
+                                    <div class="wrapper">
+                                        <div class="row g-0" id="sidebar-wrapper" style="margin-top: -2px;">
+                                            <div class="col text-center">
+                                                <span class="material-icons-outlined icon-display">
+                                                    store
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row g-0" style="margin: -15px;">
+                                            <div class="col text-center">
+                                                <h6><small class="text-muted ">Add Store</small></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                                </div>
+                              </div>
+                            <div class="form-group">
+                            </div>
+                            <div class="invalid-feedback">
+                                First Name is required
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-control-label" for="wine_bottle_count">Merchant Allocation<span
+                                class="required">*</span></label>
+                            <div class="row">
+                                <div class="col-4 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioAllocation" id="radioallocation" value="yes" (click)="onIsViaAllocation(true)">
+                                        <label class="form-check-label" for="flexRadioAllocation1">
+                                          Yes
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="radio" name="flexRadioAllocation" id="radioallocation" value="no" checked (click)="onIsViaAllocation(false)" >
+                                        <label class="form-check-label" for="flexRadioAllocation2">
+                                          No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Allocation Event  -->
+                <div *ngIf="isAllocation && merchantWithAllocation" class="form-group">
+                    <mat-form-field class="" appearance="fill" style="width: 100%;">
+                      <mat-label>Allocation Event</mat-label>
+                      <input type="text"
+                        placeholder="Pick One"
+                        aria-label="Number"
+                        matInput
+                        formControlName="allocationevent"
+                        [matAutocomplete]="auto">
+                      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"  [displayWith]="displayFn">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                          {{option.name}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                
+                <!-- Alloction Event Button -->
+                <div *ngIf="isAllocation && !merchantWithAllocation && merchantWithAllocation != undefined && wineform.value.source != ''" class="form-group">
+                    <button type="button" class="btn mb-3 btn-outline-success" (click)="openAllocationDialog()">Add Allocation Schedule</button>
+                </div>
+
+                <!-- Delivery Status -->
+                <div class="form-group">
+                    <div class="row mb-1">
+                        <label class="form-control-label" for="wine_bottle_count">Delivery Status<span
+                            class="required">*</span></label>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radioPending" value="pending" (click)="onAllocate(90)">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                  Wine is Pending Delivery
+                                </label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="radioAllocated" value="allocated" checked (click)="onAllocate(0)">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                  Allocate to Cellar
+                                </label>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Purchase -->
+                <div class="form-group">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-control-label" for="wine_bottle_count">Purchased on <span
+                                    class="required">*</span></label>
+                            <input type="text" class="form-control" id="purchasedDate"
+                                    formControlName="purchasedDate">
+                            <div class="invalid-feedback">
+                                First Name is required
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label class="form-control-label" for="wine_price">Delivery Date <span
+                                    class="required">*</span></label>
+                            <input type="text" class="form-control" id="deliveryDate"
+                                    formControlName="deliveryDate">
+                            <div class="invalid-feedback">
+                                First Name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wine Searcher -->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-control-label" for="first_name">Wine Name <span
+                                    class="required">*</span></label>
+                                    <div class="input-group">
+                                        <app-main-searcher (wineEvent)="wineSearcherSelection($event)" class="col-sm" style="width: 69%;"></app-main-searcher>
+                                        <div class="input-group-append">
+                                            <button type="button" mat-button mat-flat-button color="primary" class="" (click)="AddWine()" style="height: 75%;">Add Wine</button>
+                                        </div>
+                                    </div>
+                                <div class="invalid-feedback">
+                                First Name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <app-cellar-add-bulk-table (newItemEvent)="actionItem($event)" [events]="eventsSubject.asObservable()"></app-cellar-add-bulk-table>
+
+                <div class="form-group">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-control-label" for="wine_bottle_notes">Purchase Notes<span
+                                class="required">*</span></label>
+                            <div class="input-group">
+                                
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text h-100">Notes</span>
+                                </div>
+                              <textarea class="form-control" formControlName="notes" aria-label="With textarea"></textarea>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+                <div class="float-end">
+                    <button type="submit" class="btn btn-success" [disabled]="!wineform.valid">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

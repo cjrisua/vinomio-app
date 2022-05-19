@@ -55,6 +55,7 @@ import { AdminModelTableComponent } from './core/admin-model-table/admin-model-t
 import { AdminModelSearcherComponent } from './core/admin-model-searcher/admin-model-searcher.component';
 import { AdminCellarRoleComponent } from './admin-cellar-role/admin-cellar-role.component';
 import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
+import { CellarWineAllocationAddComponent } from './cellar-wine-allocation/cellar-wine-allocation-add/cellar-wine-allocation-add.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-r
     AdminModelTableComponent,
     AdminModelSearcherComponent,
     AdminCellarRoleComponent,
-    AdminCellarRoleFormComponent
+    AdminCellarRoleFormComponent,
+    CellarWineAllocationAddComponent
   ],
   imports: [
     BrowserModule,
@@ -149,6 +151,7 @@ export enum DashboardItem{
 }
 export enum CellarDashboardActiveRoute{
   Dashboard = 'dashboard',
+  WineAllocation='wine-allocation',
   AddWine ='add-wine',
   DrunkWine = 'remove-wine',
   Search = 'search-wine'

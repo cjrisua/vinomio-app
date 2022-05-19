@@ -247,6 +247,24 @@
                     </button>
                 </div>
                 <div class="my-3">
+                    <button type="button" class="btn btn-link text-decoration-none" (click)="onWineAllocation()">
+                        <div class="wrapper">
+                            <div class="row g-0" id="sidebar-wrapper">
+                                <div class="col text-center">
+                                    <span class="material-icons-outlined icon-display">
+                                        wine_bar
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row g-0" style="margin: -8px;">
+                                <div class="col text-center">
+                                    <small class="text-muted">Wine Allocation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="my-3">
                     <button type="button" class="btn btn-link text-decoration-none">
                         <div class="wrapper">
                             <div class="row g-0" id="sidebar-wrapper" style="margin: 0;padding: 0;">
@@ -288,4 +306,5 @@
             </div>
     </div>
     <app-cellar-add-wine [currentUser]="currentUser"  *ngIf="cellarActiveRoute == activeRoute.AddWine"></app-cellar-add-wine>
+    <app-cellar-wine-allocation-add [currentUser]="currentUser"  *ngIf="cellarActiveRoute == activeRoute.WineAllocation"></app-cellar-wine-allocation-add>
 </div>
