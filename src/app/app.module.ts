@@ -53,6 +53,8 @@ import { AdminOrderByPipe } from './admin-order-by.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminModelTableComponent } from './core/admin-model-table/admin-model-table.component';
 import { AdminModelSearcherComponent } from './core/admin-model-searcher/admin-model-searcher.component';
+import { AdminCellarRoleComponent } from './admin-cellar-role/admin-cellar-role.component';
+import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +100,9 @@ import { AdminModelSearcherComponent } from './core/admin-model-searcher/admin-m
     CellarAllocationEventOfferComponent,
     AdminOrderByPipe,
     AdminModelTableComponent,
-    AdminModelSearcherComponent
+    AdminModelSearcherComponent,
+    AdminCellarRoleComponent,
+    AdminCellarRoleFormComponent
   ],
   imports: [
     BrowserModule,
@@ -131,7 +135,8 @@ export enum MODEL {
   Region = 'region',
   Variety = 'variety',
   MasterVarietal ='mastervarietal',
-  Vintage = 'vintage'
+  Vintage = 'vintage',
+  Role = 'role'
 }
 export enum DashboardItem{
   Dashboard ='dashboard',

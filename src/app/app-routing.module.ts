@@ -24,11 +24,16 @@ import { ProfileInfoComponent } from './profile/profile-info/profile-info.compon
 import { CellarAddWineComponent } from './cellar-add-wine/cellar-add-wine.component';
 import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navbar-form-signup.component';
 import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
+import { AdminCellarRoleComponent } from './admin-cellar-role/admin-cellar-role.component';
+import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
 
 
 const routes: Routes = [
  
   {path:'admin/model', component:AdminModelComponent},
+  {path:'admin/role', component:AdminCellarRoleComponent},
+  {path:'admin/role/:id', component:AdminCellarRoleFormComponent},
+  {path:'admin/role/add', component:AdminCellarRoleFormComponent},
   {path:'admin/producers', component:AdminProducersComponent},
   {path:'admin/producer/:id', component:AdminProducersFormComponent},
   {path:'admin/producer/add', component:AdminProducersFormComponent},
