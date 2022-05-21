@@ -1,8 +1,15 @@
-<div class="row my-1">
-    <div class="col-9 my-1" style="display: grid;">
+<div class="row my-1" style="align-items: center;">
+    <div class="col-9" style="display: grid;">
         <div class="d-inline">{{wineItem.name}}</div>
         <div class="d-inline text-muted">Release Price:<span class="mx-1">$</span>
-            <div #releasePrice class="d-inline" contenteditable (keyup)="onKeyUp($event)">{{wineItem.price}}</div>
+            <div #releasePrice class="d-inline" contenteditable (keyup)="onPriceKeyUp($event)">{{offerPrice}}</div>
+        </div>
+        <div *ngIf="!wineItem.minimum || wineItem.minimum==0" class="d-inline">
+            <p class="my-1 small"><a class="text-decoration-none" (click)="setOfferMin()" href="javascript:void(0)">Set Minium Purchase</a></p>
+            <!--<p class="text-muted small">3 bottles minimum</p>-->
+        </div>
+        <div *ngIf="wineItem.minimum" class="d-inline text-muted">
+            <div #releasePrice class="d-inline" contenteditable (keyup)="onMinimumKeyUp($event)">{{wineItem.minimum}}</div><span class="mx-1">bottles minimum</span>
         </div>
     </div>
     <div class="col-3 p-0"><button type="button" class="btn btn-outline-primary btn-sm" (click)="onDelete(wineItem)">Remove</button></div>

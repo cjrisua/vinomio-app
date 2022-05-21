@@ -55,8 +55,8 @@ export class CellarAllocationEventViewComponent implements OnInit {
     'November',
     'December',
   ];
-  offerBottle: { id: number; name: string; price: number }[] = [];
-  offerBottleReleasePrices: { id: number; price: number }[] = [];
+  offerBottle: { id: number; name: string; price: number, minimum?:number }[] = [];
+  offerBottleReleasePrices: { id: number; price: number, minimum?:number}[] = [];
   event: any;
   @ViewChildren('releasePrice') releasePrice!: QueryList<any>;
 
@@ -115,6 +115,7 @@ export class CellarAllocationEventViewComponent implements OnInit {
             id: i.wine.id || 0,
             name: i.wine.name || '',
             price: i.releasePrice || 0,
+            minimum: i.minimum 
           };
           this.offerBottle.push(wine);
         }
@@ -140,7 +141,8 @@ export class CellarAllocationEventViewComponent implements OnInit {
     this.isreadonly = !this.isreadonly;
   }
   onSearchSelection(selection: any) {
-    this.offerBottle.push(selection.item);
+    const wineselection:any={id:selection.item.id, name:selection.item.name}
+    this.offerBottle.push(wineselection);
   }
   removalOfferEvent(item: any) {
     this.offerBottle = this.offerBottle.filter((p: any) => p.id != item.id);
@@ -195,6 +197,7 @@ export class CellarAllocationEventViewComponent implements OnInit {
             allocationEventId: this.eventForm.value.id,
             wineId: m.id,
             releasePrice: Number(m.price),
+            minimum: Number(m.minimum)
           };
         })
       )
