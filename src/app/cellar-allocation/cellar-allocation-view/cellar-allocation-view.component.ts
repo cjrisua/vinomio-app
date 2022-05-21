@@ -26,6 +26,7 @@ export class CellarAllocationViewComponent implements OnInit {
   allocations:Allocation[] = []
   allocationSelection!:Allocation
   merchantSelection!:Merchant
+  allocationEventSelection!:AllocationEvent
 
   constructor(
     private allocationService:VinomioAllocationService,
@@ -36,6 +37,13 @@ export class CellarAllocationViewComponent implements OnInit {
     this.searchControl = new FormControl();
     this.showView = this.action.Action == Action.List ? true : false
     this.getAllocation();
+  }
+  public purchaseAllocation(event:any){
+    event.cancelBubble = true;
+    if(event.stopPropagation) event.stopPropagation();
+   this.allocationEventSelection = event
+    this.showView = false
+    this.action =  new UserEventAction(Action.Add,Module.AllocationPurchase)
   }
   private getAllocation(){
     
@@ -51,8 +59,9 @@ export class CellarAllocationViewComponent implements OnInit {
       })
   }
   public offerPriceAverage(event:any){
+    //console.log(event)
     return event.AllocationEventOffers.reduce((sum:number,current:any)=>{
-      const total = Number(sum) + Number(current.releasePrice)
+      const total = Number(sum) + (Number(current.releasePrice) * current.minimum)
       return total
     },0)
   } 

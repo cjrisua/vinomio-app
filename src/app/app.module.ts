@@ -56,6 +56,7 @@ import { AdminModelSearcherComponent } from './core/admin-model-searcher/admin-m
 import { AdminCellarRoleComponent } from './admin-cellar-role/admin-cellar-role.component';
 import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
 import { CellarWineAllocationAddComponent } from './cellar-wine-allocation/cellar-wine-allocation-add/cellar-wine-allocation-add.component';
+import { CellarAllocationPurchaseComponent } from './cellar-allocation/cellar-allocation-purchase/cellar-allocation-purchase.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,8 @@ import { CellarWineAllocationAddComponent } from './cellar-wine-allocation/cella
     AdminModelSearcherComponent,
     AdminCellarRoleComponent,
     AdminCellarRoleFormComponent,
-    CellarWineAllocationAddComponent
+    CellarWineAllocationAddComponent,
+    CellarAllocationPurchaseComponent
   ],
   imports: [
     BrowserModule,
@@ -187,5 +189,6 @@ export enum Action{
 export enum Module{
   Merchant = 'Merchant',
   Allocation = 'Allocation',
-  AllocationEvent = 'AllocationEvent'
+  AllocationEvent = 'AllocationEvent',
+  AllocationPurchase = 'AllocationPurchase'
 }
