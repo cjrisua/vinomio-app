@@ -1,6 +1,7 @@
 <div class="content">
     <p class="h5 my-2">Add to My Cellar</p>
-    <p class="small my-2">Producer: Someone Some</p>
+    <p class="small my-2">Merchant: <strong>{{allocation.merchant.name}}</strong></p>
+    <p class="small my-2">Allocation: <strong>{{allocationEvent.name}}</strong></p>
     <p class="small my-2">Purchased on: 12/12/2021</p>
     <p class="small my-2">Expected delivery by: 12/12/2021</p>
     <hr/>
@@ -24,4 +25,5 @@
 <hr/>
 <p class="text-muted small">{{userProfile | json}}</p>
 <p class="text-muted small">{{allocationEvent | json}}</p>
+<p class="text-muted small">{{allocation | json}}</p>
 

@@ -38,10 +38,11 @@ export class CellarAllocationViewComponent implements OnInit {
     this.showView = this.action.Action == Action.List ? true : false
     this.getAllocation();
   }
-  public purchaseAllocation(event:any){
+  public purchaseAllocation(allocation:any, event:any){
     event.cancelBubble = true;
     if(event.stopPropagation) event.stopPropagation();
-   this.allocationEventSelection = event
+    this.allocationEventSelection = event;
+    this.allocationSelection = allocation;
     this.showView = false
     this.action =  new UserEventAction(Action.Add,Module.AllocationPurchase)
   }

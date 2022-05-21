@@ -16,6 +16,7 @@ export class CellarAllocationPurchaseComponent implements OnInit {
 
   @Input() userProfile!: Profile;
   @Input() allocationEvent!:any
+  @Input() allocation!:any
   @Output() ItemEvent = new EventEmitter<any>();
   allocationForm!: FormGroup;
   wineOffers:Wine[] = []
@@ -39,6 +40,9 @@ export class CellarAllocationPurchaseComponent implements OnInit {
   }
   private getEventOffers(eventid:number){
     
+  }
+  public get eventName(){
+    return 
   }
   onCancel() {
     this.ItemEvent.emit();

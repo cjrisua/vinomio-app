@@ -3,7 +3,7 @@
 <div *ngIf="!showView">
   <app-cellar-allocation-form *ngIf="action.Module == action.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocation]="allocationSelection"></app-cellar-allocation-form>
   <app-cellar-allocation-event-view *ngIf="action.Module == action.EnumModule.AllocationEvent"  (ItemEvent)="NavigateEventResponse($event)" [allocation]="allocationSelection"></app-cellar-allocation-event-view>
-  <app-cellar-allocation-purchase *ngIf="action.Module == action.EnumModule.AllocationPurchase" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocationEvent]="allocationEventSelection"></app-cellar-allocation-purchase>
+  <app-cellar-allocation-purchase *ngIf="action.Module == action.EnumModule.AllocationPurchase" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocation]="allocationSelection" [allocationEvent]="allocationEventSelection"></app-cellar-allocation-purchase>
 </div>
 <div *ngIf="showView">
     <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;">
@@ -53,7 +53,7 @@
                       <span class="mx-1" *ngIf="event.lastPurchase">{{event.lastPurchase | date}}</span></div>
                     <div class="text-muted small">Average Cost: {{offerPriceAverage(event) | currency}}</div>
                     <div class="text-muted small">Offering: {{bottleCount(event)}} wine(s)</div>
-                    <div class="my-1 text-muted small"><a class="text-decoration-none" href="javascript:void(0)" (click)="purchaseAllocation(event)">Purchase Allocation Event</a></div>
+                    <div class="my-1 text-muted small"><a class="text-decoration-none" href="javascript:void(0)" (click)="purchaseAllocation(allocation, event)">Purchase Allocation Event</a></div>
                   </div>
               </div>
             </li>
