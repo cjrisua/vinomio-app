@@ -5,6 +5,8 @@ export class Collection {
     constructor(
         public id ?: number,
         public vintageId ?: number,
+        public vintage ?: string,
+        public wineId ?: string,
         public statusId ?: string,
         public cellarId ?: number,
         public price?: number,

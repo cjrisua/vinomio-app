@@ -1,11 +1,13 @@
 import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { catchError, map, of } from 'rxjs';
+import { catchError, EMPTY, map, of } from 'rxjs';
 import { AllocationEvent } from 'src/app/models/AllocationEvent';
+import { Collection } from 'src/app/models/Collection';
 import { Profile } from 'src/app/models/Profile';
 import { Wine } from 'src/app/models/Wine';
 import { VinomioAllocationEventOfferService } from 'src/app/services/vinomio-allocation-event-offer.service';
+import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
 import { VinomioWineService } from 'src/app/services/vinomio-wine.service';
 
 @Component({
@@ -37,6 +39,7 @@ export class CellarAllocationPurchaseComponent implements OnInit {
   ]
   constructor(
     private eventservice: VinomioAllocationEventOfferService,
+    private collectionService: VinomioCollectionService,
     @Inject(LOCALE_ID) private locale: string) {}
 
   ngOnInit(): void {
@@ -86,7 +89,26 @@ export class CellarAllocationPurchaseComponent implements OnInit {
     this.ItemEvent.emit();
   }
   onSubmit() {
-    this.ItemEvent.emit();
+
+    const data:Collection[] = this.offers
+      .map((item:any) => {
+         return  {
+          wineId: item.value.id,
+          vintage: item.value.vintage,
+          cellarId: this.userProfile.cellar_id,
+          price: item.value.amount,
+          bottleCount: item.value.bottles,
+          bottleSize: item.value.formats,
+          locationId: 0,
+          acquiringSourceId: this.allocation.merchant.id,
+          allocationEventId: this.allocationEvent.allocationId
+        }});
+    if(data.length > 0){
+      this.collectionService.add(data)
+      .pipe(
+        catchError((err) => { console.debug(err); return EMPTY})
+      ).subscribe((r) => this.ItemEvent.emit());
+    }
   }
   public get offers(){
     let offers = this.allocationForm.get('offers') as FormArray;

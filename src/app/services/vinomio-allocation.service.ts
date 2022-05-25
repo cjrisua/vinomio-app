@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Allocation } from '../models/Allocation';
 
@@ -10,13 +10,23 @@ import { Allocation } from '../models/Allocation';
 export class VinomioAllocationService {
 
   private apiUrl = environment.apiUrl + "/allocation"
+  count!: number;
 
   constructor(private http:HttpClient) { }
 
+  private map(result:{count:number, rows:Allocation[]}): Allocation[]{
+    this.count = result.count;
+    return result.rows
+  }
+
   get(userId:any, upcoming:boolean = false):Observable<Allocation[]>{
     if(upcoming)
-      return this.http.get<Allocation[]>(`${this.apiUrl}/events/${userId}`);
-    return this.http.get<Allocation[]>(this.apiUrl);
+      return this.http.get<any>(`${this.apiUrl}/events/${userId}`).pipe(map(res => this.map(res)))
+    return this.http.get<any>(this.apiUrl).pipe(map(res => this.map(res)));
+  }
+  getLastPurchases(userId:any){
+    //https://localhost:3000/api/allocation/cellar/3
+    return this.http.get<any>(`${this.apiUrl}/cellar/${userId}`).pipe(map(res => this.map(res)))
   }
   add(data:any){
     //alert(JSON.stringify(data))

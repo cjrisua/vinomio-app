@@ -38,7 +38,7 @@
       <div *ngFor="let allocation of allocations"  class="card mb-2">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-              <div><a href="javascript:void(0);" (click)="onViewItem(allocation)"> {{allocation.merchant?.name}}</a></div>
+              <div><a class="text-decoration-none" href="javascript:void(0);" (click)="onViewItem(allocation)"><p class="h6 m-0 p-0">{{allocation.merchant?.name}}</p></a></div>
               <div><span class="material-icons-outlined" (click)="onDelete(allocation)" style="cursor:pointer;"  >delete_forever</span></div>
             </div>
           </div>
@@ -47,13 +47,15 @@
               <div><span class="material-icons">event</span></div>
               <div class="mx-3">
                   <div>
-                    <div>{{event.name}}<span class="text-muted mx-1"><small>&#8212; {{event.month}}</small></span></div>
-                    <div class="text-muted small">Last purchase(s):
-                      <span class="mx-1" *ngIf="!event.lastPurchase" style="color: crimson;">No Purchase made!</span>
-                      <span class="mx-1" *ngIf="event.lastPurchase">{{event.lastPurchase | date}}</span></div>
-                    <div class="text-muted small">Average Cost: {{offerPriceAverage(event) | currency}}</div>
-                    <div class="text-muted small">Offering: {{bottleCount(event)}} wine(s)</div>
-                    <div class="my-1 text-muted"><a class="text-decoration-none" href="javascript:void(0)" (click)="purchaseAllocation(allocation, event)">Purchase Allocation Event</a></div>
+                    <div><strong>{{event.name}}</strong><span class="text-muted mx-1"><small>&#8212; {{event.month}}</small></span></div>
+                    <div class="text-muted mb-1">Last purchase(s):
+                      <span style="color:cadetblue;" class="mx-1" *ngIf="getLastPurchase(event.allocationId) as date; else elseBlock">{{date | date}}</span>  
+                      <ng-template #elseBlock><span class="mx-1" style="color: crimson;">No Purchase made!</span></ng-template>          
+                      <!--
+                      <span class="mx-1" *ngIf="event.lastPurchase">{{event.lastPurchase | date}}</span>--></div>
+                    <div class="text-muted mb-1">Average Cost: {{offerPriceAverage(event) | currency}}</div>
+                    <div class="text-muted ">Offering: {{bottleCount(event)}} wine(s)</div>
+                    <div class="my-1 text-muted"><a class="text-decoration-none" href="javascript:void(0)" (click)="purchaseAllocation(allocation, event)"><strong>Purchase Allocation Event</strong></a></div>
                   </div>
               </div>
             </li>

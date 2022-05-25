@@ -4,10 +4,12 @@ import { catchError, debounceTime, distinctUntilChanged, EMPTY, map, Observable,
 import { Action, Module, UserEventAction } from 'src/app/app.module';
 import { Allocation } from 'src/app/models/Allocation';
 import { AllocationEvent } from 'src/app/models/AllocationEvent';
+import { Collection } from 'src/app/models/Collection';
 import { Merchant } from 'src/app/models/Merchant';
 import { Profile } from 'src/app/models/Profile';
 import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.service';
 import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
+import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
 
 @Component({
   selector: 'app-cellar-allocation-view',
@@ -27,9 +29,9 @@ export class CellarAllocationViewComponent implements OnInit {
   allocationSelection!:Allocation
   merchantSelection!:Merchant
   allocationEventSelection!:AllocationEvent
-
+  lastPurchasedOn:any[] =[]
   constructor(
-    private allocationService:VinomioAllocationService,
+    private allocationService:VinomioAllocationService
     //private allocation
   ) { }
 
@@ -57,6 +59,7 @@ export class CellarAllocationViewComponent implements OnInit {
         console.debug("setting allocations...")
         this.allocations = allocations
         this.totalCount = allocations.length
+        this.getUserLastAllocations();
       })
   }
   public offerPriceAverage(event:any){
@@ -94,6 +97,7 @@ export class CellarAllocationViewComponent implements OnInit {
     this.action =  new UserEventAction(Action.List,Module.Allocation)
     this.showView = !this.showView
     this.getAllocation();
+    //this.getUserLastAllocations()
   }
   inputFormatListValue(value: any)   { 
     if(value.merchant.name)
@@ -138,5 +142,17 @@ export class CellarAllocationViewComponent implements OnInit {
     this.allocationSelection = allocation
     this.showView = !this.showView
     
+  }
+  private getUserLastAllocations(){
+    console.log(this.userProfile)
+   this.allocationService.getLastPurchases(this.userProfile.id).subscribe(r =>this.lastPurchasedOn = r)
+  }
+  public getLastPurchase(allocationEventId:any){
+    if(this.lastPurchasedOn){
+      const dates:any=this.lastPurchasedOn.filter(p => p.allocationEventId == allocationEventId).map((e) => new Date(e.lastPurchased))
+      if(dates.length>0)
+        return new Date(Math.max(...dates))
+    }
+    return
   }
 }
