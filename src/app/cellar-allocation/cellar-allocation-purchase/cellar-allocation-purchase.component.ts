@@ -89,8 +89,8 @@ export class CellarAllocationPurchaseComponent implements OnInit {
     this.ItemEvent.emit();
   }
   onSubmit() {
-
-    const data:Collection[] = this.offers
+    //console.log(this.offers)
+    const data:Collection[] = this.offers.filter((i:any) => i.value.accepted)
       .map((item:any) => {
          return  {
           wineId: item.value.id,
