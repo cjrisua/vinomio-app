@@ -47,3 +47,5 @@ Thumbs.db
 key.pem
 data/certs/SSLcertificate.crt
 data/certs/SSLprivatekey.key
+data/certs/SSLcertificate.crt.backup
+data/certs/SSLprivatekey.key.backup
