@@ -144,14 +144,18 @@ export class CellarAllocationViewComponent implements OnInit {
     
   }
   private getUserLastAllocations(){
-    console.log(this.userProfile)
-   this.allocationService.getLastPurchases(this.userProfile.id).subscribe(r =>this.lastPurchasedOn = r)
+  //console.log(this.userProfile)
+   this.allocationService.getLastPurchases(this.userProfile.cellar_id).subscribe(r =>this.lastPurchasedOn = r)
   }
-  public getLastPurchase(allocationEventId:any){
+  public getLastPurchase(event:any){
+    //console.log(event)
     if(this.lastPurchasedOn){
-      const dates:any=this.lastPurchasedOn.filter(p => p.allocationEventId == allocationEventId).map((e) => new Date(e.lastPurchased))
-      if(dates.length>0)
-        return new Date(Math.max(...dates))
+      const dates:any=this.lastPurchasedOn.filter(p => p.allocationEventId == event.id).map((e) => new Date(e.lastPurchased))
+      if(dates.length>0){
+        //console.log(`${event.id} => ${dates}`)
+        return new Date(Math.max(...dates))}
+      //else
+        //console.log("Empty")
     }
     return
   }

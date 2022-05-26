@@ -49,7 +49,7 @@
                   <div>
                     <div><strong>{{event.name}}</strong><span class="text-muted mx-1"><small>&#8212; {{event.month}}</small></span></div>
                     <div class="text-muted mb-1">Last purchase(s):
-                      <span style="color:cadetblue;" class="mx-1" *ngIf="getLastPurchase(event.allocationId) as date; else elseBlock">{{date | date}}</span>  
+                      <span style="color:cadetblue;" class="mx-1" *ngIf="getLastPurchase(event) as date; else elseBlock">{{date | date}}</span>  
                       <ng-template #elseBlock><span class="mx-1" style="color: crimson;">No Purchase made!</span></ng-template>          
                       <!--
                       <span class="mx-1" *ngIf="event.lastPurchase">{{event.lastPurchase | date}}</span>--></div>

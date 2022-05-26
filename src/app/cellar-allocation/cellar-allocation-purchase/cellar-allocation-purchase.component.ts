@@ -101,8 +101,11 @@ export class CellarAllocationPurchaseComponent implements OnInit {
           bottleSize: item.value.formats,
           locationId: 0,
           acquiringSourceId: this.allocation.merchant.id,
-          allocationEventId: this.allocationEvent.allocationId
+          allocationEventId: this.allocationEvent.id,
+          purchasedOn: this.allocationForm.value.purchaseddate,
+          deliverBy: this.allocationForm.value.deliverydate
         }});
+        //console.log(data)
     if(data.length > 0){
       this.collectionService.add(data)
       .pipe(
