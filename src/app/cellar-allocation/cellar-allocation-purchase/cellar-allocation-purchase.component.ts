@@ -48,6 +48,7 @@ export class CellarAllocationPurchaseComponent implements OnInit {
       offers: new FormArray([]),
       purchaseddate: new FormControl(`${formatDate(Date.now(),'MM/dd/yyyy',this.locale)}`),
       deliverydate: new FormControl(`${formatDate(Date.now(),'MM/dd/yyyy',this.locale)}`),
+      inmycellar: new FormControl(false),
     });
     //this.allocationForm.patchValue({format:"750ml"})
 
@@ -90,6 +91,7 @@ export class CellarAllocationPurchaseComponent implements OnInit {
   }
   onSubmit() {
     //console.log(this.offers)
+    //type: DataTypes.ENUM('allocated','pending','drunk','deleted'),
     const data:Collection[] = this.offers.filter((i:any) => i.value.accepted)
       .map((item:any) => {
          return  {
@@ -103,7 +105,8 @@ export class CellarAllocationPurchaseComponent implements OnInit {
           acquiringSourceId: this.allocation.merchant.id,
           allocationEventId: this.allocationEvent.id,
           purchasedOn: this.allocationForm.value.purchaseddate,
-          deliverBy: this.allocationForm.value.deliverydate
+          deliverBy: this.allocationForm.value.deliverydate,
+          statusId:  this.allocationForm.value.inmycellar ? 'allocated' : 'pending'
         }});
         //console.log(data)
     if(data.length > 0){
@@ -112,6 +115,9 @@ export class CellarAllocationPurchaseComponent implements OnInit {
         catchError((err) => { console.debug(err); return EMPTY})
       ).subscribe((r) => this.ItemEvent.emit());
     }
+  }
+  public updateStatus(){
+    this.allocationForm.patchValue({"inmycellar" : !this.allocationForm.value.inmycellar})
   }
   public get offers(){
     let offers = this.allocationForm.get('offers') as FormArray;
