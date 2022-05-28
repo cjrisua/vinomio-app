@@ -84,7 +84,15 @@ export class CellarDashboardComponent implements OnInit {
         () => { this.currentCollection['size'] = this.currentCollection['size']+1; }
     );*/
   }
-
+  public get myCollection(){
+    return this.currentCollection.map((item:any) =>{
+      const collectionItem:{name:string} = {
+        //console.item
+        name: `${item.year} ${item}`
+      }
+      return collectionItem
+    })
+  }
   ngOnDestroy(): void {
     
   }

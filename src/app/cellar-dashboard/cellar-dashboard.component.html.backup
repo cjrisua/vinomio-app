@@ -1,0 +1,310 @@
+<div class="container my-sm-5">
+    <!--
+    <div class="row">
+        <div style="text-align:center;">
+            <app-main-searcher (wineSelection)="onSelection($event)"></app-main-searcher> 
+        </div>
+        <div *ngIf="cellarId" style="text-align:center;">
+            <div style="position: relative; text-align:center;">
+                <button (click)="onAddWineToCellar()">Add!</button>
+            </div>
+        </div>
+       
+    </div>-->
+    <div *ngIf="currentUser?.cellar_id && cellarActiveRoute == activeRoute.Dashboard" class="row">
+            <div class="col-sm">
+                <mat-tab-group style="margin-top: 2.50rem;">
+                    <mat-tab label="Collection Overview">
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">Wine in My Cellar</div>
+                                    <div class="col">
+                                        <div class="float-end">
+                                            {{currentCollection.length}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Collection Goals"></mat-tab>
+                    <mat-tab label="Recent Activity"></mat-tab>
+                </mat-tab-group>
+                <!--
+                <div class="float-end">
+                    <div class="card mt-5" style="width: 23rem;">
+                        <div class="card-header">
+                            Collection Overview
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">Wine in My Cellar</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        {{currentCollection.length}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Pending Delivery</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Consumed</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        {{currentCollection.length}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Purchased</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">Cellar Estimated Value</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-end">
+                    <div class="card mt-5" style="width: 23rem;">
+                        <div class="card-header">
+                            Recent Purchases
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">Wine in My Cellar</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        {{currentCollection.length}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Pending Delivery</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Consumed</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        {{currentCollection.length}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Purchased</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">Cellar Estimated Value</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-end">
+                    <div class="card mt-5" style="width: 23rem;">
+                        <div class="card-header">
+                            Cellar Information
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">Wine in My Cellar</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        {{currentCollection.length}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Pending Delivery</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Consumed</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        {{currentCollection.length}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col">Wine Purchased</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">Cellar Estimated Value</div>
+                                <div class="col">
+                                    <div class="float-end">
+                                        999999
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="col-sm">
+                <div class="card mt-2 mt-sm-5">
+                    <div class="card-header">
+                        Reviews
+                    </div>
+                    <div class="card-body">
+                        <div class="wrapper my-1">
+                            <div class="row g-0">
+                                <div class=""><strong>2017 Force Majeure Syrah Force Majeure Vineyard</strong></div>
+                            </div>
+                            <div class="row g-0 my-1">
+                                <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                    dolor
+                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    Excepteur
+                                    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                                    est
+                                    laborum.</div>
+                            </div>
+                            <div class="row g-0">
+                                <div class="">-Carlos Rivera</div>
+                            </div>
+                        </div>
+                        <div class="wrapper my-1">
+                            <div class="row g-0">
+                                <div class=""><strong>2017 Force Majeure Syrah Force Majeure Vineyard</strong></div>
+                            </div>
+                            <div class="row g-0 my-1">
+                                <div class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                    dolor
+                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                    Excepteur
+                                    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                                    est
+                                    laborum.</div>
+                            </div>
+                            <div class="row g-0">
+                                <div class="">-Carlos Rivera</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="test" class="col-sm-1 d-flex d-sm-block my-sm-4 fixed-bottom" style="background-color: white;">
+                <div class="my-3">
+                    <button type="button" class="btn btn-link text-decoration-none" (click)="onWineAdd()">
+                        <div class="wrapper">
+                            <div class="row g-0" id="sidebar-wrapper">
+                                <div class="col text-center">
+                                    <span class="material-icons-outlined icon-display">
+                                        wine_bar
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row g-0" style="margin: -8px;">
+                                <div class="col text-center">
+                                    <small class="text-muted">Add Wine</small>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="my-3">
+                    <button type="button" class="btn btn-link text-decoration-none" (click)="onWineAllocation()">
+                        <div class="wrapper">
+                            <div class="row g-0" id="sidebar-wrapper">
+                                <div class="col text-center">
+                                    <span class="material-icons-outlined icon-display">
+                                        wine_bar
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row g-0" style="margin: -8px;">
+                                <div class="col text-center">
+                                    <small class="text-muted">Wine Allocation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="my-3">
+                    <button type="button" class="btn btn-link text-decoration-none">
+                        <div class="wrapper">
+                            <div class="row g-0" id="sidebar-wrapper" style="margin: 0;padding: 0;">
+                                <div class="col text-center">
+                                    <span class="material-icons-outlined" style="color:#6c757d!important;">
+                                        wine_bar
+                                    </span>
+                                    <span class="material-icons-outlined icon-display-overlay">
+                                        do_not_disturb
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row g-0" style="margin: -8px;">
+                                <div class="col text-center">
+                                    <small class="text-muted" style="font-size: 0.878rem;">Delete Wine</small>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="my-3">
+                    <button type="button" class="btn btn-link text-decoration-none">
+                        <div class="wrapper">
+                            <div class="row g-0" id="sidebar-wrapper" style="margin: 0;padding: 0;">
+                                <div class="col text-center">
+                                    <span class="material-icons-outlined icon-display">
+                                        search
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row g-0" style="margin: -8px;">
+                                <div class="col text-center">
+                                    <small class="text-muted" style="font-size: 0.848rem;">Search Wine</small>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+    </div>
+    <app-cellar-add-wine [currentUser]="currentUser"  *ngIf="cellarActiveRoute == activeRoute.AddWine"></app-cellar-add-wine>
+    <app-cellar-wine-allocation-add [currentUser]="currentUser"  *ngIf="cellarActiveRoute == activeRoute.WineAllocation"></app-cellar-wine-allocation-add>
+</div>
