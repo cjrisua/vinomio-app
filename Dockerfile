@@ -1,4 +1,4 @@
-FROM node:latest as build
+FROM node:17.0.1 as build
 #ENV NODE_ENV=production
 WORKDIR /usr/local/app
 #COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
