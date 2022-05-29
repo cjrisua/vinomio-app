@@ -84,14 +84,42 @@ export class CellarDashboardComponent implements OnInit {
         () => { this.currentCollection['size'] = this.currentCollection['size']+1; }
     );*/
   }
-  public get myCollection(){
-    return this.currentCollection.map((item:any) =>{
-      const collectionItem:{name:string} = {
-        //console.item
-        name: `${item.year} ${item}`
+  public get myCollection():any[]{
+    
+    let result:any[] = []
+
+    this.currentCollection.map((item:any) =>{
+      console.log(item)
+      const collectionItem:{wineId:number,
+          name:string,
+          mastervarietal:string,
+          region:string, 
+          bottleCount:number,
+          bottleSize:string,
+          price?:string,
+          location?:string,
+          status?:string
+        } = {
+        wineId: item.Vintage.Wine.id | 0,
+        name: `${item.Vintage.year} ${item.Vintage.Wine.name}`,
+        mastervarietal: item.Vintage.Wine.MasterVarietal.name,
+        region: item.Vintage.Wine.Region.name,
+        bottleCount: 1,
+        bottleSize: item.bottleSize,
+        price: item.price,
+        status:item.status,
+        location:item.location
       }
+      const wineIndex = result.findIndex((i:any) => i?.wineId == item.Vintage.Wine.id)
+      if(wineIndex == -1)
+        result.push(collectionItem)
+      else
+        result[wineIndex].bottleCount++
+
       return collectionItem
     })
+
+    return result
   }
   ngOnDestroy(): void {
     

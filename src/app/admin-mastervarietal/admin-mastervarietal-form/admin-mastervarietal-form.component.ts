@@ -8,6 +8,7 @@ import { VinomioMastervarietalService } from 'src/app/services/vinomio-mastervar
 import { map, startWith, tap } from 'rxjs/operators';
 import { VinomioVarietyService } from 'src/app/services/vinomio-variety.service';
 import { MasterVarietal } from 'src/app/models/MasterVarietal';
+import { MasterVarietalColor, MasterVarietalType } from 'src/app/app.module';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class AdminMastervarietalFormComponent implements OnInit {
   varietyIdCollection:number[] = []
   varietyIdRemovalCollection:number[] = []
   eventsSubject:Subject<Variety[]> =  new Subject<Variety[]>(); 
+  //types=[]
 
   constructor(
     private route: Router,
@@ -41,6 +43,8 @@ export class AdminMastervarietalFormComponent implements OnInit {
 
     this.mastervarietalForm = new FormGroup({
       name:  new FormControl('',[Validators.required,Validators.minLength(3)]),
+      color:  new FormControl('',[Validators.required]),
+      type:  new FormControl('',[Validators.required]),
     })
     this.varietiesService.get()
     //.pipe(
@@ -102,5 +106,19 @@ export class AdminMastervarietalFormComponent implements OnInit {
   showFormControls(form: any) {
     return form && form.controls.name &&
     form.controls.name.value; // Dr. IQ
+  }
+  onTypeChange(selection:any){
+     //selection.target.value
+  }
+  onColorChange(selection:any){
+    //selection.target.value
+  }
+  public get types(){
+    return  Object.entries(MasterVarietalType).map((p:any) => { return {id:p[0], name:p[1]} })
+    
+  }
+  public get colors():{id:string,name:string}[]{
+    return  Object.entries(MasterVarietalColor).map((p:any) => { return {id:p[0], name:p[1]} })
+
   }
 }

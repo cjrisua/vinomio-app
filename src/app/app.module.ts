@@ -192,3 +192,17 @@ export enum Module{
   AllocationEvent = 'AllocationEvent',
   AllocationPurchase = 'AllocationPurchase'
 }
+
+export enum MasterVarietalColor{
+  Red = 'Red',
+  White = 'White',
+  Rose = 'Rosé'
+}
+export enum MasterVarietalType{
+  Red = 'Red',
+  White = 'White',
+  Rose = 'Rosé',
+  Sparkling = 'Sparkling',
+  Dessert = 'Dessert',
+  Fortified ='Fortified'
+}
