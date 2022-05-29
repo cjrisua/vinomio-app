@@ -13,10 +13,12 @@ export class Wine {
         //public producerId?: number,
         public id?:number,
         public mastervarietal?:MasterVarietal,
-        public vintages?:any[]
+        public vintages?:any[],
         //public varietal?: string,
         //public region?: string
         //public releaseprice?:number
+        public color?:string,
+        public type?:string
     ){
     }
 }

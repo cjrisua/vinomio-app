@@ -10,7 +10,7 @@
             <p class="text-right text-muted  m-0 p-0"><span class="mx-1"><a class="link"  href="javascript:void(0)">Previous</a></span>|<span class="mx-1"><a class="link" href="javascript:void(0)">Next</a></span></p>
         </div>
         <div class="d-flex mt-4" *ngFor="let item of myCollection">
-            <div><span class="material-icons">wine_bar</span></div>
+            <div [ngStyle]=setStyles(item.type)><span class="material-icons">wine_bar</span></div>
             <div>
                 <div class="mx-3"><span class="fw-bold">{{item.name}}</span><small class="mx-1">&#8212;</small><small class="fw-lighter">{{item.region}}</small></div>
                 <div class="mx-3 text-muted fw-light">{{item.mastervarietal}}</div>

@@ -11,6 +11,7 @@ import { Region } from 'src/app/models/Region';
 import { VinomioRegionService } from 'src/app/services/vinomio-region.service';
 import { Location } from '@angular/common';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, map, Observable, of, OperatorFunction, switchMap } from 'rxjs';
+import { WineColor, WineType } from 'src/app/app.module';
 
 @Component({
   selector: 'app-add-wine-form',
@@ -24,8 +25,10 @@ export class AddWineFormComponent implements OnInit {
   selectRegion: Region[] = [];
   submitted = false;
   wineForm!: FormGroup;
+  index=0
   search!: OperatorFunction<string, readonly {name:string, id:number}[]>;
-  
+  Colors:any=[]
+  Types:any=[]
   constructor(
     private router: Router,
     private location: Location,
@@ -38,7 +41,7 @@ export class AddWineFormComponent implements OnInit {
   ngOnInit(): void {
     const state: any = this.location.getState();
     this.wineItem = state;
-
+    console.log(this.wineItem)
     this.wineForm = new FormGroup({
       name: new FormControl(this.wineItem?.name || '', [
         Validators.required,
@@ -47,18 +50,21 @@ export class AddWineFormComponent implements OnInit {
       producer: new FormControl('', [Validators.required]),
       mastervarietal: new FormControl('', [Validators.required]),
       region: new FormControl('', [Validators.required]),
+      color: new FormControl(this.wineItem.color || '',[Validators.required]),
+      type:  new FormControl(this.wineItem.color || '',[Validators.required]),
     });
     
-    this.producerService.get().subscribe((data) => {
+    this.producerService.get(this.wineItem.producer?.name).subscribe((data) => {
       this.selectProducer = data;
       if (this.wineItem) {
         const selected: Producer = this.selectProducer.filter(
           (p) => p.id == this.wineItem?.producer?.id
         )[0];
-        if (selected)
+        if (selected){
           this.wineForm.patchValue({
             producer: {name:selected.name,id:selected.id},
           });
+        }
       }
     });
 
@@ -69,10 +75,11 @@ export class AddWineFormComponent implements OnInit {
         const selected: Region = this.selectRegion.filter(
           (p) => p.id == this.wineItem?.region?.id
         )[0];
-        if (selected)
+        if (selected){
           this.wineForm.patchValue({
             region: {name:selected.name,id:selected.id}
           });
+        }
       }
     });
 
@@ -89,6 +96,8 @@ export class AddWineFormComponent implements OnInit {
           });
       }
     });
+    this.Colors = this.getColors()
+    this.Types = this.getTypes()
   }
   resultFormatListValue(value: any) {
     return value.name;
@@ -176,6 +185,8 @@ export class AddWineFormComponent implements OnInit {
       producerId: this.wineForm.value.producer.id,
       mastervarietalId: this.wineForm.value.mastervarietal.id,
       regionId: this.wineForm.value.region.id,
+      type:this.wineForm.value.type.trim(),
+      color:this.wineForm.value.color.trim(),
     };
     console.log(data)
     if (this.wineItem.id) {
@@ -192,7 +203,21 @@ export class AddWineFormComponent implements OnInit {
         );
     }
   }
+  onTypeChange(selection:any){
+    //selection.target.value
+ }
+ onColorChange(selection:any){
+   //console.log({color: {id:selection.target.value,name:selection.target.value}})
+  //this.wineForm.patchValue({color: {id:selection.target.value,name:selection.target.value}}) 
+ }
+ public  getTypes(){
+   return  Object.entries(WineType).map((p:any) => { return {id:p[0], name:p[1]} })
+   
+ }
+ public getColors():{id:string,name:string}[]{
+   return  Object.entries(WineColor).map((p:any) => { return {id:p[0], name:p[1]} })
 
+ }
   showFormControls(form: any) {
     return form && form.controls.name && form.controls.name.value; // Dr. IQ
   }

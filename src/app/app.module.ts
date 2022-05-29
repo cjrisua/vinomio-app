@@ -193,12 +193,12 @@ export enum Module{
   AllocationPurchase = 'AllocationPurchase'
 }
 
-export enum MasterVarietalColor{
+export enum WineColor{
   Red = 'Red',
   White = 'White',
   Rose = 'Rosé'
 }
-export enum MasterVarietalType{
+export enum WineType{
   Red = 'Red',
   White = 'White',
   Rose = 'Rosé',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CellarDashboardActiveRoute, DashboardItem, MODEL } from '../app.module';
+import { CellarDashboardActiveRoute, DashboardItem, MODEL, WineType } from '../app.module';
 import { AuthService } from '../services/auth.service';
 import { Location } from '@angular/common';
 import { User } from '../models/User';
@@ -56,6 +56,16 @@ export class CellarDashboardComponent implements OnInit {
         )
     //}
   }
+  public setStyles(Type:string){
+
+    const type: WineType = <WineType> Type;
+    //console.log(Type)
+    return {'color': 
+      type == WineType.White ? '#E8DCA1':
+      type == WineType.Red ? '#651827' :
+      'black' 
+    }
+  }
   onSelection(selection:Vintage){
     this._selection = selection;
   }
@@ -89,7 +99,7 @@ export class CellarDashboardComponent implements OnInit {
     let result:any[] = []
 
     this.currentCollection.map((item:any) =>{
-      console.log(item)
+      //console.log(item)
       const collectionItem:{wineId:number,
           name:string,
           mastervarietal:string,
@@ -98,7 +108,9 @@ export class CellarDashboardComponent implements OnInit {
           bottleSize:string,
           price?:string,
           location?:string,
-          status?:string
+          status?:string,
+          color?:string,
+          type?:string
         } = {
         wineId: item.Vintage.Wine.id | 0,
         name: `${item.Vintage.year} ${item.Vintage.Wine.name}`,
@@ -108,7 +120,9 @@ export class CellarDashboardComponent implements OnInit {
         bottleSize: item.bottleSize,
         price: item.price,
         status:item.status,
-        location:item.location
+        location:item.location,
+        color: item.Vintage.Wine.color,
+        type: item.Vintage.Wine.type
       }
       const wineIndex = result.findIndex((i:any) => i?.wineId == item.Vintage.Wine.id)
       if(wineIndex == -1)

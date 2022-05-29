@@ -50,6 +50,8 @@ export class AdminWinesComponent implements OnInit {
           producer: d.Producer,
           region: d.Region,
           mastervarietal: d.MasterVarietal,
+          color: d.color,
+          type: d.type,
           vintages: vintages,
         };
         return result;
