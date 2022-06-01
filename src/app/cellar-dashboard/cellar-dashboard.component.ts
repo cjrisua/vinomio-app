@@ -10,6 +10,7 @@ import { Profile } from '../models/Profile';
 import { VinomioCellarService } from '../services/vinomio-cellar.service';
 import { map } from 'rxjs/operators';
 import { Collection } from '../models/Collection';
+import { FormControl, FormGroup } from '@angular/forms';
 
 interface LooseObject {
   [key: string]: any
@@ -28,6 +29,7 @@ export class CellarDashboardComponent implements OnInit {
   currentUser!: Profile
   currentCollection: Collection[] = []
   _selection!:Vintage;
+  searchForm!: FormGroup
 
   cellarActiveRoute:CellarDashboardActiveRoute = CellarDashboardActiveRoute.Dashboard
   
@@ -41,8 +43,13 @@ export class CellarDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //console.log("CellarDashboardComponent - ngOnInit")
-    //if(!this.currentUser?.id){
+
+    this.searchForm = new FormGroup({
+      wine: new FormControl('')
+    })
+    //console.log(this.currentUser)
+    //if(!this.currentUser.id){
+      console.log("reload...")
       const token = this.authService.getCurrentUser()
       const user = this.authService.getUserProfile(token)
         .pipe(
@@ -138,4 +145,7 @@ export class CellarDashboardComponent implements OnInit {
   ngOnDestroy(): void {
     
   }
+  onKeyUp(){}
+  onKeyDown(){}
+  onClear(){}
 }

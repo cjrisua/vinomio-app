@@ -57,6 +57,8 @@ import { AdminCellarRoleComponent } from './admin-cellar-role/admin-cellar-role.
 import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
 import { CellarWineAllocationAddComponent } from './cellar-wine-allocation/cellar-wine-allocation-add/cellar-wine-allocation-add.component';
 import { CellarAllocationPurchaseComponent } from './cellar-allocation/cellar-allocation-purchase/cellar-allocation-purchase.component';
+import { WineSearchComponent } from './wine/wine-search/wine-search.component';
+import { WineReviewComponent } from './review/wine-review/wine-review.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +108,9 @@ import { CellarAllocationPurchaseComponent } from './cellar-allocation/cellar-al
     AdminCellarRoleComponent,
     AdminCellarRoleFormComponent,
     CellarWineAllocationAddComponent,
-    CellarAllocationPurchaseComponent
+    CellarAllocationPurchaseComponent,
+    WineSearchComponent,
+    WineReviewComponent
   ],
   imports: [
     BrowserModule,
@@ -147,7 +151,7 @@ export enum DashboardItem{
   Cellar = 'cellar',
   Allocation = 'allocation',
   Profile = 'profile',
-  WineLake = 'winelake',
+  Search = 'search',
   Reviews = 'reviews',
   None = 'none'
 }

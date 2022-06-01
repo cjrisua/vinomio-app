@@ -4,11 +4,26 @@
         <p class="m-0 p-0">435 bottles<small class="mx-1">&#8212;</small>
             <p class="m-0 p-0"><small class="mx-2 text-muted fw-lighter">7 pending delivery</small></p>
             <p class="m-0 p-0"><small class="mx-2 text-muted fw-lighter">25 pending assignment</small></p>
-        <hr/>
-        <div  class="d-flex justify-content-between m-0 p-0">
+
+        <form [formGroup]="searchForm" autocomplete="off">
+        <div class="input-group my-2" [ngStyle]=setStyles>
+            <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;padding:0pt 2pt !important">
+              <span class="material-icons" style="color: gray;">search</span>
+            </span>
+            <input formControlName="wine" id="wine" placeholder="" class="form-control" type="text" 
+             (keyup)="onKeyUp()" (keydown)="onKeyDown()"
+              style="border-left: none !important;border-right: none !important;padding:0pt 3pt !important">
+            <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+              (click)="onClear()">
+              <span class="material-icons" style="color: gray;" >close</span>
+            </span>
+          </div>
+          <div  class="d-flex justify-content-between m-0 p-0">
             <p class="text-right text-muted  m-0 p-0">showing: 1 of 433</p>
             <p class="text-right text-muted  m-0 p-0"><span class="mx-1"><a class="link"  href="javascript:void(0)">Previous</a></span>|<span class="mx-1"><a class="link" href="javascript:void(0)">Next</a></span></p>
         </div>
+        </form>
+        <hr/>
         <div class="d-flex mt-4" *ngFor="let item of myCollection">
             <div [ngStyle]=setStyles(item.type)><span class="material-icons">wine_bar</span></div>
             <div>

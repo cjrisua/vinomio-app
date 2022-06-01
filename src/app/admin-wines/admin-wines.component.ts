@@ -35,7 +35,7 @@ export class AdminWinesComponent implements OnInit {
   }
 
   private getSourceData(text?:string){
-    this.wineService.get(undefined,text)
+    this.wineService.get({name:text})
     .pipe(
       catchError(()=>of([]))
     )

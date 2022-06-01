@@ -9,7 +9,7 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" (click)="setActiveComponent($event)">Allocation</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" (click)="setActiveComponent($event)">Reviews</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Profile ? 'underline' : '' }" (click)="setActiveComponent($event)">Profile</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.WineLake ? 'underline' : '' }" (click)="setActiveComponent($event)">WineLake</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" (click)="setActiveComponent($event)">Search</a>
                 </div>
             </div>
         </nav>
@@ -22,7 +22,7 @@
                 <a class="list-group-item list-group-item-action list-group-item-light text-center px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }" (click)="setActiveComponent($event)">Cellar</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" (click)="setActiveComponent($event)">Allocation</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" (click)="setActiveComponent($event)">Reviews</a>
-                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.WineLake ? 'underline' : '' }" (click)="setActiveComponent($event)">WineLake</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" (click)="setActiveComponent($event)">Search</a>
             </div>
         </div>
         <div class="container-fluid d-sm-block">
@@ -31,6 +31,8 @@
            <app-cellar-dashboard *ngIf="activeListItem === dashboardItem.Cellar"></app-cellar-dashboard>
            <app-profile-info *ngIf="activeListItem === dashboardItem.Profile" [profile]="currentUser"></app-profile-info>
            <app-cellar-allocation  *ngIf="activeListItem === dashboardItem.Allocation && currentUser" [profile]="currentUser"></app-cellar-allocation>
+           <app-wine-search  *ngIf="activeListItem === dashboardItem.Search && currentUser"  [profile]="currentUser"></app-wine-search>
+           <app-wine-review *ngIf="activeListItem === dashboardItem.Reviews && currentUser"  [profile]="currentUser"></app-wine-review>
         </div>
     </div>
 </div>

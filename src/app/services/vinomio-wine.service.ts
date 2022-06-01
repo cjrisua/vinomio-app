@@ -27,13 +27,13 @@ private map(result:{count:number, rows:Wine[]}): Wine[]{
   return result.rows
 }
 
-  get(producerId?:number, name?:string): Observable<any[]>{
-    if(name){
-      const query_params = [`name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
+  get(query?:{producerId?:number, name?:string}): Observable<any[]>{
+    if(query?.name){
+      const query_params = [`name__iLike=${encodeURI((<string>query.name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
       return this.httpClient.get<any>(`${this.apiUrl}?${query_params}`).pipe(map(res => this.map(res)))
     }
-    if(producerId)
-      return  this.httpClient.get<any>(`${this.apiUrl}?producerId=${producerId}`).pipe(map(res => this.map(res)))
+    if(query?.producerId)
+      return  this.httpClient.get<any>(`${this.apiUrl}?producerId=${query.producerId}`).pipe(map(res => this.map(res)))
 
     return  this.httpClient.get<any>(this.apiUrl).pipe(map(res => this.map(res)))
   }

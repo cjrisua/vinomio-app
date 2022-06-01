@@ -82,7 +82,7 @@ export class CellarAllocationEventViewComponent implements OnInit {
     });
     this.getEventOffers(this.eventForm.value.id);
     this.wineService
-      .get(this.allocation.merchant?.producerId)
+      .get({producerId:this.allocation.merchant?.producerId})
       .subscribe((res) => {
         if (res.length > 0) {
           this.search = (text$: Observable<string>) =>
