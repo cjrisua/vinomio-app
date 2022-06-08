@@ -31,7 +31,7 @@
            <app-cellar-dashboard *ngIf="activeListItem === dashboardItem.Cellar"></app-cellar-dashboard>
            <app-profile-info *ngIf="activeListItem === dashboardItem.Profile" [profile]="currentUser"></app-profile-info>
            <app-cellar-allocation  *ngIf="activeListItem === dashboardItem.Allocation && currentUser" [profile]="currentUser"></app-cellar-allocation>
-           <app-wine-search  *ngIf="activeListItem === dashboardItem.Search && currentUser"  [profile]="currentUser"></app-wine-search>
+           <app-wine-main  *ngIf="activeListItem === dashboardItem.Search && currentUser"  [profile]="currentUser"></app-wine-main>
            <app-wine-review *ngIf="activeListItem === dashboardItem.Reviews && currentUser"  [profile]="currentUser"></app-wine-review>
         </div>
     </div>

@@ -54,11 +54,11 @@ export class AddWineFormComponent implements OnInit {
       type:  new FormControl(this.wineItem.color || '',[Validators.required]),
     });
     
-    this.producerService.get(this.wineItem.producer?.name).subscribe((data) => {
+    this.producerService.get(this.wineItem.Producer?.name).subscribe((data) => {
       this.selectProducer = data;
       if (this.wineItem) {
         const selected: Producer = this.selectProducer.filter(
-          (p) => p.id == this.wineItem?.producer?.id
+          (p) => p.id == this.wineItem?.Producer?.id
         )[0];
         if (selected){
           this.wineForm.patchValue({
@@ -73,7 +73,7 @@ export class AddWineFormComponent implements OnInit {
       //console.log(this.wineItem);
       if (this.wineItem) {
         const selected: Region = this.selectRegion.filter(
-          (p) => p.id == this.wineItem?.region?.id
+          (p) => p.id == this.wineItem?.Region?.id
         )[0];
         if (selected){
           this.wineForm.patchValue({
@@ -88,7 +88,7 @@ export class AddWineFormComponent implements OnInit {
       this.selectMastervarietal = data;
       if (this.wineItem) {
         const selected: MasterVarietal = this.selectMastervarietal.filter(
-          (p) => p.id == this.wineItem?.mastervarietal?.id
+          (p) => p.id == this.wineItem?.MasterVarietal?.id
         )[0];
         if (selected)
           this.wineForm.patchValue({

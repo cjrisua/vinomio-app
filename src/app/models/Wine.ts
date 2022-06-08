@@ -7,12 +7,12 @@ export class Wine {
     constructor(
         public name : string,
         //public producername:string,
-        public producer?: Producer,
-        public region?: Region,
+        public Producer?: Producer,
+        public Region?: Region,
         public slug?:string,
         //public producerId?: number,
         public id?:number,
-        public mastervarietal?:MasterVarietal,
+        public MasterVarietal?:MasterVarietal,
         public vintages?:any[],
         //public varietal?: string,
         //public region?: string

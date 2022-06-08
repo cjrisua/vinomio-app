@@ -59,7 +59,8 @@ import { CellarWineAllocationAddComponent } from './cellar-wine-allocation/cella
 import { CellarAllocationPurchaseComponent } from './cellar-allocation/cellar-allocation-purchase/cellar-allocation-purchase.component';
 import { WineSearchComponent } from './wine/wine-search/wine-search.component';
 import { WineReviewComponent } from './review/wine-review/wine-review.component';
-
+import { WineMainComponent } from './wine/wine-main.component'
+import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -110,7 +111,9 @@ import { WineReviewComponent } from './review/wine-review/wine-review.component'
     CellarWineAllocationAddComponent,
     CellarAllocationPurchaseComponent,
     WineSearchComponent,
-    WineReviewComponent
+    WineReviewComponent,
+    WineMainComponent,
+    WineSearchAddComponent
   ],
   imports: [
     BrowserModule,
@@ -194,7 +197,8 @@ export enum Module{
   Merchant = 'Merchant',
   Allocation = 'Allocation',
   AllocationEvent = 'AllocationEvent',
-  AllocationPurchase = 'AllocationPurchase'
+  AllocationPurchase = 'AllocationPurchase',
+  WineSearch = 'WineSearch'
 }
 
 export enum WineColor{
