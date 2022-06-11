@@ -30,7 +30,7 @@ import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/ad
 import { AuthLoginComponent } from './auth-login/auth-login.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { NavbarComponent } from './core/navbar/navbar.component';
-import { CellarDashboardComponent } from './cellar-dashboard/cellar-dashboard.component';
+import { CellarDashboardComponent, VintagesPipe } from './cellar-dashboard/cellar-dashboard.component';
 import { MainDashboardComponent } from './core/main-dashboard/main-dashboard.component';
 import { MainSearcherComponent } from './core/main-searcher/main-searcher.component';
 import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
@@ -113,7 +113,8 @@ import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.c
     WineSearchComponent,
     WineReviewComponent,
     WineMainComponent,
-    WineSearchAddComponent
+    WineSearchAddComponent,
+    VintagesPipe
   ],
   imports: [
     BrowserModule,

@@ -44,8 +44,8 @@ export class WineSearchAddComponent implements OnInit {
       this.vintages = [{id:vintage[0].year, name:`${vintage[0].year}`}]
 
     this.addWineForm = new FormGroup({
-      purchasedOn : new FormControl('',[Validators.required, Validators.pattern('[0-1]{2}/[0-9]{2}/[0-9]{4}')]),
-      deliverBy : new FormControl('',[Validators.required, Validators.pattern('[0-1]{2}/[0-9]{2}/[0-9]{4}')]),
+      purchasedOn : new FormControl('',[Validators.required, Validators.pattern('[0-1][1-9]/[0-3][0-9]/[0-9]{4}')]),
+      deliverBy : new FormControl('',[Validators.required, Validators.pattern('[0-1][1-9]/[0-3][0-9]/[0-9]{4}')]),
       numOfBottles : new FormControl('1',[Validators.required, Validators.pattern('[0-9]+')]),
       price : new FormControl('',[Validators.required]),
       format : new FormControl("750ml",[Validators.required]),

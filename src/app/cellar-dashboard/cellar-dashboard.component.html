@@ -24,15 +24,17 @@
         </div>
         </form>
         <hr/>
-        <div class="d-flex mt-4" *ngFor="let item of myCollection">
-            <div [ngStyle]=setStyles(item.type)><span class="material-icons">wine_bar</span></div>
+
+          <div class="d-flex mt-4" *ngFor="let item of currentCollection">
+            <div [ngStyle]=setStyles(item[0].Vintage.Wine.type)><span class="material-icons">wine_bar</span></div>
             <div>
-                <div class="mx-3"><span class="fw-bold">{{item.name}}</span><small class="mx-1">&#8212;</small><small class="fw-lighter">{{item.region}}</small></div>
-                <div class="mx-3 text-muted fw-light">{{item.mastervarietal}}</div>
-                <div class="mx-3 text-muted">{{item.bottleCount}} bottles (<em>{{item.bottleSize}}</em> ) <small class="mx-1">&#8212;</small> ${{item.price}}</div>
+                <div class="mx-3"><span class="fw-bold">{{item[0].Vintage.Wine.name}}</span><small class="mx-1">&#8212;</small><small class="fw-lighter">{{item[0].Vintage.Wine.Region.name}}</small></div>
+                <div class="mx-3 text-muted fw-light">{{item[0].Vintage.Wine.MasterVarietal.name}}</div>
+                <div class="mx-3 text-muted">{{item.length}} bottles (<em>{{item[0].bottleSize}}</em> ) <small class="mx-1">&#8212;</small> ${{item[0].price}}</div>
+                <div class="mx-3 text-muted fw-light">Vintages: {{item | Vintages }}</div>
                 <hr/>
             </div>
-        </div>
+          </div>
     </div>
     <ng-template #elseBlock></ng-template>
     <app-cellar-add-wine [currentUser]="currentUser"  *ngIf="cellarActiveRoute == activeRoute.AddWine"></app-cellar-add-wine>
