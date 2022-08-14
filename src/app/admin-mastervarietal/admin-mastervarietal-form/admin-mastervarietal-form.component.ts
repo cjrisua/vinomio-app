@@ -46,15 +46,13 @@ export class AdminMastervarietalFormComponent implements OnInit {
       type:  new FormControl('',[Validators.required]),
     })
     this.varietiesService.get()
-    //.pipe(
-    //  map((d: Variety[])=>d))
     .subscribe(data => {
-      //console.log(this.mastervarietal.varieties)
-      //init textarea
+      console.debug(">>>varietiesService")
+      console.debug(data)
+      console.debug(this.mastervarietal.varieties)
       if(this.mastervarietal){
         this.mastervarietalForm.patchValue({name:this.mastervarietal.name})
         this.eventsSubject.next(this.mastervarietal.varieties)
-        //this.varietyIdCollection = this.mastervarietal.varieties.map(d => d.id)
       }
       return (this.onGetVarieties(data))
     });
@@ -92,7 +90,14 @@ export class AdminMastervarietalFormComponent implements OnInit {
     this.filteredOptions = this.varietyFormCtrl.valueChanges
       .pipe(
         startWith(''),
-        map(value => value.length >= 1 ? this._filter(value) : this.option)
+        map(value => { 
+          const result = value.length >= 1 ? this._filter(value) : this.option
+          console.debug(">>>onGetVarieties")
+          console.debug(value)
+          console.debug(result)
+          console.debug("<<<")
+          return result
+        })
       );
   }
   displayFn(region: Variety):string {
