@@ -30,7 +30,7 @@ export class CoreAreaTextboxComponent implements OnInit {
     
     console.log(this.item)
     console.log(this.messages)
-    if(this.item != null && !this.allowDuplictes && !this.messages.some(i=> this.slugify(i.name) == this.slugify(this.item.name))){
+    if(this.item != null && !this.allowDuplictes && this.messages != null && !this.messages.some(i=> this.slugify(i.name) == this.slugify(this.item.name))){
       //populate container
       //console.log(this.messages)
       this.messages.push({id: this.item.id, name:this.item.name })
