@@ -38,19 +38,18 @@ export class AdminMastervarietalFormComponent implements OnInit {
   ngOnInit(): void {
     const state: any = this.location.getState();
     if(state.id)
-      this.mastervarietal =state
+      this.mastervarietal = state
 
     this.mastervarietalForm = new FormGroup({
       name:  new FormControl('',[Validators.required,Validators.minLength(3)]),
-      color:  new FormControl('',[Validators.required]),
-      type:  new FormControl('',[Validators.required]),
+      //color:  new FormControl('',[Validators.required]),
+      //type:  new FormControl('',[Validators.required]),
     })
     this.varietiesService.get()
     .subscribe(data => {
-      console.debug(">>>varietiesService")
-      console.debug(data)
-      console.debug(this.mastervarietal.varieties)
+      console.debug(this.mastervarietal)
       if(this.mastervarietal){
+        console.debug("patchValue")
         this.mastervarietalForm.patchValue({name:this.mastervarietal.name})
         this.eventsSubject.next(this.mastervarietal.varieties)
       }
@@ -58,17 +57,18 @@ export class AdminMastervarietalFormComponent implements OnInit {
     });
   }
   onSubmit() { 
-    
+    console.debug(this.varietyIdCollection)
     //service data object
-    const data:{name:string,varieties:number[]} =
-    {
-      name:this.mastervarietalForm.value.name.trim(),
-
-      varieties: this.varietyIdCollection.filter( v => !this.mastervarietal.varieties.some(i => i.id == v)) //new varieties for blend
+    const data:{name:string,varieties:number[]} = {
+      name: this.mastervarietalForm.value.name.trim(),
+      varieties: this.varietyIdCollection.filter( v => !this.mastervarietal?.varieties.some(i => i.id == v)) //new varieties for blend
     }
+    console.debug(data);
+
     this.varietyIdRemovalCollection.forEach((id) => 
         this.mastervarietalService.deleteVariety(this.mastervarietal.slug, id)
-        .subscribe(() => console.log("done")))
+        .subscribe(() => console.debug("done")))
+
     if(this.mastervarietal)
       this.mastervarietalService.put(this.mastervarietal.id, data).subscribe(() => this.route.navigateByUrl('/admin/model?name=mastervarietal'));
     else
@@ -92,10 +92,6 @@ export class AdminMastervarietalFormComponent implements OnInit {
         startWith(''),
         map(value => { 
           const result = value.length >= 1 ? this._filter(value) : this.option
-          console.debug(">>>onGetVarieties")
-          console.debug(value)
-          console.debug(result)
-          console.debug("<<<")
           return result
         })
       );

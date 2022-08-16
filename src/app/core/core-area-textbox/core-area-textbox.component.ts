@@ -27,9 +27,10 @@ export class CoreAreaTextboxComponent implements OnInit {
   }
   
   onAdd(){
-    console.debug(">>>OnAdd")
-    console.debug(this.item)
-    console.debug(this.messages)
+    //console.log("???")
+    //console.debug(">>>OnAdd")
+    //console.debug(this.item)
+    //console.debug(this.messages)
     if(this.item != null && !this.allowDuplictes && this.messages != null && !this.messages.some(i=> this.slugify(i.name) == this.slugify(this.item.name))){
       this.messages.push({id: this.item.id, name:this.item.name })
       this.addOrRemovedClicked.emit({status:'added', id: this.item.id, name:this.item.name });
