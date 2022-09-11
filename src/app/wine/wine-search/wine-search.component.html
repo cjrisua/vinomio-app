@@ -19,7 +19,17 @@
     </div>
 </form>
 <div *ngFor="let wine of wines">
-    <div *ngIf="$any(wine).Vintages.length > 0; else elseBlock">
+    <div class="d-flex mt-4" (click)="addWine({wine:wine})">
+        <div [ngStyle]=setStyles(wine.type)><span class="material-icons">wine_bar</span></div>
+        <div class="mx-3">
+            <div>
+                <span class="fw-bold">{{wine.name}}</span><small class="mx-1">&#8212;</small><small
+                    class="fw-lighter">{{wine.Region?.name}}, {{wine.MasterVarietal?.name}}</small>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <!--<div *ngIf="$any(wine).Vintages.length > 0; else elseBlock">
         <div *ngFor="let vintage of $any(wine).Vintages">
             <div class="d-flex mt-4">
                 <div [ngStyle]=setStyles(wine.type)>
@@ -61,5 +71,5 @@
             </div>
         </div>
         <hr />
-    </ng-template>
+    </ng-template>-->
 </div>

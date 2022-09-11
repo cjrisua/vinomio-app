@@ -61,6 +61,8 @@ import { WineSearchComponent } from './wine/wine-search/wine-search.component';
 import { WineReviewComponent } from './review/wine-review/wine-review.component';
 import { WineMainComponent } from './wine/wine-main.component'
 import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.component';
+import { CellarWineDetailComponent } from './cellar-wine-detail/cellar-wine-detail.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -114,7 +116,8 @@ import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.c
     WineReviewComponent,
     WineMainComponent,
     WineSearchAddComponent,
-    VintagesPipe
+    VintagesPipe,
+    CellarWineDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -164,7 +167,8 @@ export enum CellarDashboardActiveRoute{
   WineAllocation='wine-allocation',
   AddWine ='add-wine',
   DrunkWine = 'remove-wine',
-  Search = 'search-wine'
+  Search = 'search-wine',
+  WineDetail = 'wine-detail'
 }
 export class UserEventAction{
   _action!:Action;

@@ -30,7 +30,7 @@ export class VintagesPipe implements PipeTransform {
           r[a].push(a);
           return r
       },Object.create(null))
-    return Object.values(vintageList).map((p:any) =>`${p[0]}(${p.length})`).join(" | ")
+    return Object.values(vintageList).map((p:any) =>`${p[0]}`).join(" , ")
   }
 }
 
@@ -48,6 +48,7 @@ export class CellarDashboardComponent implements OnInit {
   currentCollection: any[] = []
   _selection!:Vintage;
   searchForm!: FormGroup
+  _cellarItemSelection!:any
 
   cellarActiveRoute:CellarDashboardActiveRoute = CellarDashboardActiveRoute.Dashboard
   
@@ -101,6 +102,10 @@ export class CellarDashboardComponent implements OnInit {
   }
   onSelection(selection:Vintage){
     this._selection = selection;
+  }
+  onWineView(cellar:any){
+    this._cellarItemSelection = cellar
+    this.cellarActiveRoute = CellarDashboardActiveRoute.WineDetail
   }
   onWineAdd(){
     //this.activeListItem = DashboardItem.Profile;

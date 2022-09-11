@@ -48,10 +48,22 @@
     <div class="row my-2">
       <div class="col-3"><span class="text-muted">Vintage</span></div>
       <div class="col">
-        <select class="form-select form-select-sm" id="vintage" disabled>
-          <option *ngFor="let vintage of vintages" [value]="vintage.id">{{vintage.name}}</option>
-      </select>
-      </div>
+      <div class="input-group input-group-sm">
+        <span class="input-group-text" id="basic-addon1"
+            style="background-color: transparent !important;padding:0pt 2pt !important">
+            <span class="material-icons" style="color: gray;">search</span>
+        </span>
+        <input #keyword formControlName="searchControl" id="merchant-name" placeholder="Enter vintage..." class="form-control"
+            type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue" [focusFirst]="false"
+            [inputFormatter]="inputFormatListValue" [editable]="true" (selectItem)="onSearchSelection($event)"
+            (click)="onFilterList()" (keyup)="onKeyUp($event,keyword.value)"
+            style="border-left: none !important;border-right: none !important;padding:0pt 2pt !important">
+        <span class="input-group-text" id="basic-addon1"
+            style="background-color: transparent !important;padding:5pt 2pt !important" (click)="onClear()">
+            <span class="material-icons" style="color: gray;">close</span>
+        </span>
+    </div>
+  </div>
     </div>
     <div class="row my-2">
       <div class="col-3"><span class="text-muted">Number of bottles</span></div>

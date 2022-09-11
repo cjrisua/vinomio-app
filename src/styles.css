@@ -17,6 +17,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
    width: 99% !important;
 }
 
+.form-control:focus {
+   border-color: #ced4da !important;
+   box-shadow: none !important
+ }
+
 a.pointer{
     cursor:pointer;
 }

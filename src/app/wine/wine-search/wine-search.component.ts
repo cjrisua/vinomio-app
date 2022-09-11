@@ -47,6 +47,7 @@ export class WineSearchComponent implements OnInit {
      return value.name;
   }
   onSearchSelection(selection:any):any{
+    this.wines = []
     this.wines.push(selection.item)
   }
   onKeyUp(event:any,keyword:any){
@@ -62,8 +63,7 @@ export class WineSearchComponent implements OnInit {
       filter((i) => i.length > 2),
       switchMap((searchText: string ) => {
           return this.wineService.get({name:searchText}).pipe(
-          map((w:any) => {
-            return w}),
+          map((w:any) => { return w }),
           catchError(()=> {console.log("continue.."); return EMPTY}))
       }),
       catchError((e)=>{ console .log(e); return []})
