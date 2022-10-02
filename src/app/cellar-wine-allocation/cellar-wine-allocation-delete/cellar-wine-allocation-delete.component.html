@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="mt-4" [hidden]="submitted">
+        <div class="h3 fw-light">Drink</div>
+        <form [formGroup]="itemForm" autocomplete="off">
+            <div class="form-group mb-2">
+                <label for="name">Removing Action</label>
+                <select class="form-control" id="source">    
+                    <option value="">Select a Option</option>
+                    <option>Drunk from cellar</option>
+                    <option>Delete</option>
+                </select>
+              </div>
+              <div class="form-group mb-2">
+                <label for="inputMerchant" class="sr-only">Consumption Note</label>
+                <input type="text" class="form-control" id="inputMerchant" placeholder="">
+              </div>
+              <div class="form-group mb-2">
+                <label for="inputMerchant" class="sr-only">Consumption Date</label>
+                <input type="text" class="form-control" id="inputMerchant" placeholder="">
+              </div>
+              <div class="form-group mb-2">
+                <label for="inputMerchant" class="sr-only">Points</label>
+                <input type="text" class="form-control" id="inputMerchant" placeholder="">
+              </div>
+              <div class="form-group mb-2">
+                <label for="inputMerchant" class="sr-only">Tasting Note</label>
+                <textarea class="form-control" aria-label="With textarea"></textarea>
+              </div>
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-outline-primary" (click)="onNavigateBack()">Cancel</button>
+            <button class="btn btn-success" (click)="onSubmit()" [disabled]="!itemForm.valid">Submit</button>
+          </div>
+          <div>
+            <hr>
+            Name via form.controls = {{showFormControls(itemForm)}}
+          </div>
+        </form>
+      </div>
+</div>

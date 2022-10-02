@@ -30,4 +30,7 @@ export class VinomioCollectionService {
     return this.httpClient
       .post(this.apiUrl, data, {observe : 'response'})
   }
+  delete(id:number){
+    return this.httpClient.delete(`${this.apiUrl}/${id}`)
+  }
 }

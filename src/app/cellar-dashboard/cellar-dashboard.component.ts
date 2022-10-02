@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CellarDashboardActiveRoute, DashboardItem, MODEL, WineType } from '../app.module';
 import { AuthService } from '../services/auth.service';
@@ -40,7 +40,10 @@ export class VintagesPipe implements PipeTransform {
   styleUrls: ['./cellar-dashboard.component.css']
 })
 
+
 export class CellarDashboardComponent implements OnInit {
+
+  @ViewChild("collectionItems") nameField!: ElementRef<HTMLElement>;
 
   activeListItem:DashboardItem = DashboardItem.Cellar
   
@@ -49,6 +52,8 @@ export class CellarDashboardComponent implements OnInit {
   _selection!:Vintage;
   searchForm!: FormGroup
   _cellarItemSelection!:any
+  _itemCollectionId!:number
+  _focusTo:number = -1;
 
   cellarActiveRoute:CellarDashboardActiveRoute = CellarDashboardActiveRoute.Dashboard
   
@@ -61,8 +66,15 @@ export class CellarDashboardComponent implements OnInit {
     this.currentUser = this.authService.currentUser
   }
 
+  ngAfterViewChecked(): void {
+    if(this.nameField && this._focusTo > -1)
+      this.nameField.nativeElement.querySelectorAll(`[id="${this._focusTo}"]`)[0].scrollIntoView({
+        behavior: 'auto',
+        block: 'center',
+        inline: 'center'
+    });
+  }
   ngOnInit(): void {
-
     this.searchForm = new FormGroup({
       wine: new FormControl('')
     })
@@ -110,6 +122,26 @@ export class CellarDashboardComponent implements OnInit {
   onWineAdd(){
     //this.activeListItem = DashboardItem.Profile;
     this.cellarActiveRoute = CellarDashboardActiveRoute.AddWine
+  }
+  onActionEvent(action:any){
+    console.debug(action)
+     if(action.id=="delete"){
+      this.cellarActiveRoute = CellarDashboardActiveRoute.DeleteWine
+      this._itemCollectionId= action.data.id
+     }
+     else if (action.id=="edit")
+      this.cellarActiveRoute = CellarDashboardActiveRoute.EditWine
+     else if (action.id=="back"){
+      this.cellarActiveRoute = CellarDashboardActiveRoute.Dashboard
+      this._focusTo = action.data
+     }
+     else{
+        //console.debug(this._cellarItemSelection)
+        console.debug(action)
+        if(action.id==="touched")
+          this._cellarItemSelection = action.data
+        this.cellarActiveRoute = CellarDashboardActiveRoute.WineDetail
+     }
   }
   onWineAllocation(){
     this.cellarActiveRoute = CellarDashboardActiveRoute.WineAllocation

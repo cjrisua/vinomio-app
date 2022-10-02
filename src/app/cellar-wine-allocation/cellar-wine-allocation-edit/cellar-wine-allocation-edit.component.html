@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="mt-4" [hidden]="submitted">
+        <div class="h3 fw-light">Edit</div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="itemForm" autocomplete="off">
+            <div class="form-group my-1">
+                <label for="name">Size</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="form-group my-1">
+                <label for="name">Rack</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="form-group my-1">
+                <label for="name">Bin</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="d-flex justify-content-between mt-2">
+                <button class="btn btn-outline-primary" (click)="NavigateBack()">Cancel</button>
+                <button type="submit" class="btn btn-success" [disabled]="!itemForm.valid">Submit</button>
+            </div>
+            <div>
+                <hr>
+                Name via form.controls = {{showFormControls(itemForm)}}
+            </div>
+        </form>
+    </div>
+</div>

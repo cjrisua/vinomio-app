@@ -27,7 +27,8 @@
       </div>
     </form>
     <div class="my-4"></div>
-    <div class="d-flex mt-0" *ngFor="let item of currentCollection">
+    <div  #collectionItems>
+    <div id={{item[0].Vintage.Wine.id}} class="d-flex mt-0" *ngFor="let item of currentCollection">
       <div class="border rounded-circle position-relative mb-2"
         style="margin:0,0,0,0; padding-top: 12pt; text-align:center;width: 50pt;height: 41pt;">
         <span class="fw-bold">95.5</span>
@@ -38,8 +39,8 @@
         </div>
       </div>
       <div class="row w-100">
-        <div class="mx-3"><span class="fw-bold">{{item[0].Vintage.Wine.name}}</span><small
-            class="mx-1">&#8212;</small><small class="fw-lighter">{{item[0].Vintage.Wine.Region.name}}</small></div>
+        <div class="mx-3" style="width:90%;"><span class="fw-bold">{{item[0].Vintage.Wine.name}}</span><small
+            class="mx-1">&#8212;</small><small class="fw-lighter text-nowrap ">{{item[0].Vintage.Wine.Region.name}}</small></div>
         <div class="col">
           <div class="mx-3 text-muted fw-light">{{item[0].Vintage.Wine.MasterVarietal.name}}</div>
           <div class="mx-3 text-muted">Vintages:<span class="mx-1 fw-light">{{item | Vintages }}</span></div>
@@ -69,12 +70,30 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
   <ng-template #elseBlock></ng-template>
-  <app-cellar-add-wine [currentUser]="currentUser" *ngIf="cellarActiveRoute == activeRoute.AddWine">
+  <app-cellar-add-wine 
+    [currentUser]="currentUser" 
+    *ngIf="cellarActiveRoute == activeRoute.AddWine">
   </app-cellar-add-wine>
-  <app-cellar-wine-allocation-add [currentUser]="currentUser" *ngIf="cellarActiveRoute == activeRoute.WineAllocation">
+  <app-cellar-wine-allocation-add 
+    [currentUser]="currentUser" 
+    *ngIf="cellarActiveRoute == activeRoute.WineAllocation">
   </app-cellar-wine-allocation-add>
-  <app-cellar-wine-detail [wine]="_cellarItemSelection" [currentUser]="currentUser"
+  <app-cellar-wine-detail 
+    [wine]="_cellarItemSelection" 
+    [currentUser]="currentUser"
+    (actionEvent)="onActionEvent($event)"
     *ngIf="cellarActiveRoute == activeRoute.WineDetail && _cellarItemSelection"></app-cellar-wine-detail>
+  <app-cellar-wine-allocation-edit 
+    [currentUser]="currentUser" 
+    (actionEvent)="onActionEvent($event)"
+    *ngIf="cellarActiveRoute == activeRoute.EditWine"></app-cellar-wine-allocation-edit>
+  <app-cellar-wine-allocation-delete 
+    [currentUser]="currentUser" 
+    (actionEvent)="onActionEvent($event)"
+    [collectionId]="_itemCollectionId"
+    [wine]="_cellarItemSelection"
+    *ngIf="cellarActiveRoute == activeRoute.DeleteWine && _itemCollectionId"></app-cellar-wine-allocation-delete>
 </div>

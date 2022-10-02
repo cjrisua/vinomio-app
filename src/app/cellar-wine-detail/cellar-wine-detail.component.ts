@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Profile } from '../models/Profile';
 import { Vintage } from '../models/Vintage';
@@ -12,6 +12,7 @@ export class CellarWineDetailComponent implements OnInit {
 
   @Input() currentUser!:Profile
   @Input() wine!:any
+  @Output() actionEvent =  new EventEmitter<{}>();
   
   cellarItem!:any
   vintages:any=[]
@@ -51,6 +52,15 @@ export class CellarWineDetailComponent implements OnInit {
     this.activeTab = id
     this.onVintageSelection(this.activeYear)
   }
+  onDeleteItem(item:any){
+    this.actionEvent.emit({id:"delete", data:item})
+  }
+  onEditItem(item:any){
+    this.actionEvent.emit({id:"edit", data:item})
+  }
+  onRelocateItem(item:any){
+    this.actionEvent.emit({id:"relocate", data:item})
+  }
   onVintageSelection(Year:any){
     const filtered = this.vintages.filter((i:any) => i.year==Year)
     if(this.activeTab == 0)
@@ -59,5 +69,8 @@ export class CellarWineDetailComponent implements OnInit {
       this.vintageSelection = filtered.map((i:any)=>i.pending)[0]
     else
       this.vintageSelection = []
+  }
+  onGoBack(){
+    this.actionEvent.emit({id:"back", data:this.wine[0].Vintage.Wine.id})
   }
 }

@@ -62,6 +62,8 @@ import { WineReviewComponent } from './review/wine-review/wine-review.component'
 import { WineMainComponent } from './wine/wine-main.component'
 import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.component';
 import { CellarWineDetailComponent } from './cellar-wine-detail/cellar-wine-detail.component';
+import { CellarWineAllocationEditComponent } from './cellar-wine-allocation/cellar-wine-allocation-edit/cellar-wine-allocation-edit.component';
+import { CellarWineAllocationDeleteComponent } from './cellar-wine-allocation/cellar-wine-allocation-delete/cellar-wine-allocation-delete.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +119,9 @@ import { CellarWineDetailComponent } from './cellar-wine-detail/cellar-wine-deta
     WineMainComponent,
     WineSearchAddComponent,
     VintagesPipe,
-    CellarWineDetailComponent
+    CellarWineDetailComponent,
+    CellarWineAllocationDeleteComponent,
+    CellarWineAllocationEditComponent
   ],
   imports: [
     BrowserModule,
@@ -166,7 +170,8 @@ export enum CellarDashboardActiveRoute{
   Dashboard = 'dashboard',
   WineAllocation='wine-allocation',
   AddWine ='add-wine',
-  DrunkWine = 'remove-wine',
+  DeleteWine = 'delete-wine',
+  EditWine = 'edit-wine',
   Search = 'search-wine',
   WineDetail = 'wine-detail'
 }
