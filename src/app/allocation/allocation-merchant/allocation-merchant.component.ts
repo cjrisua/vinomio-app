@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, OperatorFunction } from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { Merchant } from 'src/app/models/Merchant';
 import { Profile } from 'src/app/models/Profile';
+import { AuthService } from 'src/app/services/auth.service';
 import { VinomioMerchantService } from 'src/app/services/vinomio-merchant.service';
 
 @Component({
@@ -14,7 +15,9 @@ import { VinomioMerchantService } from 'src/app/services/vinomio-merchant.servic
 })
 export class AllocationMerchantComponent implements OnInit {
   @Output() ItemEvent = new EventEmitter<any>();
-  userProfile!: Profile;
+  //userProfile!: Profile;
+  //userProfileId!:string
+  userProfile!:any
   merchantForm!: FormGroup;
   searchControl!: FormControl;
   merchants!: Merchant[];
@@ -26,12 +29,15 @@ export class AllocationMerchantComponent implements OnInit {
   search!: OperatorFunction<string, readonly Merchant[]>
 
   constructor(
-    private route: Router,
-    private merchantService: VinomioMerchantService
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+    private merchantService: VinomioMerchantService,
+    private authService : AuthService
+  ) {
+    this.userProfile = this.authService.getCurrentUser()
+  }
 
   ngOnInit(): void {
-    this.userProfile =  history.state.profile 
     this.searchControl = new FormControl();
     this.merchantForm = new FormGroup({
       name: new FormControl('', [Validators.required]),

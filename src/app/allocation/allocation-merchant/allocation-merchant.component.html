@@ -53,6 +53,6 @@
   </div>
   <!-- Merchant Add/Update -->
   <div *ngIf="!showMerchants">
-   <app-merchant-form  (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [merchant]="merchantSelection"></app-merchant-form>
+   <app-allocation-merchant-form  (ItemEvent)="NavigateEventResponse($event)"  [merchant]="merchantSelection"></app-allocation-merchant-form>
   </div>
 </div>

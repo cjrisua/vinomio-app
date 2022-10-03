@@ -1,20 +1,21 @@
 import { Component, Inject, LOCALE_ID, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DashboardItem } from '../app.module';
+import { DashboardItem } from '../../app.module';
 import {formatDate} from '@angular/common';
-import { VinomioCollectionService } from '../services/vinomio-collection.service';
-import { Collection } from '../models/Collection';
-import { Profile } from '../models/Profile';
-import { Vintage } from '../models/Vintage';
-import { VinomioMerchantService } from '../services/vinomio-merchant.service';
-import { Merchant } from '../models/Merchant';
+import { VinomioCollectionService } from '../../services/vinomio-collection.service';
+import { Collection } from '../../models/Collection';
+import { Profile } from '../../models/Profile';
+import { Vintage } from '../../models/Vintage';
+import { VinomioMerchantService } from '../../services/vinomio-merchant.service';
+import { Merchant } from '../../models/Merchant';
 import { MatDialog } from '@angular/material/dialog';
-import { MerchantDialogComponent } from '../shared/merchant/merchant-dialog/merchant-dialog.component';
+import { MerchantDialogComponent } from '../../shared/merchant/merchant-dialog/merchant-dialog.component';
 import { catchError, EMPTY, map, Observable, skipWhile, startWith, Subject, Subscription } from 'rxjs';
-import { VinomioAllocationEventService } from '../services/vinomio-allocation-event.service';
-import { AllocationEvent } from '../models/AllocationEvent';
-import { AllocationDialogAddComponent } from '../shared/allocation/allocation-dialog-add/allocation-dialog-add.component';
+import { VinomioAllocationEventService } from '../../services/vinomio-allocation-event.service';
+import { AllocationEvent } from '../../models/AllocationEvent';
+import { AllocationDialogAddComponent } from '../../shared/allocation/allocation-dialog-add/allocation-dialog-add.component';
+import { AuthService } from '../../services/auth.service';
 
 export interface ComponentType<T> {
   new (...args: any[]): T;
@@ -29,7 +30,7 @@ export class CellarAddWineComponent implements OnInit {
 
   wineform!: FormGroup;
 
-  @Input() currentUser!:Profile
+  currentUser!:Profile
   selectMerchant: Merchant[] = [];
   filteredOptions: Observable<AllocationEvent[]> | undefined;
   
@@ -52,7 +53,10 @@ export class CellarAddWineComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
-    @Inject(LOCALE_ID) private locale: string) { }
+    public authService: AuthService,
+    @Inject(LOCALE_ID) private locale: string) { 
+      this.currentUser = this.authService.getCurrentUser();
+    }
 
   ngOnInit(): void {
     Date.now().toString()
@@ -179,7 +183,7 @@ export class CellarAddWineComponent implements OnInit {
     return {
       vintageId : data.vintageId.id,
       statusId : data.statusId,
-      cellarId : this.currentUser.cellar_id,
+      cellarId : this.currentUser.cellar,
       price : data.price,
       purchaseNote : data.notes,
       bottleSize : data.format,

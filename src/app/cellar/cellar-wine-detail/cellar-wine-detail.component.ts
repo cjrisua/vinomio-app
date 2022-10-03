@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Profile } from '../models/Profile';
-import { Vintage } from '../models/Vintage';
+import { Profile } from '../../models/Profile';
+import { Vintage } from '../../models/Vintage';
 
 @Component({
   selector: 'app-cellar-wine-detail',

@@ -7,6 +7,7 @@ import { AllocationEvent } from 'src/app/models/AllocationEvent';
 import { Collection } from 'src/app/models/Collection';
 import { Merchant } from 'src/app/models/Merchant';
 import { Profile } from 'src/app/models/Profile';
+import { AuthService } from 'src/app/services/auth.service';
 import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.service';
 import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
@@ -19,7 +20,7 @@ import { VinomioCollectionService } from 'src/app/services/vinomio-collection.se
 export class AllocationViewComponent implements OnInit {
 
   @Output() ItemEvent = new EventEmitter<any>();
-  @Input() userProfile!:Profile;
+  userProfile!:Profile;
   @Input() action!:UserEventAction;
   showView = true;
   searchControl!: FormControl;
@@ -31,9 +32,11 @@ export class AllocationViewComponent implements OnInit {
   allocationEventSelection!:AllocationEvent
   lastPurchasedOn:any[] =[]
   constructor(
-    private allocationService:VinomioAllocationService
-    //private allocation
-  ) { }
+    private allocationService:VinomioAllocationService,
+    private authService: AuthService
+  ) { 
+    this.userProfile = this.authService.getCurrentUser()
+  }
 
   ngOnInit(): void {
     this.searchControl = new FormControl();
@@ -145,7 +148,7 @@ export class AllocationViewComponent implements OnInit {
   }
   private getUserLastAllocations(){
   //console.log(this.userProfile)
-   this.allocationService.getLastPurchases(this.userProfile.cellar_id).subscribe(r =>this.lastPurchasedOn = r)
+   this.allocationService.getLastPurchases(this.userProfile.cellar).subscribe(r =>this.lastPurchasedOn = r)
   }
   public getLastPurchase(event:any){
     //console.log(event)

@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CellarAddWineComponent } from 'src/app/cellar-add-wine/cellar-add-wine.component';
+import { CellarAddWineComponent } from 'src/app/cellar/cellar-add-wine/cellar-add-wine.component';
 import { Merchant } from 'src/app/models/Merchant';
 import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.service';
 

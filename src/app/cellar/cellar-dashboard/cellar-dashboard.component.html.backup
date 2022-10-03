@@ -11,7 +11,7 @@
         </div>
        
     </div>-->
-    <div *ngIf="currentUser?.cellar_id && cellarActiveRoute == activeRoute.Dashboard" class="row">
+    <div *ngIf="currentUser?.cellar && cellarActiveRoute == activeRoute.Dashboard" class="row">
             <div class="col-sm">
                 <mat-tab-group style="margin-top: 2.50rem;">
                     <mat-tab label="Collection Overview">

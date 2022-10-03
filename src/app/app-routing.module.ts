@@ -17,28 +17,27 @@ import { AdminMastervarietalFormComponent } from './admin/admin-mastervarietal/a
 import { AdminVintageFormComponent } from './admin/admin-vintage/admin-vintage-form/admin-vintage-form.component';
 import { AdminVintageComponent } from './admin/admin-vintage/admin-vintage.component';
 import { AuthLoginComponent } from './auth-login/auth-login.component';
-import { CellarDashboardComponent } from './cellar-dashboard/cellar-dashboard.component';
+import { CellarDashboardComponent } from './cellar/cellar-dashboard/cellar-dashboard.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { MainDashboardComponent } from './core/main-dashboard/main-dashboard.component';
 import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
-import { CellarAddWineComponent } from './cellar-add-wine/cellar-add-wine.component';
+import { CellarAddWineComponent } from './cellar/cellar-add-wine/cellar-add-wine.component';
 import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navbar-form-signup.component';
 import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
 import { AdminCellarRoleComponent } from './admin/admin-cellar-role/admin-cellar-role.component';
 import { AdminCellarRoleFormComponent } from './admin/admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
-import { CellarDashboardWineReviewsComponent } from './cellar-dashboard/cellar-dashboard-wine-reviews/cellar-dashboard-wine-reviews.component';
-import { CellarDashboardTestComponent } from './cellar-dashboard/cellar-dashboard-test/cellar-dashboard-test.component';
-import { CellarWineDetailComponent } from './cellar-wine-detail/cellar-wine-detail.component';
+import { CellarWineDetailComponent } from './cellar/cellar-wine-detail/cellar-wine-detail.component';
 import { AllocationComponent } from './allocation/allocation.component';
 import { WineReviewViewComponent } from './review/wine-review-view/wine-review-view.component';
 import { WineSearchComponent } from './wine/wine-search/wine-search.component';
 import { AllocationMerchantComponent } from './allocation/allocation-merchant/allocation-merchant.component';
+import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wine-review.component';
 
 
 const routes: Routes = [
- 
-/*  
   {path:'login', component:AuthLoginComponent},
+/*  
+  
   {path:'profile', component:ProfileInfoComponent, canActivate: [AuthGuard] },
   {path:'profile/cellar/add', component:ProfileCellarAddFormComponent, canActivate: [AuthGuard] },
   {path:'signup', component:NavbarFormSignupComponent},
@@ -80,6 +79,7 @@ const routes: Routes = [
     children:[
       {path : '', pathMatch:'full', component: CellarDashboardComponent},
       {path:'wine', component:CellarWineDetailComponent},
+      {path:'wine-review', component:CellarWineReviewComponent }
     ]
   },
   {

@@ -30,14 +30,14 @@ import { AdminVintageFormComponent } from './admin/admin-vintage/admin-vintage-f
 import { AuthLoginComponent } from './auth-login/auth-login.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { NavbarComponent } from './core/navbar/navbar.component';
-import { CellarDashboardComponent, VintagesPipe } from './cellar-dashboard/cellar-dashboard.component';
+import { CellarDashboardComponent, VintagesPipe } from './cellar/cellar-dashboard/cellar-dashboard.component';
 import { MainDashboardComponent } from './core/main-dashboard/main-dashboard.component';
 import { MainSearcherComponent } from './core/main-searcher/main-searcher.component';
 import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
 import { ProfileCellarComponent } from './profile/profile-cellar/profile-cellar.component';
-import { CellarAddWineComponent } from './cellar-add-wine/cellar-add-wine.component';
+import { CellarAddWineComponent } from './cellar/cellar-add-wine/cellar-add-wine.component';
 import { MerchantDialogComponent } from './shared/merchant/merchant-dialog/merchant-dialog.component';
-import { CellarAddBulkTableComponent } from './cellar-add-wine/cellar-add-bulk-table/cellar-add-bulk-table.component'
+import { CellarAddBulkTableComponent } from './cellar/cellar-add-wine/cellar-add-bulk-table/cellar-add-bulk-table.component'
 import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navbar-form-signup.component';
 import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
 import { AllocationComponent } from './allocation/allocation.component';
@@ -47,7 +47,7 @@ import { AllocationMerchantComponent } from './allocation/allocation-merchant/al
 import { AllocationFormComponent } from './allocation/allocation-form/allocation-form.component';
 import { AllocationViewComponent } from './allocation/allocation-view/allocation-view.component';
 import { AllocationEventViewComponent } from './allocation/allocation-event-view/allocation-event-view.component';
-import { MerchantFormComponent } from './allocation/merchant-form/merchant-form.component';
+import { AllocationMerchantFormComponent } from './allocation/allocation-merchant/allocation-merchant-form/allocation-merchant-form.component';
 import { AllocationEventOfferComponent } from './allocation/allocation-event-offer/allocation-event-offer.component';
 import { AdminOrderByPipe } from './admin-order-by.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -55,19 +55,19 @@ import { AdminModelTableComponent } from './core/admin-model-table/admin-model-t
 import { AdminModelSearcherComponent } from './core/admin-model-searcher/admin-model-searcher.component';
 import { AdminCellarRoleComponent } from './admin/admin-cellar-role/admin-cellar-role.component';
 import { AdminCellarRoleFormComponent } from './admin/admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
-import { CellarWineAllocationAddComponent } from './cellar-wine-allocation/cellar-wine-allocation-add/cellar-wine-allocation-add.component';
+import { CellarWineAllocationAddComponent } from './cellar/cellar-wine-allocation/cellar-wine-allocation-add/cellar-wine-allocation-add.component';
 import { AllocationPurchaseComponent } from './allocation/allocation-purchase/allocation-purchase.component';
 import { WineSearchComponent } from './wine/wine-search/wine-search.component';
 import { WineReviewComponent } from './review/wine-review/wine-review.component';
 import { WineMainComponent } from './wine/wine-main.component'
 import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.component';
-import { CellarWineDetailComponent } from './cellar-wine-detail/cellar-wine-detail.component';
-import { CellarWineAllocationEditComponent } from './cellar-wine-allocation/cellar-wine-allocation-edit/cellar-wine-allocation-edit.component';
-import { CellarWineAllocationDeleteComponent } from './cellar-wine-allocation/cellar-wine-allocation-delete/cellar-wine-allocation-delete.component';
+import { CellarWineDetailComponent } from './cellar/cellar-wine-detail/cellar-wine-detail.component';
+import { CellarWineAllocationEditComponent } from './cellar/cellar-wine-allocation/cellar-wine-allocation-edit/cellar-wine-allocation-edit.component';
+import { CellarWineAllocationDeleteComponent } from './cellar/cellar-wine-allocation/cellar-wine-allocation-delete/cellar-wine-allocation-delete.component';
 import { WineReviewViewComponent } from './review/wine-review-view/wine-review-view.component';
 import { WineReviewListComponent } from './review/wine-review-list/wine-review-list.component';
-import { CellarDashboardWineReviewsComponent } from './cellar-dashboard/cellar-dashboard-wine-reviews/cellar-dashboard-wine-reviews.component';
-import { CellarDashboardTestComponent } from './cellar-dashboard/cellar-dashboard-test/cellar-dashboard-test.component';
+import { Profile } from './models/Profile';
+import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wine-review.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +109,7 @@ import { CellarDashboardTestComponent } from './cellar-dashboard/cellar-dashboar
     AllocationFormComponent,
     AllocationViewComponent,
     AllocationEventViewComponent,
-    MerchantFormComponent,
+    AllocationMerchantFormComponent,
     AllocationEventOfferComponent,
     AdminOrderByPipe,
     AdminModelTableComponent,
@@ -128,8 +128,7 @@ import { CellarDashboardTestComponent } from './cellar-dashboard/cellar-dashboar
     CellarWineAllocationEditComponent,
     WineReviewViewComponent,
     WineReviewListComponent,
-    CellarDashboardWineReviewsComponent,
-    CellarDashboardTestComponent
+    CellarWineReviewComponent
   ],
   imports: [
     BrowserModule,
@@ -183,6 +182,10 @@ export enum CellarDashboardActiveRoute{
   Search = 'search-wine',
   WineDetail = 'wine-detail'
 }
+export class BaseCellar{
+
+}
+
 export class UserEventAction{
   _action!:Action;
   _module!:Module;

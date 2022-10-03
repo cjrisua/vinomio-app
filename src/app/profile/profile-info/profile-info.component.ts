@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/Profile';
+import { AuthService } from 'src/app/services/auth.service';
 import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 
 @Component({
@@ -10,13 +11,16 @@ import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 })
 export class ProfileInfoComponent implements OnInit {
 
-  @Input() profile!:Profile
+  profile!:Profile
   profileForm!: FormGroup;
   showForm:boolean = false
   
   constructor(
-    private cellarService: VinomioCellarService
-  ) { }
+    private cellarService: VinomioCellarService,
+    private authService: AuthService
+  ) {
+    this.profile = this.authService.getCurrentUser()
+   }
 
   ngOnInit(): void {
     this.profileForm = new FormGroup({

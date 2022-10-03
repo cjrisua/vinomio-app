@@ -33,6 +33,7 @@ import { VinomioMerchantService } from 'src/app/services/vinomio-merchant.servic
 import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { Allocation } from 'src/app/models/Allocation';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-allocation-form',
@@ -57,7 +58,7 @@ export class AllocationFormComponent implements OnInit {
 
   eventName!: any;
   @Output() ItemEvent = new EventEmitter<any>();
-  @Input() userProfile!: Profile;
+  userProfile!: Profile;
   @Input() allocation!: Allocation;
   //@Input() eventItem!:AllocationEvent
   allocationForm!: FormGroup;
@@ -72,8 +73,11 @@ export class AllocationFormComponent implements OnInit {
     private merchantService: VinomioMerchantService,
     private allocationService: VinomioAllocationService,
     private eventService: VinomioAllocationEventService,
-    private datePipe: DatePipe
-  ) {}
+    private datePipe: DatePipe,
+    private authService: AuthService
+  ) {
+    this.userProfile = this.authService.getCurrentUser()
+  }
 
   initFormGroup(){
     this.allocationForm = new FormGroup({
@@ -105,7 +109,7 @@ export class AllocationFormComponent implements OnInit {
     
     if (this.allocation) {
       const date:string = this.datePipe.transform(this.allocation?.memberSince,'MM/dd/yyyy') || ''
-      console.log(this.allocation.events)
+      //console.log(this.allocation.events)
       this.allocationForm.patchValue({
         allocationId:this.allocation.id,
         userId:this.userProfile.id,
@@ -240,7 +244,7 @@ export class AllocationFormComponent implements OnInit {
       memberSince: this.allocationForm.value.memberSince,
       events: eventItemCollection,
     };
-    console.log(data)
+    //console.log(data)
     
     if (!this.allocationForm.value.allocationId)
       this.allocationService.add(data).subscribe((p) => this.EmitEvent(p));

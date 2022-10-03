@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngIf="currentUser?.cellar_id">
+  <div *ngIf="currentUser?.cellar">
     <p class="h5">In my Cellar</p>
     <p class="m-0 p-0">435 bottles<small class="mx-1">&#8212;</small>
     <p class="m-0 p-0"><small class="mx-2 text-muted fw-lighter">7 pending delivery</small></p>
@@ -52,7 +52,7 @@
         <hr class="mx-2 my-3" />
       </div>
       <div>
-        <div class="position-relative" (click)="onNavigateToReview()">
+        <div class="position-relative" [routerLink]="['./wine-review']" [queryParams]="{wine:item[0].Vintage.Wine.id}">
           <span class="material-icons-outlined" style="font-size: 25px;">insert_comment</span>
           <span class="mt-2 position-absolute start-100 translate-middle badge rounded-pill bg-danger">
             9

@@ -1,15 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CellarDashboardActiveRoute, DashboardItem, MODEL, WineType } from '../app.module';
-import { AuthService } from '../services/auth.service';
+import { CellarDashboardActiveRoute, DashboardItem, MODEL, WineType } from '../../app.module';
+import { AuthService } from '../../services/auth.service';
 import { Location } from '@angular/common';
-import { User } from '../models/User';
-import { Vintage } from '../models/Vintage';
-import { VinomioCollectionService } from '../services/vinomio-collection.service';
-import { Profile } from '../models/Profile';
-import { VinomioCellarService } from '../services/vinomio-cellar.service';
+import { User } from '../../models/User';
+import { Vintage } from '../../models/Vintage';
+import { VinomioCollectionService } from '../../services/vinomio-collection.service';
+import { Profile } from '../../models/Profile';
+import { VinomioCellarService } from '../../services/vinomio-cellar.service';
 import { map, reduce, switchMap } from 'rxjs';
-import { Collection } from '../models/Collection';
+import { Collection } from '../../models/Collection';
 import { FormControl, FormGroup } from '@angular/forms';
 import { query } from '@angular/animations';
 import { Pipe, PipeTransform } from '@angular/core';
@@ -64,7 +64,7 @@ export class CellarDashboardComponent implements OnInit {
     private router: Router,
     private cellarService: VinomioCellarService,
   ) { 
-    this.currentUser = this.authService.currentUser
+    this.currentUser = this.authService.getCurrentUser()
   }
 
   ngAfterViewChecked(): void {
@@ -79,29 +79,21 @@ export class CellarDashboardComponent implements OnInit {
     this.searchForm = new FormGroup({
       wine: new FormControl('')
     })
-    console.log("reload...")
-    const token = this.authService.getCurrentUser()
-    const user = this.authService.getUserProfile(token)
-      .pipe(
-        map((userprofile:Profile) => userprofile))
-      .subscribe((user:Profile)=> 
-        this.collectionService.getCollection(user?.cellar_id)
-        .pipe(
-          switchMap((m) => m),
-          reduce((r:any,a:any) =>{
-            r[a.Vintage.Wine.id] = r[a.Vintage.Wine.id] || [];
-            r[a.Vintage.Wine.id].push(a);
-            return r
-          },Object.create(null)),
-          map((m:any) => Object.values(m))
-        )
-        .subscribe((collection) =>
-        {
-          //console.log(collection)
-          this.currentCollection = collection
-          this.currentUser = user
-        })
-      )
+
+    this.collectionService.getCollection(this.currentUser.cellar)
+    .pipe(
+      switchMap((m) => m),
+      reduce((r:any,a:any) =>{
+        r[a.Vintage.Wine.id] = r[a.Vintage.Wine.id] || [];
+        r[a.Vintage.Wine.id].push(a);
+        return r
+      },Object.create(null)),
+      map((m:any) => Object.values(m))
+    )
+    .subscribe((collection) =>
+    {
+      this.currentCollection = collection
+    })
   }
   public setStyles(Type:string){
 
@@ -153,13 +145,13 @@ export class CellarDashboardComponent implements OnInit {
   }
   onNavigateToReview()
   {
-    this.router.navigate(['./cellar-wine-reviews']);
+    this.router.navigate(['wine-review']);
   }
   onAddWineToCellar(){
     
     const collection_item = {
       vintageId:this._selection.id,
-      cellarId: this.currentUser['cellar_id'],
+      cellarId: this.currentUser['cellar'],
       purchaseNote: "",
 
     }

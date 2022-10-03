@@ -6,6 +6,7 @@ import { AllocationEvent } from 'src/app/models/AllocationEvent';
 import { Collection } from 'src/app/models/Collection';
 import { Profile } from 'src/app/models/Profile';
 import { Wine } from 'src/app/models/Wine';
+import { AuthService } from 'src/app/services/auth.service';
 import { VinomioAllocationEventOfferService } from 'src/app/services/vinomio-allocation-event-offer.service';
 import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
 import { VinomioWineService } from 'src/app/services/vinomio-wine.service';
@@ -16,7 +17,7 @@ import { VinomioWineService } from 'src/app/services/vinomio-wine.service';
   styleUrls: ['./allocation-purchase.component.css'],
 })
 export class AllocationPurchaseComponent implements OnInit {
-  @Input() userProfile!: Profile;
+  userProfile!: Profile;
   @Input() allocationEvent!: any;
   @Input() allocation!: any;
   @Output() ItemEvent = new EventEmitter<any>();
@@ -40,7 +41,10 @@ export class AllocationPurchaseComponent implements OnInit {
   constructor(
     private eventservice: VinomioAllocationEventOfferService,
     private collectionService: VinomioCollectionService,
-    @Inject(LOCALE_ID) private locale: string) {}
+    private authService: AuthService,
+    @Inject(LOCALE_ID) private locale: string) {
+      this.userProfile = this.authService.getCurrentUser();
+    }
 
   ngOnInit(): void {
     //console.log(this.allocationEvent)
@@ -97,7 +101,7 @@ export class AllocationPurchaseComponent implements OnInit {
          return  {
           wineId: item.value.id,
           vintage: item.value.vintage,
-          cellarId: this.userProfile.cellar_id,
+          cellarId: this.userProfile.cellar,
           price: item.value.amount,
           bottleCount: item.value.bottles,
           bottleSize: item.value.formats,

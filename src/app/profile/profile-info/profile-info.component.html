@@ -49,12 +49,12 @@
         </mat-tab>
         <mat-tab label="Cellar">
             <div class="card mt-3">
-                <div *ngIf="!profile?.cellar_id" class="card-body">
+                <div *ngIf="!profile?.cellar" class="card-body">
                     <label *ngIf="!showForm" class="form-control-label">Cellar: <a class="text-decoration-none mx-2 pointer" (click)="onAddCellar()">Add Cellar</a></label>
-                    <app-profile-cellar-add-form [profile]="profile"  *ngIf="showForm"></app-profile-cellar-add-form>
+                    <app-profile-cellar-add-form  *ngIf="showForm"></app-profile-cellar-add-form>
                 </div>
-                <div *ngIf="profile?.cellar_id" class="card-body">
-                    <app-profile-cellar [profile]="profile"></app-profile-cellar>
+                <div *ngIf="profile?.cellar" class="card-body">
+                    <app-profile-cellar></app-profile-cellar>
                 </div>
             </div>
         </mat-tab>

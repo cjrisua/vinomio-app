@@ -17,16 +17,17 @@ import {
 import { Merchant } from 'src/app/models/Merchant';
 import { Producer } from 'src/app/models/Producer';
 import { Profile } from 'src/app/models/Profile';
+import { AuthService } from 'src/app/services/auth.service';
 import { VinomioMerchantService } from 'src/app/services/vinomio-merchant.service';
 import { VinomioProducerService } from 'src/app/services/vinomio-producer.service';
 
 @Component({
-  selector: 'app-merchant-form',
-  templateUrl: './merchant-form.component.html',
-  styleUrls: ['./merchant-form.component.css'],
+  selector: 'app-allocation-merchant-form',
+  templateUrl: './allocation-merchant-form.component.html',
+  styleUrls: ['./allocation-merchant-form.component.css'],
 })
-export class MerchantFormComponent implements OnInit {
-  @Input() userProfile!: Profile;
+export class AllocationMerchantFormComponent implements OnInit {
+  userProfile!: Profile;
   @Input() merchant!: Merchant
   @Output() ItemEvent = new EventEmitter<any>();
   submitted = false;
@@ -38,11 +39,13 @@ export class MerchantFormComponent implements OnInit {
   constructor(
     private route: Router,
     private merchantService: VinomioMerchantService,
-    private producerService: VinomioProducerService
-    ) {}
+    private producerService: VinomioProducerService,
+    private authService: AuthService
+    ) {
+      this.userProfile = this.authService.getCurrentUser()
+    }
 
   ngOnInit(): void {
-    //console.log(this.merchant)
     this.merchantForm = new FormGroup({
       id: new FormControl(this.merchant?.id || 0),
       name: new FormControl(this.merchant?.name || "", [Validators.required]),

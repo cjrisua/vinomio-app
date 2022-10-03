@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, Observable, OperatorFunction, startWith, switchMap } from 'rxjs';
 import { Profile } from 'src/app/models/Profile';
+import { AuthService } from 'src/app/services/auth.service';
 import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { VinomioCollectionService } from 'src/app/services/vinomio-collection.se
 })
 export class WineSearchAddComponent implements OnInit {
 
-  @Input() profile!: Profile
+  profile!: Profile
   @Input() navData!: any
 
   @Output() navEvent =  new EventEmitter<{}>();
@@ -26,8 +27,11 @@ export class WineSearchAddComponent implements OnInit {
   search!: OperatorFunction<string, readonly any[]>;
   vintages: { id: number; year: string }[] = []
   constructor(
-    private collectionService:VinomioCollectionService
-  ) { }
+    private collectionService:VinomioCollectionService,
+    private authService: AuthService
+  ) { 
+    this.profile = this.authService.getCurrentUser()
+  }
 
   ngOnInit(): void {
 
@@ -63,7 +67,7 @@ export class WineSearchAddComponent implements OnInit {
         //vintageId: this.navData.data.vintageId,
         vintage: ""+(this.addWineForm.get('searchControl')?.value?.year | this.addWineForm.get('searchControl')?.value),
         wineId: this.navData.data.wine.id,
-        cellarId: this.profile.cellar_id,
+        cellarId: this.profile.cellar,
         price: this.addWineForm.value.price,
         bottleCount: this.addWineForm.value.numOfBottles,
         bottleSize: this.addWineForm.value.format,

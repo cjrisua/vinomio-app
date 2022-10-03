@@ -4,5 +4,6 @@ export class Profile {
     public firstname?:string
     public lastname?:string
     public cellar_id?:number
+    public cellar?:number
     public handler?:string
 }

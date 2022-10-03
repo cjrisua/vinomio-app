@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Action, UserEventAction, Module } from '../app.module';
 import { Profile } from '../models/Profile';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-wine-main',
@@ -9,10 +10,14 @@ import { Profile } from '../models/Profile';
 })
 export class WineMainComponent implements OnInit {
 
-  @Input() profile!: Profile
+  profile!: Profile
   navData!: any
   userNavigation!:UserEventAction 
-  constructor() { }
+  constructor(
+    private authService: AuthService
+  ) { 
+    this.profile = this.authService.getCurrentUser()
+  }
 
   public get wineAction(): typeof Action {
     return Action;

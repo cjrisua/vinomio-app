@@ -6,8 +6,8 @@
             <div class="collapse navbar-collapse">
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Dashboard ? 'underline' : '' }" [routerLink]="['admin']">Dashboard</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }"  [routerLink]="['Cellar']">Cellar</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" [routerLink]="['allocation']" [state]="{profile:currentUser}">Allocation</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }"  [routerLink]="['cellar']">Cellar</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" [routerLink]="['allocation']">Allocation</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" [routerLink]="['review']">Reviews</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Profile ? 'underline' : '' }" [routerLink]="['profile']">Profile</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" [routerLink]="['search']">Search</a>
@@ -21,7 +21,7 @@
             <div class="list-group list-group-horizontal">
                 <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Dashboard ? 'underline' : '' }" [routerLink]="['admin']">Dashboard</a>
                 <a class="list-group-item list-group-item-action list-group-item-light text-center px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }" [routerLink]="['cellar']">Cellar</a>
-                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" [routerLink]="['allocation']" [state]="{profile:currentUser}">Allocation</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" [routerLink]="['allocation']">Allocation</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" [routerLink]="['review']">Reviews</a>
                 <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" [routerLink]="['search']">Search</a>
             </div>

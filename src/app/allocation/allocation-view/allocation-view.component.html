@@ -1,9 +1,9 @@
 <!--{{action.Module| json}}
 {{showView}}-->
 <div *ngIf="!showView">
-  <app-allocation-form *ngIf="action.Module == action.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocation]="allocationSelection"></app-allocation-form>
+  <app-allocation-form *ngIf="action.Module == action.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)"  [allocation]="allocationSelection"></app-allocation-form>
   <app-allocation-event-view *ngIf="action.Module == action.EnumModule.AllocationEvent"  (ItemEvent)="NavigateEventResponse($event)" [allocation]="allocationSelection"></app-allocation-event-view>
-  <app-allocation-purchase *ngIf="action.Module == action.EnumModule.AllocationPurchase" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocation]="allocationSelection" [allocationEvent]="allocationEventSelection"></app-allocation-purchase>
+  <app-allocation-purchase *ngIf="action.Module == action.EnumModule.AllocationPurchase" (ItemEvent)="NavigateEventResponse($event)" [allocation]="allocationSelection" [allocationEvent]="allocationEventSelection"></app-allocation-purchase>
 </div>
 <div *ngIf="showView">
     <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;">

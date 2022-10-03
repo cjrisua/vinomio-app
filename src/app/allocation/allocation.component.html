@@ -45,7 +45,7 @@
             <!--<h5 class="card-title">Merchants</h5>-->
             <!-- Merchants -->
             <ul class="list-group" style="border-radius:0% !important">
-              <li class="list-group-item d-flex justify-content-between align-items-center" [routerLink]="['merchant']" [state]="{profile:profile}">
+              <li *ngIf="profile" class="list-group-item d-flex justify-content-between align-items-center" [routerLink]="['merchant']">
                 Merchants
                 <span class="badge bg-primary rounded-pill">{{MerchantCount}}</span>
               </li>
