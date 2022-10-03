@@ -1,16 +1,16 @@
 <app-navbar></app-navbar>
-<div class="d-flex" id="wrapper">
+<div class="float-sm-start" id="wrapper">
     <div class="border-end bg-white" id="sidebar-wrapper">
         <div class="sidebar-heading border-bottom bg-light"></div>
-        <nav class="navbar navbar-expand-sm">
+        <nav class="navbar navbar-expand-sm" style="padding:0;">
             <div class="collapse navbar-collapse">
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Dashboard ? 'underline' : '' }" [routerLink]="['admin']">Dashboard</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }" (click)="setActiveComponent($event)">Cellar</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" (click)="setActiveComponent($event)">Allocation</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" (click)="setActiveComponent($event)">Reviews</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Profile ? 'underline' : '' }" (click)="setActiveComponent($event)">Profile</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" (click)="setActiveComponent($event)">Search</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }"  [routerLink]="['Cellar']">Cellar</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" [routerLink]="['allocation']" [state]="{profile:currentUser}">Allocation</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" [routerLink]="['review']">Reviews</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Profile ? 'underline' : '' }" [routerLink]="['profile']">Profile</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" [routerLink]="['search']">Search</a>
                 </div>
             </div>
         </nav>
@@ -20,10 +20,10 @@
         <div class="d-sm-none">
             <div class="list-group list-group-horizontal">
                 <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Dashboard ? 'underline' : '' }" [routerLink]="['admin']">Dashboard</a>
-                <a class="list-group-item list-group-item-action list-group-item-light text-center px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }" (click)="setActiveComponent($event)">Cellar</a>
-                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" (click)="setActiveComponent($event)">Allocation</a>
-                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" (click)="setActiveComponent($event)">Reviews</a>
-                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" (click)="setActiveComponent($event)">Search</a>
+                <a class="list-group-item list-group-item-action list-group-item-light text-center px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Cellar ? 'underline' : '' }" [routerLink]="['cellar']">Cellar</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Allocation ? 'underline' : '' }" [routerLink]="['allocation']" [state]="{profile:currentUser}">Allocation</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Reviews ? 'underline' : '' }" [routerLink]="['review']">Reviews</a>
+                <a class="list-group-item list-group-item-action list-group-item-light px-2" [ngStyle]="{'text-decoration':activeListItem === dashboardItem.Search ? 'underline' : '' }" [routerLink]="['search']">Search</a>
             </div>
         </div>
         <div class="container-fluid d-sm-block">
@@ -31,7 +31,7 @@
            <app-admin *ngIf="activeListItem == dashboardItem.Dashboard"></app-admin>
            <app-cellar-dashboard *ngIf="activeListItem === dashboardItem.Cellar"></app-cellar-dashboard>
            <app-profile-info *ngIf="activeListItem === dashboardItem.Profile" [profile]="currentUser"></app-profile-info>
-           <app-cellar-allocation  *ngIf="activeListItem === dashboardItem.Allocation && currentUser" [profile]="currentUser"></app-cellar-allocation>
+           <app-allocation  *ngIf="activeListItem === dashboardItem.Allocation && currentUser" [profile]="currentUser"></app-allocation>
            <app-wine-main  *ngIf="activeListItem === dashboardItem.Search && currentUser"  [profile]="currentUser"></app-wine-main>
            <app-wine-review *ngIf="activeListItem === dashboardItem.Reviews && currentUser"  [profile]="currentUser"></app-wine-review>
            -->

@@ -1,0 +1,21 @@
+<div class="container">
+  <div [hidden]="submitted">
+    <h1>Country Form</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="countryForm" autocomplete="off">
+      <div class="form-group mb-3">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" [routerLink]="['/admin/country']"
+          class="btn btn btn-outline-dark">Cancel</button>
+
+        <button type="submit" class="btn btn-success" [disabled]="!countryForm.valid">Submit</button>
+      </div>
+      <div>
+        <hr>
+        Name via form.controls = {{showFormControls(countryForm)}}
+      </div>
+    </form>
+  </div>
+</div>

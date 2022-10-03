@@ -6,27 +6,27 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
-import { AdminProducersComponent } from './admin-producers/admin-producers.component';
-import { AdminWinesComponent } from './admin-wines/admin-wines.component';
+import { AdminProducersComponent } from './admin/admin-producers/admin-producers.component';
+import { AdminWinesComponent } from './admin/admin-wines/admin-wines.component';
 //import { AdminModelNavigationComponent } from './admin-model-navigation/admin-model-navigation.component';
 //import { AdminModelComponent } from './admin-model/admin-model.component';
-import { AdminProducersFormComponent } from './admin-producers/admin-producers-form/admin-producers-form.component';
-import { AddWineFormComponent } from './admin-wines/add-wine-form/add-wine-form.component';
+import { AdminProducersFormComponent } from './admin/admin-producers/admin-producers-form/admin-producers-form.component';
+import { AddWineFormComponent } from './admin/admin-wines/add-wine-form/add-wine-form.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AdminCountryComponent } from './admin-country/admin-country.component';
-import { AdminCountryFormComponent } from './admin-country/admin-country-form/admin-country-form.component';
-import { AdminRegionComponent } from './admin-region/admin-region.component';
-import { AdminRegionFormComponent } from './admin-region/admin-region-form/admin-region-form.component';
-import { AdminMastervarietalComponent } from './admin-mastervarietal/admin-mastervarietal.component';
-import { AdminVarietyComponent } from './admin-variety/admin-variety.component';
-import { AdminVintageComponent } from './admin-vintage/admin-vintage.component';
-import { AdminVarietyFormComponent } from './admin-variety/admin-variety-form/admin-variety-form.component';
-import { AdminMastervarietalFormComponent } from './admin-mastervarietal/admin-mastervarietal-form/admin-mastervarietal-form.component';
+import { AdminCountryComponent } from './admin/admin-country/admin-country.component';
+import { AdminCountryFormComponent } from './admin/admin-country/admin-country-form/admin-country-form.component';
+import { AdminRegionComponent } from './admin/admin-region/admin-region.component';
+import { AdminRegionFormComponent } from './admin/admin-region/admin-region-form/admin-region-form.component';
+import { AdminMastervarietalComponent } from './admin/admin-mastervarietal/admin-mastervarietal.component';
+import { AdminVarietyComponent } from './admin/admin-variety/admin-variety.component';
+import { AdminVintageComponent } from './admin/admin-vintage/admin-vintage.component';
+import { AdminVarietyFormComponent } from './admin/admin-variety/admin-variety-form/admin-variety-form.component';
+import { AdminMastervarietalFormComponent } from './admin/admin-mastervarietal/admin-mastervarietal-form/admin-mastervarietal-form.component';
 import { MatIconModule } from '@angular/material/icon';
-import { AdminVintageFormComponent } from './admin-vintage/admin-vintage-form/admin-vintage-form.component';
+import { AdminVintageFormComponent } from './admin/admin-vintage/admin-vintage-form/admin-vintage-form.component';
 import { AuthLoginComponent } from './auth-login/auth-login.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { NavbarComponent } from './core/navbar/navbar.component';
@@ -40,23 +40,23 @@ import { MerchantDialogComponent } from './shared/merchant/merchant-dialog/merch
 import { CellarAddBulkTableComponent } from './cellar-add-wine/cellar-add-bulk-table/cellar-add-bulk-table.component'
 import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navbar-form-signup.component';
 import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
-import { CellarAllocationComponent } from './cellar-allocation/cellar-allocation.component';
-import { CellarAllocationEventItemComponent } from './cellar-allocation/cellar-allocation-event-item/cellar-allocation-event-item.component';
-import { CellarAllocationEventComponent } from './cellar-allocation/cellar-allocation-event/cellar-allocation-event.component';
-import { CellarAllocationMerchantComponent } from './cellar-allocation/cellar-allocation-merchant/cellar-allocation-merchant.component';
-import { CellarAllocationFormComponent } from './cellar-allocation/cellar-allocation-form/cellar-allocation-form.component';
-import { CellarAllocationViewComponent } from './cellar-allocation/cellar-allocation-view/cellar-allocation-view.component';
-import { CellarAllocationEventViewComponent } from './cellar-allocation/cellar-allocation-event-view/cellar-allocation-event-view.component';
-import { CellarMerchantFormComponent } from './cellar-allocation/cellar-merchant-form/cellar-merchant-form.component';
-import { CellarAllocationEventOfferComponent } from './cellar-allocation/cellar-allocation-event-offer/cellar-allocation-event-offer.component';
+import { AllocationComponent } from './allocation/allocation.component';
+import { AllocationEventItemComponent } from './allocation/allocation-event-item/allocation-event-item.component';
+import { AllocationEventComponent } from './allocation/allocation-event/allocation-event.component';
+import { AllocationMerchantComponent } from './allocation/allocation-merchant/allocation-merchant.component';
+import { AllocationFormComponent } from './allocation/allocation-form/allocation-form.component';
+import { AllocationViewComponent } from './allocation/allocation-view/allocation-view.component';
+import { AllocationEventViewComponent } from './allocation/allocation-event-view/allocation-event-view.component';
+import { MerchantFormComponent } from './allocation/merchant-form/merchant-form.component';
+import { AllocationEventOfferComponent } from './allocation/allocation-event-offer/allocation-event-offer.component';
 import { AdminOrderByPipe } from './admin-order-by.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminModelTableComponent } from './core/admin-model-table/admin-model-table.component';
 import { AdminModelSearcherComponent } from './core/admin-model-searcher/admin-model-searcher.component';
-import { AdminCellarRoleComponent } from './admin-cellar-role/admin-cellar-role.component';
-import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
+import { AdminCellarRoleComponent } from './admin/admin-cellar-role/admin-cellar-role.component';
+import { AdminCellarRoleFormComponent } from './admin/admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
 import { CellarWineAllocationAddComponent } from './cellar-wine-allocation/cellar-wine-allocation-add/cellar-wine-allocation-add.component';
-import { CellarAllocationPurchaseComponent } from './cellar-allocation/cellar-allocation-purchase/cellar-allocation-purchase.component';
+import { AllocationPurchaseComponent } from './allocation/allocation-purchase/allocation-purchase.component';
 import { WineSearchComponent } from './wine/wine-search/wine-search.component';
 import { WineReviewComponent } from './review/wine-review/wine-review.component';
 import { WineMainComponent } from './wine/wine-main.component'
@@ -102,22 +102,22 @@ import { CellarDashboardTestComponent } from './cellar-dashboard/cellar-dashboar
     CellarAddBulkTableComponent,
     NavbarFormSignupComponent,
     ProfileCellarAddFormComponent,
-    CellarAllocationComponent,
-    CellarAllocationEventItemComponent,
-    CellarAllocationEventComponent,
-    CellarAllocationMerchantComponent,
-    CellarAllocationFormComponent,
-    CellarAllocationViewComponent,
-    CellarAllocationEventViewComponent,
-    CellarMerchantFormComponent,
-    CellarAllocationEventOfferComponent,
+    AllocationComponent,
+    AllocationEventItemComponent,
+    AllocationEventComponent,
+    AllocationMerchantComponent,
+    AllocationFormComponent,
+    AllocationViewComponent,
+    AllocationEventViewComponent,
+    MerchantFormComponent,
+    AllocationEventOfferComponent,
     AdminOrderByPipe,
     AdminModelTableComponent,
     AdminModelSearcherComponent,
     AdminCellarRoleComponent,
     AdminCellarRoleFormComponent,
     CellarWineAllocationAddComponent,
-    CellarAllocationPurchaseComponent,
+    AllocationPurchaseComponent,
     WineSearchComponent,
     WineReviewComponent,
     WineMainComponent,

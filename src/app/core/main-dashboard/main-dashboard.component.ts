@@ -23,23 +23,15 @@ export class MainDashboardComponent implements OnInit {
     private location: Location
   ) {}
   ngOnInit(): void {
-    /*
-    this.route.queryParams.subscribe((p) => {
-      if ('view' in p) {
-        this.activeListItem =  p['view']
-      }
-    });
-
     const token = this.authService.getCurrentUser();
     this.authService
       .getUserProfile(token)
       .subscribe((u) =>{ 
         this.currentUser = u
-    });*/
+    });
   }
   ngOnDestroy(): void {
     if (this.navigationSubscription) {
-      //console.log('ngOnDestroy');
       this.navigationSubscription.unsubscribe();
     }
   }

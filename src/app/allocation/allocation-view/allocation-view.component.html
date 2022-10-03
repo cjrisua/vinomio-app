@@ -1,0 +1,79 @@
+<!--{{action.Module| json}}
+{{showView}}-->
+<div *ngIf="!showView">
+  <app-allocation-form *ngIf="action.Module == action.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocation]="allocationSelection"></app-allocation-form>
+  <app-allocation-event-view *ngIf="action.Module == action.EnumModule.AllocationEvent"  (ItemEvent)="NavigateEventResponse($event)" [allocation]="allocationSelection"></app-allocation-event-view>
+  <app-allocation-purchase *ngIf="action.Module == action.EnumModule.AllocationPurchase" (ItemEvent)="NavigateEventResponse($event)" [userProfile]="userProfile" [allocation]="allocationSelection" [allocationEvent]="allocationEventSelection"></app-allocation-purchase>
+</div>
+<div *ngIf="showView">
+    <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;">
+        <p class="h2" style="padding-top: 10px;">Allocation List</p>
+        <button type="button" class="btn btn-primary my-1 btn-sm" (click)="onAddAllocation()" style="border-radius: 100px;">
+          <div class="mx-1">
+            <span class="material-icons" style="vertical-align: middle;
+          font-size: larger;">add_circle_outline</span>
+            <small class="px-1">Add Allocation</small>
+          </div>
+        </button>
+      </div>
+      <form autocomplete="off">
+        <div class="form-group mt-4">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"> 
+              <span class="material-icons" style="color: gray;">search</span>
+            </span>
+            <input [formControl]="searchControl" id="merchant-name" placeholder="Allocation name" class="form-control" type="text" 
+            [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+            [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onSearchSelection($event)" (click)="onFilterList()"
+            style="border-left: none !important;border-right: none !important">
+            <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;" (click)="onClear()"> 
+              <span class="material-icons" style="color: gray;">close</span>
+            </span>
+          </div>
+        </div>
+        <div class="d-flex" style="justify-content: end; padding-right: 5px;">
+          <p class="h6"><small class="text-muted">showing {{allocations ? allocations.length :0 }} of {{totalCount}}</small></p>
+        </div>
+      </form>
+      <div *ngFor="let allocation of allocations"  class="card mb-2">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div><a class="text-decoration-none" href="javascript:void(0);" (click)="onViewItem(allocation)"><p class="h6 m-0 p-0">{{allocation.merchant?.name}}</p></a></div>
+              <div><span class="material-icons-outlined" (click)="onDelete(allocation)" style="cursor:pointer;"  >delete_forever</span></div>
+            </div>
+          </div>
+          <ul class="list-group list-group-flush" *ngFor="let event of allocation.events">
+            <li class="list-group-item d-flex" (click)="onEventView(allocation, event)">
+              <div><span class="material-icons">event</span></div>
+              <div class="mx-3">
+                  <div>
+                    <div><strong>{{event.name}}</strong><span class="text-muted mx-1"><small>&#8212; {{event.month}}</small></span></div>
+                    <div class="text-muted mb-1">Last purchase(s):
+                      <span style="color:cadetblue;" class="mx-1" *ngIf="getLastPurchase(event) as date; else elseBlock">{{date | date}}</span>  
+                      <ng-template #elseBlock><span class="mx-1" style="color: crimson;">No Purchase made!</span></ng-template>          
+                      <!--
+                      <span class="mx-1" *ngIf="event.lastPurchase">{{event.lastPurchase | date}}</span>--></div>
+                    <div class="text-muted mb-1">Average Cost: {{offerPriceAverage(event) | currency}}</div>
+                    <div class="text-muted ">Offering: {{bottleCount(event)}} wine(s)</div>
+                    <div class="my-1 text-muted"><a class="text-decoration-none" href="javascript:void(0)" (click)="purchaseAllocation(allocation, event)"><strong>Purchase Allocation Event</strong></a></div>
+                  </div>
+              </div>
+            </li>
+          </ul>
+        <!--
+        <div class="d-block" style="background-color: rgba(0,0,0,.03);height: 30px; padding: 6px;margin: 5px 0px;">
+          <a  class="text-decoration-none pointer" href="#">{{allocation.merchant?.name}}</a>
+        </div>
+       -->
+        <!--
+        <div class="row" *ngFor="let event of allocation.events" style="padding-left: 0px; margin: 3px 0px;" >
+          <div class="col">
+            <a  class="text-decoration-none pointer" href="#">{{event.name}}</a>
+            Month:{{event.month}}
+            Average Cost: $999.99
+            something
+          </div>
+        </div>
+      -->
+      </div>
+</div>
