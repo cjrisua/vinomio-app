@@ -60,6 +60,7 @@ export class CellarDashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private collectionService: VinomioCollectionService,
+    private route: ActivatedRoute,
     private router: Router,
     private cellarService: VinomioCellarService,
   ) { 
@@ -116,8 +117,9 @@ export class CellarDashboardComponent implements OnInit {
     this._selection = selection;
   }
   onWineView(cellar:any){
-    this._cellarItemSelection = cellar
-    this.cellarActiveRoute = CellarDashboardActiveRoute.WineDetail
+    //this._cellarItemSelection = cellar
+    //this.cellarActiveRoute = CellarDashboardActiveRoute.WineDetail
+    //this.router.navigate(['./wine'])
   }
   onWineAdd(){
     //this.activeListItem = DashboardItem.Profile;
@@ -148,6 +150,10 @@ export class CellarDashboardComponent implements OnInit {
   }
   public get activeRoute(): typeof CellarDashboardActiveRoute {
     return CellarDashboardActiveRoute; 
+  }
+  onNavigateToReview()
+  {
+    this.router.navigate(['./cellar-wine-reviews']);
   }
   onAddWineToCellar(){
     

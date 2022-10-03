@@ -23,6 +23,7 @@ export class MainDashboardComponent implements OnInit {
     private location: Location
   ) {}
   ngOnInit(): void {
+    /*
     this.route.queryParams.subscribe((p) => {
       if ('view' in p) {
         this.activeListItem =  p['view']
@@ -34,7 +35,7 @@ export class MainDashboardComponent implements OnInit {
       .getUserProfile(token)
       .subscribe((u) =>{ 
         this.currentUser = u
-    });
+    });*/
   }
   ngOnDestroy(): void {
     if (this.navigationSubscription) {
@@ -49,28 +50,25 @@ export class MainDashboardComponent implements OnInit {
   return JSON.stringify(this.currentUser)
   }
   setActiveComponent(event: any) {
-    console.info("getUserProfile->" + JSON.stringify(this.currentUser))
     const action: DashboardItem = (<any>DashboardItem)[event.target.innerText];
-    //console.log(action);
     if (action == this.activeListItem) {
       this.activeListItem = action;
-      //console.log('refreshing');
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
-      this.router.navigate(['/home'], {
+      this.router.navigate(['/'], {
         queryParams: { view: this.activeListItem },
       });
     } else {
-      this.activeListItem = action;
-      this.reloadCurrentRoute();
+      //this.activeListItem = action;
+      //this.reloadCurrentRoute();
+      this.router.navigate([action],{relativeTo:this.route})
     }
   }
   reloadCurrentRoute() {
     //let currentUrl = this.router.url;
-    //console.log("reloadCurrentRoute")
     this.router.navigateByUrl('/', { skipLocationChange: true }).then((p) => {
       //this.router.onSameUrlNavigation = 'reload'
-      this.router.navigate(['home'], {
+      this.router.navigate([''], {
         queryParams: { view: this.activeListItem },
       });
     });

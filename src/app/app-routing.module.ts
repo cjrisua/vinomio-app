@@ -26,11 +26,14 @@ import { NavbarFormSignupComponent } from './core/navbar/navbar-form-signup/navb
 import { ProfileCellarAddFormComponent } from './profile/profile-cellar/profile-cellar-add-form/profile-cellar-add-form.component';
 import { AdminCellarRoleComponent } from './admin-cellar-role/admin-cellar-role.component';
 import { AdminCellarRoleFormComponent } from './admin-cellar-role/admin-cellar-role-form/admin-cellar-role-form.component';
+import { CellarDashboardWineReviewsComponent } from './cellar-dashboard/cellar-dashboard-wine-reviews/cellar-dashboard-wine-reviews.component';
+import { CellarDashboardTestComponent } from './cellar-dashboard/cellar-dashboard-test/cellar-dashboard-test.component';
+import { CellarWineDetailComponent } from './cellar-wine-detail/cellar-wine-detail.component';
 
 
 const routes: Routes = [
  
-  {path:'admin/model', component:AdminModelComponent},
+/*  {path:'admin/model', component:AdminModelComponent},
   {path:'admin/role', component:AdminCellarRoleComponent},
   {path:'admin/role/:id', component:AdminCellarRoleFormComponent},
   {path:'admin/role/add', component:AdminCellarRoleFormComponent},
@@ -60,8 +63,46 @@ const routes: Routes = [
   {path:'profile/cellar/add', component:ProfileCellarAddFormComponent, canActivate: [AuthGuard] },
   {path:'home', component:MainDashboardComponent, canActivate: [AuthGuard]},
   {path:'signup', component:NavbarFormSignupComponent},
+  {path:'cellar-wine-reviews', component:CellarDashboardWineReviewsComponent},
   {path:'admin', redirectTo:'/home?view=dashboard', pathMatch:'full'},
-  {path:'', redirectTo:'/home', pathMatch:'full'}
+  {path:'', redirectTo:'/home', pathMatch:'full'}*/
+  {
+    path:'admin',
+    component:AdminComponent,
+    children:[
+      {path:'model', component:AdminModelComponent},
+    ]
+  },
+  {path:'admin/producer', component:AdminProducersComponent},
+  {path:'admin/producer/:id', component:AdminProducersFormComponent},
+  {path:'admin/producer/add', component:AdminProducersFormComponent},
+  {path:'admin/wine', component:AdminWinesComponent},
+  {path:'admin/wine/add', component:AddWineFormComponent},
+  {path:'admin/wine/:id', component:AddWineFormComponent},
+  {path:'admin/country', component:AdminCountryComponent},
+  {path:'admin/country/:id', component:AdminCountryFormComponent},
+  {path:'admin/country/add', component:AdminCountryFormComponent},
+  {path:'admin/region', component:AdminRegionComponent},
+  {path:'admin/region/:id', component:AdminRegionFormComponent},
+  {path:'admin/region/add', component:AdminRegionFormComponent},
+  {path:'admin/variety', component:AdminVarietyComponent},
+  {path:'admin/variety/:id', component:AdminVarietyFormComponent},
+  {path:'admin/variety/add', component:AdminVarietyFormComponent},
+  {path:'admin/mastervarietal', component:AdminMastervarietalComponent},
+  {path:'admin/mastervarietal/:id', component:AdminMastervarietalFormComponent},
+  {path:'admin/mastervarietal/add', component:AdminMastervarietalFormComponent},
+  {path:'admin/vintage', component:AdminVintageComponent},
+  {path:'admin/vintage/add', component:AdminVintageFormComponent},
+  {path:'admin/vintage/:id', component:AdminVintageFormComponent},
+  {
+    path:'cellar', 
+    //component: CellarDashboardComponent,
+    children:[
+      { path : '', pathMatch:'full', component: CellarDashboardComponent},
+      {path:'wine', component:CellarWineDetailComponent},
+    ]
+  }
+  
 ];
 
 @NgModule({

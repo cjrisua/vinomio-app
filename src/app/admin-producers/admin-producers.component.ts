@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VinomioProducerService } from '../services/vinomio-producer.service';
 import {MatTableDataSource} from "@angular/material/table";
 import { Producer } from '../models/Producer';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 
 @Component({
@@ -17,10 +17,12 @@ export class AdminProducersComponent implements OnInit {
   dataSource = new MatTableDataSource<Producer>();
   isEmpty!:string
   constructor(
-    private producerService: VinomioProducerService,
-    private router: Router) { }
+    private route: ActivatedRoute,
+    private router: Router,
+    private producerService: VinomioProducerService) { }
 
   ngOnInit(): void {
+    console.debug("AdminProducersComponent [ngOnInit()]")
     this.getSourceData()
   }
 

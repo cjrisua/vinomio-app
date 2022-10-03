@@ -1,5 +1,5 @@
 <div class="container my-sm-5">
-  <div *ngIf="currentUser?.cellar_id && cellarActiveRoute == activeRoute.Dashboard; else elseBlock">
+  <div *ngIf="currentUser?.cellar_id">
     <p class="mt-3 h5">In my Cellar</p>
     <p class="m-0 p-0">435 bottles<small class="mx-1">&#8212;</small>
     <p class="m-0 p-0"><small class="mx-2 text-muted fw-lighter">7 pending delivery</small></p>
@@ -44,17 +44,15 @@
         <div class="col">
           <div class="mx-3 text-muted fw-light">{{item[0].Vintage.Wine.MasterVarietal.name}}</div>
           <div class="mx-3 text-muted">Vintages:<span class="mx-1 fw-light">{{item | Vintages }}</span></div>
-          <!--<div class="mx-3 text-muted">{{item.length}} bottles (<em>{{item[0].bottleSize}}</em> ) <small
-              class="mx-1">&#8212;</small> Average: ${{item[0].price}}</div>-->
           <div class="mx-3 text-muted">Last tasted on:<span class="mx-1 fw-light">Dec 31, 2022</span></div>
         </div>
         <div class="d-grid gap-sm-2 my-2 mx-2">
-          <button class="btn btn-outline-secondary" type="button" (click)="onWineView(item)">View</button>
+          <button class="btn btn-outline-secondary" type="button"  [routerLink]="['./wine']" [state]="{data:item}">View</button>
         </div>
         <hr class="mx-2 my-3" />
       </div>
       <div>
-        <div class="position-relative">
+        <div class="position-relative" (click)="onNavigateToReview()">
           <span class="material-icons-outlined" style="font-size: 25px;">insert_comment</span>
           <span class="mt-2 position-absolute start-100 translate-middle badge rounded-pill bg-danger">
             9
@@ -72,6 +70,7 @@
     </div>
     </div>
   </div>
+  <!--
   <ng-template #elseBlock></ng-template>
   <app-cellar-add-wine 
     [currentUser]="currentUser" 
@@ -96,4 +95,6 @@
     [collectionId]="_itemCollectionId"
     [wine]="_cellarItemSelection"
     *ngIf="cellarActiveRoute == activeRoute.DeleteWine && _itemCollectionId"></app-cellar-wine-allocation-delete>
+-->
 </div>
+<router-outlet> </router-outlet>

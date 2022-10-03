@@ -8,8 +8,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { AdminProducersComponent } from './admin-producers/admin-producers.component';
 import { AdminWinesComponent } from './admin-wines/admin-wines.component';
-import { AdminModelNavigationComponent } from './admin-model-navigation/admin-model-navigation.component';
-import { AdminModelComponent } from './admin-model/admin-model.component';
+//import { AdminModelNavigationComponent } from './admin-model-navigation/admin-model-navigation.component';
+//import { AdminModelComponent } from './admin-model/admin-model.component';
 import { AdminProducersFormComponent } from './admin-producers/admin-producers-form/admin-producers-form.component';
 import { AddWineFormComponent } from './admin-wines/add-wine-form/add-wine-form.component';
 import { CoreModule } from './core/core.module';
@@ -64,6 +64,10 @@ import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.c
 import { CellarWineDetailComponent } from './cellar-wine-detail/cellar-wine-detail.component';
 import { CellarWineAllocationEditComponent } from './cellar-wine-allocation/cellar-wine-allocation-edit/cellar-wine-allocation-edit.component';
 import { CellarWineAllocationDeleteComponent } from './cellar-wine-allocation/cellar-wine-allocation-delete/cellar-wine-allocation-delete.component';
+import { WineReviewViewComponent } from './review/wine-review-view/wine-review-view.component';
+import { WineReviewListComponent } from './review/wine-review-list/wine-review-list.component';
+import { CellarDashboardWineReviewsComponent } from './cellar-dashboard/cellar-dashboard-wine-reviews/cellar-dashboard-wine-reviews.component';
+import { CellarDashboardTestComponent } from './cellar-dashboard/cellar-dashboard-test/cellar-dashboard-test.component';
 
 @NgModule({
   declarations: [
@@ -71,8 +75,8 @@ import { CellarWineAllocationDeleteComponent } from './cellar-wine-allocation/ce
     AdminComponent,
     AdminProducersComponent,
     AdminWinesComponent,
-    AdminModelNavigationComponent,
-    AdminModelComponent,
+    //AdminModelNavigationComponent,
+    //AdminModelComponent,
     AddWineFormComponent,
     AdminProducersFormComponent,
     AdminCountryComponent,
@@ -121,7 +125,11 @@ import { CellarWineAllocationDeleteComponent } from './cellar-wine-allocation/ce
     VintagesPipe,
     CellarWineDetailComponent,
     CellarWineAllocationDeleteComponent,
-    CellarWineAllocationEditComponent
+    CellarWineAllocationEditComponent,
+    WineReviewViewComponent,
+    WineReviewListComponent,
+    CellarDashboardWineReviewsComponent,
+    CellarDashboardTestComponent
   ],
   imports: [
     BrowserModule,

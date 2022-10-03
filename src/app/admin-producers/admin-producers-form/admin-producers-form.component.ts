@@ -44,12 +44,12 @@ export class AdminProducersFormComponent implements OnInit {
     };
     if(this.producer){
       this.producerService.put(this.producer.id, data).subscribe(
-        (response) => this.router.navigateByUrl('/admin/model?name=producer')
+        (response) => this.router.navigateByUrl('/admin/producer')
       );
     }
     else{
       this.producerService.add(data).subscribe(
-        (response) => this.router.navigateByUrl('/admin/model?name=producer')
+        (response) => this.router.navigateByUrl('/admin/producer')
       );
     }
   }

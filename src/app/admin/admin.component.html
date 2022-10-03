@@ -18,10 +18,10 @@
               <div class="card-body">
                 <h3 class="card-title"><strong>{{item.name}}</strong></h3>
                 <p class="card-text">{{item.description}}</p>
-                <a class="btn btn-primary" routerLink="/admin/model" [queryParams]="{'name':item.value}">Go</a>
+                <a class="btn btn-primary" (click)="onNavigateToModel(item.value)">Go</a>
               </div>
             </div>
           </div>
     </div>
 </ul>
-
+<router-outlet></router-outlet>

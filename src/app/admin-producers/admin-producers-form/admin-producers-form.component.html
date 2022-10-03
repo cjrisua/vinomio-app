@@ -7,7 +7,7 @@
         <input type="text" class="form-control" id="name" formControlName="name">
       </div>
       <div class="d-flex justify-content-between">
-        <button type="button" [routerLink]="['/admin/model']" [queryParams]="{name:'producer'}"
+        <button type="button" [routerLink]="['/admin/producer']"
           class="btn btn btn-outline-dark">Cancel</button>
         <button type="submit" class="btn btn-success" [disabled]="!producerForm.valid">Submit</button>
       </div>

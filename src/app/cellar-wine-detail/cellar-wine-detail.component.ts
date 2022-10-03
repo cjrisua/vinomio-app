@@ -10,8 +10,8 @@ import { Vintage } from '../models/Vintage';
 })
 export class CellarWineDetailComponent implements OnInit {
 
-  @Input() currentUser!:Profile
-  @Input() wine!:any
+  //@Input() currentUser!:Profile
+  wine!:any
   @Output() actionEvent =  new EventEmitter<{}>();
   
   cellarItem!:any
@@ -25,22 +25,25 @@ export class CellarWineDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.cellarItem = this.wine[0].Vintage.Wine
-    this.wine.reduce((res:any,value:any)=>{
-      if (!res[value.Vintage.year]){
-        res[value.Vintage.year] = {year:value.Vintage.year,allocated:[],pending:[]}
-        this.vintages.push(res[value.Vintage.year])
-      }
-      //res[value.Vintage.year].qty.push(value);
-      //allocated
-    if(value.statusId == "allocated")
-      res[value.Vintage.year].allocated.push(value)
-    else if(value.statusId == "pending")
-    res[value.Vintage.year].pending.push(value)
-      return res;
-    },{})
-    this.activeYear = this.vintages[0].year
-    this.onVintageSelection(this.activeYear)
+    this.wine = <any[]>history.state.data;
+    if(this.wine){
+      this.cellarItem = this.wine[0].Vintage.Wine
+      this.wine.reduce((res:any,value:any)=>{
+        if (!res[value.Vintage.year]){
+          res[value.Vintage.year] = {year:value.Vintage.year,allocated:[],pending:[]}
+          this.vintages.push(res[value.Vintage.year])
+        }
+        //res[value.Vintage.year].qty.push(value);
+        //allocated
+      if(value.statusId == "allocated")
+        res[value.Vintage.year].allocated.push(value)
+      else if(value.statusId == "pending")
+      res[value.Vintage.year].pending.push(value)
+        return res;
+      },{})
+      this.activeYear = this.vintages[0].year
+      this.onVintageSelection(this.activeYear)
+    }
   }
   isDisabled(item:number){
     return false
@@ -71,6 +74,6 @@ export class CellarWineDetailComponent implements OnInit {
       this.vintageSelection = []
   }
   onGoBack(){
-    this.actionEvent.emit({id:"back", data:this.wine[0].Vintage.Wine.id})
+    //this.actionEvent.emit({id:"back", data:this.wine[0].Vintage.Wine.id})
   }
 }
