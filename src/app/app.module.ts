@@ -8,8 +8,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { AdminProducersComponent } from './admin/admin-producers/admin-producers.component';
 import { AdminWinesComponent } from './admin/admin-wines/admin-wines.component';
-//import { AdminModelNavigationComponent } from './admin-model-navigation/admin-model-navigation.component';
-//import { AdminModelComponent } from './admin-model/admin-model.component';
 import { AdminProducersFormComponent } from './admin/admin-producers/admin-producers-form/admin-producers-form.component';
 import { AddWineFormComponent } from './admin/admin-wines/add-wine-form/add-wine-form.component';
 import { CoreModule } from './core/core.module';
@@ -68,6 +66,8 @@ import { WineReviewViewComponent } from './review/wine-review-view/wine-review-v
 import { WineReviewListComponent } from './review/wine-review-list/wine-review-list.component';
 import { Profile } from './models/Profile';
 import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wine-review.component';
+import { AdminPeopleComponent } from './admin/admin-people/admin-people.component';
+import { AdminPeopleFormComponent } from './admin/admin-people/admin-people-form/admin-people-form.component';
 
 @NgModule({
   declarations: [
@@ -75,8 +75,6 @@ import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wi
     AdminComponent,
     AdminProducersComponent,
     AdminWinesComponent,
-    //AdminModelNavigationComponent,
-    //AdminModelComponent,
     AddWineFormComponent,
     AdminProducersFormComponent,
     AdminCountryComponent,
@@ -90,6 +88,8 @@ import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wi
     AdminVarietyFormComponent,
     AdminMastervarietalFormComponent,
     AdminVintageFormComponent,
+    AdminPeopleComponent,
+    AdminPeopleFormComponent,
     AuthLoginComponent,
     NavbarComponent,
     CellarDashboardComponent,
@@ -162,7 +162,10 @@ export enum MODEL {
   Variety = 'variety',
   MasterVarietal ='mastervarietal',
   Vintage = 'vintage',
-  Role = 'role'
+  Role = 'role',
+  People = 'people',
+  Review = 'review',
+  Tag = 'tag'
 }
 export enum DashboardItem{
   Dashboard ='dashboard',

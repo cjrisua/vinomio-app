@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Profile } from 'src/app/models/Profile';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-cellar-wine-review',
@@ -7,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CellarWineReviewComponent implements OnInit {
 
-  constructor() { }
+  userProfile: Profile
+
+  constructor(
+    private authService: AuthService
+  ) { 
+    this.userProfile = this.authService.getCurrentUser()  
+  }
 
   ngOnInit(): void {
   }

@@ -1,0 +1,13 @@
+<div class="container mt-4">
+    <div *ngIf="dataSource.data.length==0 else elseBlock">
+        <p class="h6">No People Found!<span><button class="btn btn-sm btn-outline-link" [routerLink]="['./add']">Add People</button></span></p>
+    </div>
+    <ng-template #elseBlock>
+      <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty">
+      </app-admin-model-searcher>
+      <h3><strong>People Table</strong></h3>
+      <app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" [ModelItems]="dataSource.data"
+        [exclusionColumns]="exclusionColumns" (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"></app-admin-model-table>
+    </ng-template>
+    
+</div>

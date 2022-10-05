@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { AdminProducersComponent } from './admin/admin-producers/admin-producers.component';
 import { AdminWinesComponent } from './admin/admin-wines/admin-wines.component';
-import { AdminModelComponent } from './admin/admin-model/admin-model.component';
 import { AdminProducersFormComponent } from './admin/admin-producers/admin-producers-form/admin-producers-form.component';
 import { AddWineFormComponent } from './admin/admin-wines/add-wine-form/add-wine-form.component'
 import { AdminCountryComponent } from './admin/admin-country/admin-country.component';
@@ -32,6 +31,10 @@ import { WineReviewViewComponent } from './review/wine-review-view/wine-review-v
 import { WineSearchComponent } from './wine/wine-search/wine-search.component';
 import { AllocationMerchantComponent } from './allocation/allocation-merchant/allocation-merchant.component';
 import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wine-review.component';
+import { AdminReviewComponent } from './admin/admin-review/admin-review.component';
+import { AdminPeopleComponent } from './admin/admin-people/admin-people.component';
+import { AdminTagComponent } from './admin/admin-tag/admin-tag.component';
+import { AdminPeopleFormComponent } from './admin/admin-people/admin-people-form/admin-people-form.component';
 
 
 const routes: Routes = [
@@ -46,7 +49,6 @@ const routes: Routes = [
     path:'admin',
     children:[
       {path:'', pathMatch:'full', component: AdminComponent},
-      {path:'model', component:AdminModelComponent},
       {path:'vintage', component:AdminVintageComponent},
       {path:'vintage/add', component:AdminVintageFormComponent},
       {path:'vintage/:id', component:AdminVintageFormComponent},
@@ -71,6 +73,14 @@ const routes: Routes = [
       {path:'mastervarietal', component:AdminMastervarietalComponent},
       {path:'mastervarietal/:id', component:AdminMastervarietalFormComponent},
       {path:'mastervarietal/add', component:AdminMastervarietalFormComponent},
+      {path:'review', component:AdminReviewComponent},
+      {path:'people',
+        children:[
+          {path : '', pathMatch:'full',component:AdminPeopleComponent},
+          {path:'add', component:AdminPeopleFormComponent}
+        ]
+      },
+      {path:'tag', component:AdminTagComponent},
     ]
   },
   {
