@@ -25,7 +25,7 @@ export class AllocationEventOfferComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.wineItem)
+    //console.log(this.wineItem)
     if(this.wineItem.price)
       this.offerPrice = this.wineItem.price
    

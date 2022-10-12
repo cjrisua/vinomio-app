@@ -213,9 +213,9 @@ export class UserEventAction{
   }
 }
 export enum Action{
-  Add ='Add',
-  Edit ='Edit',
-  List ='List'
+  Add ="Add",
+  Edit ="Edit",
+  List ="List"
 }
 export enum Module{
   Merchant = 'Merchant',

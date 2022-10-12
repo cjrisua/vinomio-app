@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
+import { VinomioPeopleService } from 'src/app/services/vinomio-people.service';
 import { People } from '../../models/People';
 import { VinomioRegionService } from '../../services/vinomio-region.service';
 
@@ -19,40 +20,33 @@ export class AdminPeopleComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private peopleService:VinomioPeopleService
   ) { }
 
   ngOnInit(): void {
     this.getSourceData()
   }
   private getSourceData(text?:string){
-    /*
-    this.regionService.get(true,-1,text)
-    .pipe(
+    this.peopleService.getList().pipe(
       catchError(()=>of([]))
     )
     .subscribe(data => {
       this.dataSource.data = data;
       this.isEmpty= data.length == 0 ? 'true':'false';
-      });*/
+      });
   }
   public searchEvent(keyword:string){
     this.getSourceData(keyword)
   }
-  public ViewOrDeleteModelItem(wine: any) {
-    /*
-    console.log(`naviage to id ${JSON.stringify(wine.event)}`);
-    if(wine.action=='view')
-      this.router.navigateByUrl('/admin/region/' + wine.event.id, { state: wine.event });
-    else if(wine.action=='delete')
-      this.regionService.delete(wine.event.id).subscribe(() => this.ngOnInit())
-      */
+  public ViewOrDeleteModelItem(item: any) {
+    if(item.action=='view')
+      this.router.navigate(['/admin/people/', item.event.id]);
+    else if(item.action=='delete')
+      this.peopleService.delete(item.event.id).subscribe(() => this.ngOnInit())
+      
   }
   public get showing(){
-    return {
-      limit:0,
-      count:0
-    }
-    //return {limit:this.dataSource.data.length,count:this.regionService.count}
+    return {limit:this.dataSource.data.length,count:this.peopleService.count ? this.peopleService.count:0}
   }
 
 }

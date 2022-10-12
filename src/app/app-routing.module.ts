@@ -35,6 +35,10 @@ import { AdminReviewComponent } from './admin/admin-review/admin-review.componen
 import { AdminPeopleComponent } from './admin/admin-people/admin-people.component';
 import { AdminTagComponent } from './admin/admin-tag/admin-tag.component';
 import { AdminPeopleFormComponent } from './admin/admin-people/admin-people-form/admin-people-form.component';
+import { AllocationViewComponent } from './allocation/allocation-view/allocation-view.component';
+import { AllocationEventViewComponent } from './allocation/allocation-event-view/allocation-event-view.component';
+import { AllocationFormComponent } from './allocation/allocation-form/allocation-form.component';
+import { AllocationPurchaseComponent } from './allocation/allocation-purchase/allocation-purchase.component';
 
 
 const routes: Routes = [
@@ -77,7 +81,8 @@ const routes: Routes = [
       {path:'people',
         children:[
           {path : '', pathMatch:'full',component:AdminPeopleComponent},
-          {path:'add', component:AdminPeopleFormComponent}
+          {path:'add', component:AdminPeopleFormComponent},
+          {path:':id', component:AdminPeopleFormComponent}
         ]
       },
       {path:'tag', component:AdminTagComponent},
@@ -97,7 +102,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children:[
       {path:'',pathMatch:'full',component:AllocationComponent},
-      {path:'merchant',pathMatch:'full',component:AllocationMerchantComponent}
+      {path:'mailing/purchase', pathMatch:'full',component:AllocationPurchaseComponent},
+      {path:'merchant',pathMatch:'full',component:AllocationMerchantComponent},
+      {path:'mailing',pathMatch:'full',component:AllocationViewComponent},
+      {path:'mailing/:id',pathMatch:'full',component:AllocationFormComponent},
+      {path:'mailing/add', pathMatch:'full',component:AllocationFormComponent},
+      {path:'mailing/event/:id', pathMatch:'full',component:AllocationEventViewComponent},
+     
     ]
   },
   {

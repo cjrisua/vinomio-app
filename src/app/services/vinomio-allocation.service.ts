@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Allocation } from '../models/Allocation';
+import { VinomioBaseService } from './vinomio-base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,26 @@ export class VinomioAllocationService {
   private apiUrl = environment.apiUrl + "/allocation"
   count!: number;
 
-  constructor(private http:HttpClient) { }
+  constructor(
+    private http:HttpClient,
+    private baseService:VinomioBaseService
+    ) 
+    { 
+      baseService.apiUrl = this.apiUrl;
+    }
 
   private map(result:{count:number, rows:Allocation[]}): Allocation[]{
     this.count = result.count;
     return result.rows
   }
 
+  getById(id:number){
+    this.baseService.apiUrl = `${this.apiUrl}/${id}`
+    return this.baseService.get().pipe(map((p)=>p))
+  }
+  getByCellarId(id:number){
+    //this.baseService.apiUrl += "cellar"
+  }
   get(userId:any, upcoming:boolean = false):Observable<Allocation[]>{
     if(upcoming)
       return this.http.get<any>(`${this.apiUrl}/events/${userId}`).pipe(map(res => this.map(res)))

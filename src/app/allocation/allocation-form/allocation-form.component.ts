@@ -34,6 +34,7 @@ import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { Allocation } from 'src/app/models/Allocation';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-allocation-form',
@@ -44,22 +45,13 @@ import { AuthService } from 'src/app/services/auth.service';
 export class AllocationFormComponent implements OnInit {
   public model: Merchant | undefined;
   search!: OperatorFunction<string, readonly Merchant[]>;
-  /*
-  search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 2 ? []
-        : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
-  */
 
   @ViewChildren('scheduleTable') container!: ElementRef;
 
   eventName!: any;
   @Output() ItemEvent = new EventEmitter<any>();
   userProfile!: Profile;
-  @Input() allocation!: Allocation;
+  allocation!: Allocation;
   //@Input() eventItem!:AllocationEvent
   allocationForm!: FormGroup;
   submitted = false;
@@ -68,13 +60,14 @@ export class AllocationFormComponent implements OnInit {
   displayedColumns = ['name', 'month'];
   contenteditable: boolean = true;
   merchants!: Merchant[];
-  //dataSource:AllocationEvent[] = [{name: "Spring Release", month:"January"},{name: "Spring Release", month:"January"}];
+ 
   constructor(
     private merchantService: VinomioMerchantService,
     private allocationService: VinomioAllocationService,
     private eventService: VinomioAllocationEventService,
     private datePipe: DatePipe,
-    private authService: AuthService
+    private authService: AuthService,
+    private route:ActivatedRoute
   ) {
     this.userProfile = this.authService.getCurrentUser()
   }
@@ -88,12 +81,11 @@ export class AllocationFormComponent implements OnInit {
       memberSince: new FormControl('', [Validators.required]),
       events: new FormArray([])
     });
-    const eventForm:any = this.setEventFormGroup(this.allocation?.events || [])
+    //const eventForm:any = this.setEventFormGroup(this.allocation?.events || [])
   }
   setEventFormGroup(events:any[]){
     let formArray = this.allocationForm.get('events') as FormArray;
     events.map((a) => {
-      //console.log(a.name)
         formArray.push(
           new FormGroup({
             name: new FormControl(a.name, []),
@@ -104,34 +96,28 @@ export class AllocationFormComponent implements OnInit {
       });
   }
   ngOnInit(): void {
-    //console.log(this.allocation)
     this.initFormGroup();
-    
-    if (this.allocation) {
-      const date:string = this.datePipe.transform(this.allocation?.memberSince,'MM/dd/yyyy') || ''
-      //console.log(this.allocation.events)
-      this.allocationForm.patchValue({
-        allocationId:this.allocation.id,
-        userId:this.userProfile.id,
-        merchant:this.allocation.merchant,
-        status: this.allocation.status,
-        memberSince: date,
-        //events: this.allocation.events
-      });
-    }else {
-      
-      /*
-      this.merchantService.get(this.userProfile.id).subscribe((res) => {
-        if (res.length > 0) {
-          this.search = (text$: Observable<string>) =>
-            text$.pipe(
-              debounceTime(200),
-              distinctUntilChanged(),
-              map((term) =>
-                term.length < 1 ? [] : res.filter((v) => v.name && v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
-              ));
-        }});*/
-    }
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const regExp: RegExp = /^[0-9]+$/g;
+      if (params.get('id') && regExp.test(params.get('id') || '')) {
+        this.allocationService
+          .getById(Number(params.get('id')))
+          .subscribe((res:any) => {
+            //console.log(res)
+            this.allocation = res
+            const date:string = this.datePipe.transform(this.allocation.memberSince,'MM/dd/yyyy') || ''
+            this.allocationForm.patchValue({
+              allocationId:this.allocation.id,
+              userId:this.userProfile.id,
+              merchant:this.allocation.merchant,
+              status: this.allocation.status,
+              memberSince: date,
+            });
+            this.setEventFormGroup(this.allocation?.events || [])
+          });
+      }
+    });
   }
   onClearForm() {
     this.initFormGroup();
@@ -165,52 +151,6 @@ export class AllocationFormComponent implements OnInit {
         )
       }
     });
-  }
-  onMerchantSelection(selection: any) 
-  {
-    //console.log("???")
-    /*
-    this.allocationForm.reset();
-    this.merchantAllocationEvents = new MatTableDataSource<any>();
-
-    //console.log(selection.item.id)
-    if (selection.item.id)
-      this.eventService
-        .get(selection.item.id)
-        .pipe(
-          map((d: any[]) => d),
-          catchError((err) => {
-            this.merchantAllocationEvents = new MatTableDataSource<any>();
-            return EMPTY;
-          })
-        )
-        .subscribe((allocations: any[]) => {
-          //console.log(allocations[0].allocationId)
-          const allocation = allocations[0].allocation;
-          //console.debug(allocation)
-          this.allocationForm.patchValue({
-            allocationId: allocations[0].allocationId,
-            status: allocation?.status,
-            memberSince: this.datePipe.transform(
-              allocation?.memberSince,
-              'MM/dd/yyyy'
-            ),
-          });
-          //this.merchantAllocationEvents =
-          let formArray = this.allocationForm.get('events') as FormArray;
-          allocations.map((a) => {
-            formArray.push(
-              new FormGroup({
-                name: new FormControl(a.name, []),
-                month: new FormControl(a.month, []),
-                eventId: new FormControl(a.eventId, []),
-              })
-            );
-            this.merchantAllocationEvents = new MatTableDataSource(
-              formArray.controls
-            );
-          });
-        });*/
   }
   isContentEditable(element: AllocationEvent) {
     return element.eventId == -1 ? true : false;
@@ -254,7 +194,7 @@ export class AllocationFormComponent implements OnInit {
         .subscribe((p) => this.EmitEvent(p));
   }
   onCancel() {
-    this.EmitEvent();
+    //this.EmitEvent();
   }
   onRowClick(column: any, rowid: any) {
     //console.log(rowid)

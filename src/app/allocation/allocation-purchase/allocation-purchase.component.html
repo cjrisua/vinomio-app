@@ -1,5 +1,6 @@
-<div class="content">
+<div class="container" *ngIf="allocation">
     <p class="h5 mt-2 mb-4">Add to My Cellar</p>
+
     <form autocomplete="off" [formGroup]="allocationForm" (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-3 text-muted mb-1">Merchant</div>
@@ -7,7 +8,7 @@
         </div>
         <div class="row mb-1">
             <div class="col-3 text-muted mb-1">Event</div>
-            <div class="col-auto">{{allocationEvent.name}}</div>
+            <div class="col-auto">{{allocation.events.name}}</div>
         </div>
         <div class="row mb-1">
             <div class="col-3 text-muted mb-1">Status</div>
@@ -45,7 +46,7 @@
             </div>
         </div>
         <hr />
-
+        
         <div *ngFor="let offer of offers" class="row my-1">
             <div class="d-inline mb-2"> 
                 <span>{{$any(offer.get('name')?.value)}}</span></div>
@@ -79,7 +80,7 @@
             <hr class="mt-2" />
         </div>
         <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn btn-outline-dark" (click)="onCancel()">Cancel</button>
+            <button type="button" class="btn btn btn-outline-dark" [routerLink]="['/allocation/mailing']" [queryParams]="{action:'List'}">Cancel</button>
             <button type="submit" class="btn btn-success" [disabled]="!allocationForm.valid">Submit</button>
         </div>
     </form>

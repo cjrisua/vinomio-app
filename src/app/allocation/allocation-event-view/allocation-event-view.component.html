@@ -1,100 +1,59 @@
 <!--{{allocation | json}}-->
-<div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;" (click)="onEditForm()">
-    <p class="h4" style="padding-top: 10px;">{{allocation.merchant?.name}} Event <span class="material-icons">
-      edit
-      </span ></p>
-</div>
-<div>
-    <form autocomplete="off" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="inputEvent" class="col-sm-2 col-form-label">Event Name</label>
-            <input id="inputEvent" type="text" class="form-control" id="eventFormControlInput"
-             formControlName="name" [readonly]="isreadonly"
-            >
-        </div>
-        <div class="form-group mb-2">
-            <label class="col-sm-2 col-form-label" for="monthFormControlSelect">Event Month</label>
-            <input *ngIf="isreadonly" id="inputEvent" type="text" class="form-control" id="eventFormControlInput"
-            formControlName="month" [readonly]="isreadonly"
-           >
-            <select *ngIf="!isreadonly" class="form-control" id="monthFormControlSelect" formControlName="month">
-              <option value="" >Select Month</option>
-              <option *ngFor="let month of months" [value]="month">{{month}}</option>
-            </select>
-        </div>
-        <!--<mat-divider class="mt-3"></mat-divider>-->
-        <div class="form-group">
-            <label class="col-sm-2 col-form-label" for="wineOfferingFormControlSelect">Wine Name</label>
-            <div class="input-group">
-                <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"> 
-                  <span class="material-icons" style="color: gray;">search</span>
-                </span>
-                <input [formControl]="searchControl" id="merchant-name" placeholder="" class="form-control" type="text" 
-                [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
-                [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onSearchSelection($event)" (click)="onFilterList()"
-                style="border-left: none !important;border-right: none !important">
-                <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;" (click)="onClear()"> 
-                  <span class="material-icons" style="color: gray;">close</span>
-                </span>
+<div class="container" *ngIf="allocationEvent">
+    <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;"
+        (click)="onEditForm()">
+        <p class="h4" style="padding-top: 10px;">{{allocationEvent.allocation?.merchant?.name}} Event <span class="material-icons">
+                edit
+            </span></p>
+    </div>
+    <div>
+        <form autocomplete="off" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="inputEvent" class="col-sm-2 col-form-label">Event Name</label>
+                <input id="inputEvent" type="text" class="form-control" id="eventFormControlInput"
+                    formControlName="name" [readonly]="isreadonly">
             </div>
-        </div>
-        <div class="my-3 form-group" *ngIf="offerBottle.length > 0">
-            <h3>Event Offering</h3>
-            <div class="row">
-              <div class="col"><strong class="text-muted">Wine Name</strong></div>
+            <div class="form-group mb-2">
+                <label class="col-sm-2 col-form-label" for="monthFormControlSelect">Event Month</label>
+                <input *ngIf="isreadonly" id="inputEvent" type="text" class="form-control" id="eventFormControlInput"
+                    formControlName="month" [readonly]="isreadonly">
+                <select *ngIf="!isreadonly" class="form-control" id="monthFormControlSelect" formControlName="month">
+                    <option value="">Select Month</option>
+                    <option *ngFor="let month of months" [value]="month">{{month}}</option>
+                </select>
             </div>
-            <hr>
-            <app-allocation-event-offer *ngFor="let offer of offerBottle" [wineItem]="offer" (deleteItemEvent)="removalOfferEvent($event)" (setPriceEvent)="setPriceUpdate($event)"></app-allocation-event-offer>
-        </div>
-        <!--
-        <div class="form-group" style="margin-top: -15px;">
-            <label class="col-sm-2 col-form-label" for="monthFormControlSelect"></label>
-            <div class="row">
-                <div class="d-flex mb-2" style="justify-content: space-between;align-items: center;">
-                    <label class="col-sm-2 col-form-label" for="wineOfferingFormControlSelect"><strong>Wine Offering Allocation</strong></label>
-                    <button type="button" class="btn btn-primary my-1 btn-sm" style="border-radius: 100px;">
-                        <div class="mx-1">
-                          <span class="material-icons" style="vertical-align: middle;
-                        font-size: larger;">add_circle_outline</span>
-                          <small class="px-1">Add Wine</small>
-                        </div>
-                    </button>
+            <!--<mat-divider class="mt-3"></mat-divider>-->
+            <div class="form-group">
+                <label class="col-sm-2 col-form-label" for="wineOfferingFormControlSelect">Wine Name</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
+                        <span class="material-icons" style="color: gray;">search</span>
+                    </span>
+                    <input [formControl]="searchControl" id="merchant-name" placeholder="" class="form-control"
+                        type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+                        [inputFormatter]="inputFormatListValue" [editable]='false'
+                        (selectItem)="onSearchSelection($event)" (click)="onFilterList()"
+                        style="border-left: none !important;border-right: none !important">
+                    <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+                        (click)="onClear()">
+                        <span class="material-icons" style="color: gray;">close</span>
+                    </span>
                 </div>
             </div>
-            <mat-divider class="my-1"></mat-divider>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex">
-                  <div><span class="material-icons">
-                    wine_bar
-                    </span></div>
-                  <div class="mx-3">
-                      <div>
-                        <div>Memento Mori Cabernet Sauvignon<span class="text-muted mx-1"><small>&#8212;</small></span></div>
-                        <div class="text-muted small">Price: $250.00</div>
-                        <div class="text-muted small">Appellation: Napa Valley</div>
-                        <div class="text-muted small">(Yes)/(No)</div>
-                      </div>
-                  </div>
-                </li>
-                <li class="list-group-item d-flex">
-                    <div><span class="material-icons">
-                      wine_bar
-                      </span></div>
-                    <div class="mx-3">
-                        <div>
-                          <div>Memento Mori Cabernet Sauvignon<span class="text-muted mx-1"><small>&#8212;</small></span></div>
-                          <div class="text-muted small">Price: $250.00</div>
-                          <div class="text-muted small">Appellation: Napa Valley</div>
-                          <div class="text-muted small">(Yes)/(No)</div>
-                        </div>
-                    </div>
-                  </li>
-              </ul>
-        </div>-->
-        <div class="d-flex justify-content-between mt-3">
-          <button type="button" class="btn btn btn-outline-dark" (click)="onCancel()">Cancel</button>
-          <button type="submit" class="btn btn-success" [disabled]="!eventForm.valid">Submit</button>
-        </div>
-    </form>
-    
+            <div class="my-3 form-group" *ngIf="offerBottle.length > 0">
+                <h3>Event Offering</h3>
+                <div class="row">
+                    <div class="col"><strong class="text-muted">Wine Name</strong></div>
+                </div>
+                <hr>
+                <app-allocation-event-offer *ngFor="let offer of offerBottle" [wineItem]="offer"
+                    (deleteItemEvent)="removalOfferEvent($event)" (setPriceEvent)="setPriceUpdate($event)">
+                </app-allocation-event-offer>
+            </div>
+            <div class="d-flex justify-content-between mt-3">
+                <button type="button" class="btn btn btn-outline-dark" [routerLink]="['/allocation/mailing']" [queryParams]="{action:'List'}">Cancel</button>
+                <button type="submit" class="btn btn-success" [disabled]="!eventForm.valid">Submit</button>
+            </div>
+        </form>
+    </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, map, Observable, of, OperatorFunction } from 'rxjs';
 import { Action, Module, UserEventAction } from 'src/app/app.module';
 import { Allocation } from 'src/app/models/Allocation';
@@ -21,8 +22,10 @@ export class AllocationViewComponent implements OnInit {
 
   @Output() ItemEvent = new EventEmitter<any>();
   userProfile!:Profile;
-  @Input() action!:UserEventAction;
-  showView = true;
+  @Input() action!:UserEventAction
+  //action!:UserEventAction
+  userAction!: Action
+  //showView = true;
   searchControl!: FormControl;
   search!: OperatorFunction<string, readonly Allocation[]>
   totalCount:number = 0
@@ -33,23 +36,28 @@ export class AllocationViewComponent implements OnInit {
   lastPurchasedOn:any[] =[]
   constructor(
     private allocationService:VinomioAllocationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route:ActivatedRoute
   ) { 
     this.userProfile = this.authService.getCurrentUser()
+    this.route.queryParams.subscribe((params:any) => {
+        const action:string = params.action
+        this.userAction = (<any>Action)[action]
+      })
   }
 
   ngOnInit(): void {
     this.searchControl = new FormControl();
-    this.showView = this.action.Action == Action.List ? true : false
+    //this.showView = this.userAction == Action.List ? true : false
     this.getAllocation();
   }
   public purchaseAllocation(allocation:any, event:any){
-    event.cancelBubble = true;
-    if(event.stopPropagation) event.stopPropagation();
-    this.allocationEventSelection = event;
-    this.allocationSelection = allocation;
-    this.showView = false
-    this.action =  new UserEventAction(Action.Add,Module.AllocationPurchase)
+    //event.cancelBubble = true;
+    //if(event.stopPropagation) event.stopPropagation();
+    //this.allocationEventSelection = event;
+    //this.allocationSelection = allocation;
+    //this.showView = false
+    //this.action =  new UserEventAction(Action.Add,Module.AllocationPurchase)
   }
   private getAllocation(){
     
@@ -59,7 +67,7 @@ export class AllocationViewComponent implements OnInit {
       catchError((val)=> of([])))
     .subscribe(
       (allocations)=>{
-        console.debug("setting allocations...")
+        //console.debug("setting allocations...")
         this.allocations = allocations
         this.totalCount = allocations.length
         this.getUserLastAllocations();
@@ -76,17 +84,19 @@ export class AllocationViewComponent implements OnInit {
     return event.AllocationEventOffers.length;
   }
   onEventView(allocation:Allocation, event:AllocationEvent){
-    this.showView = false
-    this.action =  new UserEventAction(Action.List,Module.AllocationEvent)
-    const tempAllocation:Allocation = {...allocation}
-    tempAllocation.events = [];
-    tempAllocation.events.push(event);
-    this.allocationSelection = tempAllocation
+    //this.showView = false
+    //this.action =  new UserEventAction(Action.List,Module.AllocationEvent)
+    //const tempAllocation:Allocation = {...allocation}
+    //tempAllocation.events = [];
+    //tempAllocation.events.push(event);
+    //this.allocationSelection = tempAllocation
     //console.log("onEventView")
+    //console.debug(allocation)
+    //console.debug(event)
     //this.merchantSelection = merchant
   }
   onAddAllocation(){
-    this.showView = false
+    //this.showView = false
   }
   resultFormatListValue(value: any) {          
     return value.merchant.name;
@@ -98,7 +108,7 @@ export class AllocationViewComponent implements OnInit {
     }
     this.allocationSelection = {}
     this.action =  new UserEventAction(Action.List,Module.Allocation)
-    this.showView = !this.showView
+    //this.showView = !this.showView
     this.getAllocation();
     //this.getUserLastAllocations()
   }
@@ -141,9 +151,9 @@ export class AllocationViewComponent implements OnInit {
     })
   }
   onViewItem(allocation:any){
-    //console.log(allocation)
-    this.allocationSelection = allocation
-    this.showView = !this.showView
+    console.log("onViewItem")
+    //this.allocationSelection = allocation
+    //this.showView = !this.showView
     
   }
   private getUserLastAllocations(){

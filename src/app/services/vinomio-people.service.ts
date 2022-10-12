@@ -1,23 +1,53 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, EMPTY, map, Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { People } from '../models/People';
+import { VinomioBaseService } from './vinomio-base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VinomioPeopleService {
+  private apiUrl = environment.apiUrl + '/people';
+  public count?:number;
 
-  private apiUrl = environment.apiUrl + "/people"
-
-  constructor(private http: HttpClient) { }
-
-  get(name?:string){
-    //const query_params = [`userId=${userid}`,`name__iLike=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
-    //console.log(query_params)
-    //return this.http.get<Merchant[]>(`${this.apiUrl}?${query_params}`)
-    return this.http.get<any>(`${this.apiUrl}`)
+  constructor(private baseService: VinomioBaseService) {
+    baseService.apiUrl = this.apiUrl;
   }
-  add(){}
-  put(){}
-  delete(){}
+  private get(filter?:{}):Observable<any>{
+    return this.baseService.get(filter).pipe(
+      map((p) => { 
+        this.count = this.baseService.count;
+        return p})
+    )
+  }
+  getList(){
+    return this.get()
+  }
+  getById(id:number){
+    return this.get({"id":id}).pipe(
+      map((p)=>{
+        console.log(p)
+        return p})
+    )
+  }
+  add(data:{name:string,role:string,handler:string}) {
+    return this.baseService.add(data).pipe(
+      map((res)=>res),
+      catchError((err)=>{console.debug(err); return EMPTY})
+    )
+  }
+  put(id:number,data:any) {
+    return this.baseService.put(id,data).pipe(
+      map((res)=>res),
+      catchError((err)=>{console.debug(err); return EMPTY})
+    )
+  }
+  delete(id:number) {
+    return this.baseService.delete(id).pipe(
+      map((res)=>res),
+      catchError((err)=>{console.debug(err); return EMPTY})
+    )
+  }
 }

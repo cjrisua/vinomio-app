@@ -11,7 +11,7 @@
         <div class="input-group">
           <input id="merchant-name" placeholder="Merchant name" class="form-control" type="text"
             formControlName="merchant" [ngbTypeahead]="search" [resultFormatter]="resultFormatBandListValue"
-            [inputFormatter]="inputFormatBandListValue" [editable]='false' (selectItem)="onMerchantSelection($event)"  (click)="onFilterMerchantList()">
+            [inputFormatter]="inputFormatBandListValue" [editable]='false'  (click)="onFilterMerchantList()">
           <div type="button" class="btn bg-transparent" style="margin-left: -40px; z-index: 100;"
             (click)="onClearForm()">
             <span class="material-icons-outlined" style="color:grey; padding-top: 5px; ">close</span>
@@ -72,7 +72,7 @@
 
       <!-- Submit buttons -->
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn btn-outline-dark" (click)="onCancel()">Cancel</button>
+        <button type="button" class="btn btn btn-outline-dark" [routerLink]="['/allocation/mailing']" [queryParams]="{action:'List'}">Cancel</button>
         <button type="submit" class="btn btn-success" [disabled]="!allocationForm.valid">Submit</button>
       </div>
       <!-- Debug -->
