@@ -12,8 +12,8 @@
         <div class="d-flex" *ngIf="displayColumn(item.key)">
           <div class=""><strong>{{item.key}}</strong><span class="mx-1">:</span></div>
           <div class="" *ngIf="isObject(item.value)">{{item.value}}</div>
-          <div class="" *ngIf="!isObject(item.value) && item.value.name">{{item.value.name}}</div>
-          <div class="" *ngIf="!isObject(item.value) && !item.value.name">{{item.value}}</div>
+          <div class="" *ngIf="!isObject(item.value) && item.value.name">{{item.value.name }}</div>
+          <div class="" *ngIf="!isObject(item.value) && !item.value.name">{{item.value |json }}</div>
         </div>
       </div>
     </div>

@@ -24,21 +24,28 @@
             </div>
             <!--<mat-divider class="mt-3"></mat-divider>-->
             <div class="form-group">
-                <label class="col-sm-2 col-form-label" for="wineOfferingFormControlSelect">Wine Name</label>
-                <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
-                        <span class="material-icons" style="color: gray;">search</span>
-                    </span>
-                    <input [formControl]="searchControl" id="merchant-name" placeholder="" class="form-control"
-                        type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
-                        [inputFormatter]="inputFormatListValue" [editable]='false'
-                        (selectItem)="onSearchSelection($event)" (click)="onFilterList()"
-                        style="border-left: none !important;border-right: none !important">
-                    <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
-                        (click)="onClear()">
-                        <span class="material-icons" style="color: gray;">close</span>
-                    </span>
+                <div class="d-flex justify-content-between">
+                    <div><label class="col-sm-2 col-form-label" for="wineOfferingFormControlSelect">Wine Name</label></div>
+                    <div><button class="btn btn-sm btn-link" [routerLink]="['/admin/wine/add']" [state]="{'Producer': {id: allocationEvent.allocation?.merchant?.producer.id,'name':allocationEvent.allocation?.merchant?.name},routeBack:'/allocation/mailing/event/'+allocationEvent.id} ">Add Wine</button></div>
                 </div>
+                <div *ngIf="false else elseBlock">
+                </div>
+                <ng-template #elseBlock>
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
+                            <span class="material-icons" style="color: gray;">search</span>
+                        </span>
+                        <input [formControl]="searchControl" id="merchant-name" placeholder="" class="form-control"
+                            type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+                            [inputFormatter]="inputFormatListValue" [editable]='false'
+                            (selectItem)="onSearchSelection($event)" (click)="onFilterList()"
+                            style="border-left: none !important;border-right: none !important">
+                        <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+                            (click)="onClear()">
+                            <span class="material-icons" style="color: gray;">close</span>
+                        </span>
+                    </div>
+                </ng-template>
             </div>
             <div class="my-3 form-group" *ngIf="offerBottle.length > 0">
                 <h3>Event Offering</h3>

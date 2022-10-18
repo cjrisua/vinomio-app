@@ -1,1 +1,77 @@
-<p>admin-review works!</p>
+<!--<div class="container">
+  <button class="btn  btn-sm btn-link m-0 p-0" (click)="onDebug()" >Show</button>
+  <div *ngIf="isDebugOn">
+    {{dataSource?.data?.length}}
+  </div>
+</div>-->
+<div class="container mt-4">
+    <div *ngIf="dataSource.data.length==0 else elseBlock">
+        <div class="d-flex justify-content-between" style="align-items:baseline">
+            <p class="h6">No Review Found!<p>
+            <button class="btn btn-sm btn-link btn-outline-link" [routerLink]="['./add']">Add Review</button>
+        </div>
+    </div>
+    <ng-template #elseBlock>
+      <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty">
+      </app-admin-model-searcher>
+      <div  class="d-flex justify-content-between" style="align-items:baseline">
+        <div><h3><strong>Review Table</strong></h3></div>
+        <div><button class="btn btn-sm btn-link btn-outline-link" [routerLink]="['./add']">Add Review</button></div>
+      </div>
+      <!--<app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" [ModelItems]="dataSource.data"
+        [exclusionColumns]="exclusionColumns" (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"></app-admin-model-table>-->
+        <div class="card my-2" *ngFor="let modelItem of dataSource.data">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div><a href="javascript:void(0);"><span>{{$any(modelItem).vintage.year}} {{$any(modelItem).vintage.Wine.name}}</span></a></div>
+              <div><span class="material-icons-outlined" style="cursor:pointer;">delete_forever</span></div>
+            </div>
+            
+          </div>
+          
+          <div *ngIf="modelItem" class="card-body">
+            <div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>id</strong><span class="">:</span></div>
+                <div class="col-auto p-0" [innerHTML]="$any(modelItem).id"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>score</strong><span class="">:</span></div>
+                <div class="col-auto p-0" [innerHTML]="$any(modelItem).score"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>publisher</strong><span class="">:</span></div>
+                <div class="col-auto p-0" [innerHTML]="$any(modelItem).people.name"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>vintage</strong><span class="">:</span></div>
+                <div class="col-auto p-0" [innerHTML]="$any(modelItem).vintage.year"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>wine</strong><span class="">:</span></div>
+                <div class="col-9 p-0" [innerHTML]="$any(modelItem).vintage.Wine.name"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>review</strong><span class="">:</span></div>
+                <div class="col-9 p-0" style="font-weight: 300;" [innerHTML]="formatReview($any(modelItem).review)"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>createdAt</strong><span class="">:</span></div>
+                <div class="col-auto p-0" [innerHTML]="$any(modelItem).createdAt"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end"><strong>updatedAt</strong><span class="">:</span></div>
+                <div class="col-auto p-0" [innerHTML]="$any(modelItem).updatedAt"></div>
+              </div>
+              <div class="row mb-1">
+                <div class="col-3 text-end py-1"><strong>tags</strong><span class="">:</span></div>
+                <div class="col-9 p-0">
+                  <button class="btn btn-sm btn-link m-0 p-0" *ngFor="let tag of $any(modelItem).Tags">{{tag.name}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </ng-template>
+    
+</div>

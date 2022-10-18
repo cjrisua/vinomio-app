@@ -39,6 +39,9 @@ import { AllocationViewComponent } from './allocation/allocation-view/allocation
 import { AllocationEventViewComponent } from './allocation/allocation-event-view/allocation-event-view.component';
 import { AllocationFormComponent } from './allocation/allocation-form/allocation-form.component';
 import { AllocationPurchaseComponent } from './allocation/allocation-purchase/allocation-purchase.component';
+import { AdminReviewFormComponent } from './admin/admin-review/admin-review-form/admin-review-form.component';
+import { WineSearchViewComponent } from './wine/wine-search-view/wine-search-view.component';
+import { WineSearchAddComponent } from './wine/wine-search-add/wine-search-add.component';
 
 
 const routes: Routes = [
@@ -77,7 +80,13 @@ const routes: Routes = [
       {path:'mastervarietal', component:AdminMastervarietalComponent},
       {path:'mastervarietal/:id', component:AdminMastervarietalFormComponent},
       {path:'mastervarietal/add', component:AdminMastervarietalFormComponent},
-      {path:'review', component:AdminReviewComponent},
+      {path:'review', 
+        children:[
+          {path : '', pathMatch:'full',component:AdminReviewComponent},
+          {path:'add', component:AdminReviewFormComponent},
+          {path:':id', component:AdminReviewFormComponent}
+        ]
+      },
       {path:'people',
         children:[
           {path : '', pathMatch:'full',component:AdminPeopleComponent},
@@ -119,7 +128,10 @@ const routes: Routes = [
   {
     path:'search',
     children:[
-      {path:'',pathMatch:'full',component:WineSearchComponent}]
+      {path:'',pathMatch:'full',component:WineSearchComponent},
+      {path:'details/:id',pathMatch:'full',component:WineSearchViewComponent},
+      {path:'add/:id',pathMatch:'full',component:WineSearchAddComponent}
+    ]
   }
   
 ];

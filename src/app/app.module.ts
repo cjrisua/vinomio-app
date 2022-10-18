@@ -68,6 +68,9 @@ import { Profile } from './models/Profile';
 import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wine-review.component';
 import { AdminPeopleComponent } from './admin/admin-people/admin-people.component';
 import { AdminPeopleFormComponent } from './admin/admin-people/admin-people-form/admin-people-form.component';
+import { AdminReviewComponent } from './admin/admin-review/admin-review.component';
+import { AdminReviewFormComponent } from './admin/admin-review/admin-review-form/admin-review-form.component';
+import { WineSearchViewComponent } from './wine/wine-search-view/wine-search-view.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +93,8 @@ import { AdminPeopleFormComponent } from './admin/admin-people/admin-people-form
     AdminVintageFormComponent,
     AdminPeopleComponent,
     AdminPeopleFormComponent,
+    AdminReviewComponent,
+    AdminReviewFormComponent,
     AuthLoginComponent,
     NavbarComponent,
     CellarDashboardComponent,
@@ -121,6 +126,7 @@ import { AdminPeopleFormComponent } from './admin/admin-people/admin-people-form
     WineSearchComponent,
     WineReviewComponent,
     WineMainComponent,
+    WineSearchViewComponent,
     WineSearchAddComponent,
     VintagesPipe,
     CellarWineDetailComponent,

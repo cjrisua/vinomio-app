@@ -52,6 +52,16 @@
                         (click)="onSelection(2)">Reviews</a>
                 </li>
             </ul>
+            <div *ngIf="activeTab == 2">
+                <div *ngIf="reviews.length==0 else elseBlock">
+                    <p class="h6">No Reviews Found<span class="mx-2">Add Review!</span></p>
+                </div>
+                <ng-template #elseBlock>
+                    <div *ngFor="let r of reviews">
+                        {{r.score}}-{{r.review}}
+                    </div>
+                </ng-template>
+            </div>
             <div class="my-2 border rounded" *ngFor="let item of vintageSelection">
                 <div class="row">
                     <div class="col-6">

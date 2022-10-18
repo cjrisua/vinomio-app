@@ -46,3 +46,11 @@ a.pointer{
 [contentEditable=true]:empty:not(:focus):before{
    content:attr(data-placeholder)
 }
+span.hashtag{
+   color: indigo;
+   font-weight: 500;
+}
+ngb-rating {
+   color: #FFC107;
+   font-size: 15px;
+}

@@ -29,6 +29,7 @@ export class AddWineFormComponent implements OnInit {
   search!: OperatorFunction<string, readonly {name:string, id:number}[]>;
   Colors:any=[]
   Types:any=[]
+  routeBack:string
   constructor(
     private router: Router,
     private location: Location,
@@ -36,12 +37,15 @@ export class AddWineFormComponent implements OnInit {
     private wineService: VinomioWineService,
     private mastervarietalService: VinomioMastervarietalService,
     private regionService: VinomioRegionService
-  ) {}
+  ) {
+    this.routeBack ='/admin/wine'
+  }
 
   ngOnInit(): void {
     const state: any = this.location.getState();
     this.wineItem = state;
-    console.log(this.wineItem)
+    if(state?.routeBack)
+      this.routeBack = state.routeBack
     this.wineForm = new FormGroup({
       name: new FormControl(this.wineItem?.name || '', [
         Validators.required,
@@ -116,7 +120,7 @@ export class AddWineFormComponent implements OnInit {
               return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
             }),
             map((p)=>{
-              console.log(p)
+              //console.log(p)
               let names:any[] = []
               p.map(p => names.push({name:p.name, id:p.id}))
               return names
@@ -131,7 +135,7 @@ export class AddWineFormComponent implements OnInit {
               return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
             }),
             map((p)=>{
-              console.log(p)
+              //console.log(p)
               let names:any[] = []
               p.map(p => names.push({name:p.name, id:p.id}))
               return names
@@ -146,7 +150,7 @@ export class AddWineFormComponent implements OnInit {
               return producers.filter(producer => producer.name && producer.name.toLowerCase().startsWith(searchText.toLowerCase()))
             }),
             map((p)=>{
-              console.log(p)
+              //console.log(p)
               let names:any[] = []
               p.map(p => names.push({name:p.name, id:p.id}))
               return names
@@ -188,18 +192,18 @@ export class AddWineFormComponent implements OnInit {
       type:this.wineForm.value.type.trim(),
       color:this.wineForm.value.color.trim(),
     };
-    console.log(data)
+    //console.log(data)
     if (this.wineItem.id) {
       this.wineService
         .put(this.wineItem.id, data)
         .subscribe((response) =>
-          this.router.navigateByUrl('/admin/model?name=wine')
+          this.router.navigateByUrl(this.routeBack)
         );
     } else {
       this.wineService
         .add(data)
         .subscribe((response) =>
-          this.router.navigateByUrl('/admin/model?name=wine')
+          this.router.navigateByUrl(this.routeBack)
         );
     }
   }

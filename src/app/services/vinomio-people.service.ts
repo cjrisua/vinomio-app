@@ -13,10 +13,9 @@ export class VinomioPeopleService {
   public count?:number;
 
   constructor(private baseService: VinomioBaseService) {
-    baseService.apiUrl = this.apiUrl;
   }
   private get(filter?:{}):Observable<any>{
-    return this.baseService.get(filter).pipe(
+    return this.baseService.get(this.apiUrl,filter).pipe(
       map((p) => { 
         this.count = this.baseService.count;
         return p})
@@ -32,20 +31,28 @@ export class VinomioPeopleService {
         return p})
     )
   }
+  getByName(name:string){
+    const query_params = {name__iLike:encodeURI((<string>name).trim())}
+    return this.baseService.get(this.apiUrl,query_params).pipe(
+      map((p)=>{
+        console.log(p)
+        return p})
+    )
+  }
   add(data:{name:string,role:string,handler:string}) {
-    return this.baseService.add(data).pipe(
+    return this.baseService.add(this.apiUrl,data).pipe(
       map((res)=>res),
       catchError((err)=>{console.debug(err); return EMPTY})
     )
   }
   put(id:number,data:any) {
-    return this.baseService.put(id,data).pipe(
+    return this.baseService.put(this.apiUrl,id,data).pipe(
       map((res)=>res),
       catchError((err)=>{console.debug(err); return EMPTY})
     )
   }
   delete(id:number) {
-    return this.baseService.delete(id).pipe(
+    return this.baseService.delete(this.apiUrl,id).pipe(
       map((res)=>res),
       catchError((err)=>{console.debug(err); return EMPTY})
     )

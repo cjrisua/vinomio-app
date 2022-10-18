@@ -18,7 +18,6 @@ export class VinomioAllocationService {
     private baseService:VinomioBaseService
     ) 
     { 
-      baseService.apiUrl = this.apiUrl;
     }
 
   private map(result:{count:number, rows:Allocation[]}): Allocation[]{
@@ -27,8 +26,7 @@ export class VinomioAllocationService {
   }
 
   getById(id:number){
-    this.baseService.apiUrl = `${this.apiUrl}/${id}`
-    return this.baseService.get().pipe(map((p)=>p))
+    return this.baseService.get( `${this.apiUrl}/${id}`).pipe(map((p)=>p))
   }
   getByCellarId(id:number){
     //this.baseService.apiUrl += "cellar"
@@ -52,6 +50,6 @@ export class VinomioAllocationService {
       .patch(`${this.apiUrl}/${id}`, data, {observe : 'response'})
   }
   delete(id:number){
-    return this.http.delete(`${this.apiUrl}/${id}`)
+    return this.http.delete(`${this.apiUrl}/${id}`,{observe : 'response'})
   }
 }

@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { catchError, EMPTY, filter, map, of } from 'rxjs';
 import { AllocationEvent } from 'src/app/models/AllocationEvent';
 import { Collection } from 'src/app/models/Collection';
@@ -54,6 +54,7 @@ export class AllocationPurchaseComponent implements OnInit {
     private collectionService: VinomioCollectionService,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private router: Router,
     @Inject(LOCALE_ID) private locale: string
   ) {
     this.userProfile = this.authService.getCurrentUser();
@@ -70,46 +71,49 @@ export class AllocationPurchaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.route.queryParamMap.subscribe((params: ParamMap) => {
       //console.debug(params);
       const regExp: RegExp = /^[0-9]+$/g;
       const regExp2: RegExp = /^[0-9]+$/g;
-      console.log("-"+params.get('event')+"-")
-      if (params.get('event') && regExp.test(params.get('event') || '') && 
-          params.get('allocation') && regExp2.test(params.get('allocation') || ''))
-      {
-        this.allocationService.getById(Number(params.get('allocation'))).pipe(
-          map(p => {
-            const event = p.events.filter((i:any)=> i.id ==params.get('event'))
-            if(event.length > 0)
-              p.events = event[0]
-            else
-              p.events = {}
-            return p
-          })
-        ).subscribe((rs)=>{ 
-          //console.debug(rs)
-          this.allocation = rs
-          rs.events.AllocationEventOffers.forEach((o:any)=>{
-            //console.debug(o)
-            this.wineOffers.push(o.wine);
-            let offerArray = this.allocationForm.get('offers') as FormArray;
-            offerArray.push(
-              new FormGroup({
-                id: new FormControl(o.wine.id),
-                name: new FormControl(o.wine.name),
-                bottles: new FormControl(o.minimum, [Validators.min(1)]),
-                amount: new FormControl(o.releasePrice, [
-                  Validators.min(1),
-                ]),
-                formats: new FormControl('750ml'),
-                accepted: new FormControl(false),
-                vintage: new FormControl(0),
-              })
-            );
-          })
-        })
+      console.log('-' + params.get('event') + '-');
+      if (
+        params.get('event') &&
+        regExp.test(params.get('event') || '') &&
+        params.get('allocation') &&
+        regExp2.test(params.get('allocation') || '')
+      ) {
+        this.allocationService
+          .getById(Number(params.get('allocation')))
+          .pipe(
+            map((p) => {
+              const event = p.events.filter(
+                (i: any) => i.id == params.get('event')
+              );
+              if (event.length > 0) p.events = event[0];
+              else p.events = {};
+              return p;
+            })
+          )
+          .subscribe((rs) => {
+            //console.debug(rs)
+            this.allocation = rs;
+            rs.events.AllocationEventOffers.forEach((o: any) => {
+              //console.debug(o)
+              this.wineOffers.push(o.wine);
+              let offerArray = this.allocationForm.get('offers') as FormArray;
+              offerArray.push(
+                new FormGroup({
+                  id: new FormControl(o.wine.id),
+                  name: new FormControl(o.wine.name),
+                  bottles: new FormControl(o.minimum, [Validators.min(1)]),
+                  amount: new FormControl(o.releasePrice, [Validators.min(1)]),
+                  formats: new FormControl('750ml'),
+                  accepted: new FormControl(false),
+                  vintage: new FormControl(0),
+                })
+              );
+            });
+          });
         /*
         this.eventservice
           .getByEvent(params.get('event'))
@@ -139,7 +143,7 @@ export class AllocationPurchaseComponent implements OnInit {
           .subscribe((r) => {
             //console.log(this.wineOffers);
           });*/
-      }//
+      } //
     });
   }
   onAddToOffer(offer: FormControl) {
@@ -184,7 +188,14 @@ export class AllocationPurchaseComponent implements OnInit {
             return EMPTY;
           })
         )
-        .subscribe((r) => this.ItemEvent.emit());
+        .subscribe((resp) => {
+          //console.log(resp);
+          if (resp.status == 201) {
+            this.router.navigate(['/allocation/mailing'], {
+              queryParams: { action: 'List' },
+            });
+          }
+        });
     }
   }
   public updateStatus() {

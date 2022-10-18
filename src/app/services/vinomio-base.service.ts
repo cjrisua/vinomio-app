@@ -6,18 +6,18 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class VinomioBaseService {
-  count?: number;
+  count: number = 0;
   pages?: number;
-  apiUrl!: string;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    //console.log(">>>" + this.apiUrl)
+  }
 
   private map(result: { count: number; pages: number; rows: any[] }): any[] {
     this.pages = result.pages | 0;
     this.count = result.count | 0;
     return result.rows?  result.rows : <any>result;
   }
-  get(query?: {}): Observable<any> {
-    console.debug(this.apiUrl)
+  get(apiURL:string, query?: {}): Observable<any> {
     let params="";
     if (query){
       params = Object.entries(query)
@@ -27,15 +27,15 @@ export class VinomioBaseService {
       params = params? `?${params}`: ""
     }
     //console.debug(`${this.apiUrl}${params}`);
-    return this.http.get<any>(`${this.apiUrl}${params}`).pipe(map((res) => this.map(res)));
+    return this.http.get<any>(`${apiURL}${params}`).pipe(map((res) => this.map(res)));
   }
-  add(data: any) {
-    return this.http.post(this.apiUrl, data, { observe: 'response' });
+  add(apiURL:string,data: any) {
+    return this.http.post(apiURL, data, { observe: 'response' });
   }
-  delete(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  delete(apiURL:string,id: number) {
+    return this.http.delete(`${apiURL}/${id}`);
   }
-  put(id: number, data: any) {
-    return this.http.put(`${this.apiUrl}/${id}`, data);
+  put(apiURL:string,id: number, data: any) {
+    return this.http.put(`${apiURL}/${id}`, data);
   }
 }

@@ -32,7 +32,7 @@ export class AdminPeopleFormComponent implements OnInit {
         Validators.required,
         Validators.minLength(0),
       ]),
-      handler: new FormControl(this.data?.handler, [Validators.minLength(0)]),
+      email: new FormControl(this.data?.email, [Validators.minLength(0)]),
     });
 
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -44,7 +44,7 @@ export class AdminPeopleFormComponent implements OnInit {
             this.adminForm.patchValue({
               name: res.name,
               role: res.role,
-              handler: res.handler,
+              email: res.email,
             });
           });
       }

@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, Observable, OperatorFunction, startWith, switchMap } from 'rxjs';
 import { Profile } from 'src/app/models/Profile';
 import { AuthService } from 'src/app/services/auth.service';
 import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
+import { VinomioVintageService } from 'src/app/services/vinomio-vintage.service';
 
 @Component({
   selector: 'app-wine-search-add',
@@ -13,11 +15,13 @@ import { VinomioCollectionService } from 'src/app/services/vinomio-collection.se
 export class WineSearchAddComponent implements OnInit {
 
   profile!: Profile
-  @Input() navData!: any
+  //@Input() navData!: any
 
-  @Output() navEvent =  new EventEmitter<{}>();
+  //@Output() navEvent =  new EventEmitter<{}>();
 
   addWineForm!:FormGroup
+  vintageObject!:any
+  bottleCount:number = 1
   //searchControl !: FormControl
 
   formats: { id: string; name: string }[] = [
@@ -28,13 +32,23 @@ export class WineSearchAddComponent implements OnInit {
   vintages: { id: number; year: string }[] = []
   constructor(
     private collectionService:VinomioCollectionService,
-    private authService: AuthService
+    private vintageService:VinomioVintageService,
+    private authService: AuthService,
+    private route:ActivatedRoute
   ) { 
     this.profile = this.authService.getCurrentUser()
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const regExp: RegExp = /^[0-9]+$/g;
+      if (params.get('id') && regExp.test(params.get('id') || '')) {
+       const vintageId = params.get('id')
+       //this.wineService.getByWine(wineId).subscribe((res) => { console.log(res); this.wineObject = res })
+        this.vintageService.getByVintageId(vintageId).subscribe((res:any[]) => this.vintageObject=res[0])
+      }
+    });
   }
 
   ngOnInit(): void {
-
+    /*
     this.vintages = this.navData.data.wine.Vintages.map((x:any) =>  {return {id:x.id,year:x.year}})
 
     this.addWineForm = new FormGroup({
@@ -46,8 +60,14 @@ export class WineSearchAddComponent implements OnInit {
       state : new FormControl(false),
       searchControl : new FormControl('',[Validators.required,this.forbiddenYearValidator(/[0-9]{4}/i)])
     })
-
+    */
     
+  }
+  onAdd(){
+    this.bottleCount++
+  }
+  onRemove(){
+    if(this.bottleCount > 1) this.bottleCount--;
   }
   forbiddenYearValidator(nameRe: RegExp): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -60,32 +80,33 @@ export class WineSearchAddComponent implements OnInit {
     };
   }
   onBack(){
-    this.navEvent.emit({history:this.navData.history})
+    //this.navEvent.emit({history:this.navData.history})
   }
   onSubmit(){
-    const data:any[] = [{
-        //vintageId: this.navData.data.vintageId,
-        vintage: ""+(this.addWineForm.get('searchControl')?.value?.year | this.addWineForm.get('searchControl')?.value),
-        wineId: this.navData.data.wine.id,
-        cellarId: this.profile.cellar,
-        price: this.addWineForm.value.price,
-        bottleCount: this.addWineForm.value.numOfBottles,
-        bottleSize: this.addWineForm.value.format,
-        /*locationId: 0,
-        acquiringSourceId: 0,
-        allocationEventId: this.allocationEvent.id,*/
-        purchasedOn:this.addWineForm.value.price,
-        deliverBy: this.addWineForm.value.price,
-        statusId:  this.addWineForm.value.state ? 'allocated' : 'pending'
-      }];
-      //console.log(data)
     
+    //const data:any[] = [{
+    //    //vintageId: this.navData.data.vintageId,
+    //    vintage: ""+(this.addWineForm.get('searchControl')?.value?.year | this.addWineForm.get('searchControl')?.value),
+    //    wineId: this.navData.data.wine.id,
+    //    cellarId: this.profile.cellar,
+    //    price: this.addWineForm.value.price,
+    //    bottleCount: this.addWineForm.value.numOfBottles,
+    //    bottleSize: this.addWineForm.value.format,
+    //    /*locationId: 0,
+    //    acquiringSourceId: 0,
+    //    allocationEventId: this.allocationEvent.id,*/
+    //    purchasedOn:this.addWineForm.value.price,
+    //    deliverBy: this.addWineForm.value.price,
+    //    statusId:  this.addWineForm.value.state ? 'allocated' : 'pending'
+    //  }];
+      //console.log(data)
+    /*
     if(data.length > 0){
       this.collectionService.add(data).pipe(
         catchError((err) => { console.debug(err); return EMPTY})
       )
       .subscribe((r) =>this.navEvent.emit({}));
-    }
+    }*/
   }
   onClear():void{
     //this.searchControl.setValue('')
@@ -123,7 +144,7 @@ export class WineSearchAddComponent implements OnInit {
   updateStatus(){
     this.addWineForm.patchValue({"state" : !this.addWineForm.value.state})
   }
-
+/*
   public get WineName():string{
     return `${this.navData.data.wine.name}`
   }
@@ -132,7 +153,7 @@ export class WineSearchAddComponent implements OnInit {
   }
   public get MasterVarietal():string{
     return `${this.navData.data.wine.MasterVarietal.name}`
-  }
+  }*/
 /**
  * 
  *  {

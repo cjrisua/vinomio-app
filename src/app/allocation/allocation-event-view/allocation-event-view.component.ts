@@ -8,7 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Form, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -71,7 +71,8 @@ export class AllocationEventViewComponent implements OnInit {
     private wineService: VinomioWineService,
     private eventService: VinomioAllocationEventService,
     private eventOfferService: VinomioAllocationEventOfferService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.searchControl = new FormControl();
     this.eventForm = new FormGroup({
@@ -225,9 +226,13 @@ export class AllocationEventViewComponent implements OnInit {
           };
         })
       )
-      .subscribe((r) => {
-        //console.debug('done');
-        this.ItemEvent.emit();
+      .subscribe((resp) => {
+        //console.log(resp)
+        if(resp.status == 201){
+          //let object = this.allocations.filter(p=>p.id == event.allocationId)[0]
+          //object.events = object.events?.filter((i:any)=>i.id != event.id)
+          this.router.navigate(['/allocation/mailing'],{queryParams: { action: 'List'}})
+        }
       });
   }
 }

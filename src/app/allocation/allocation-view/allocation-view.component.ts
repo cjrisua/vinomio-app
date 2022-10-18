@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, map, Observable, of, OperatorFunction } from 'rxjs';
 import { Action, Module, UserEventAction } from 'src/app/app.module';
 import { Allocation } from 'src/app/models/Allocation';
@@ -9,6 +9,7 @@ import { Collection } from 'src/app/models/Collection';
 import { Merchant } from 'src/app/models/Merchant';
 import { Profile } from 'src/app/models/Profile';
 import { AuthService } from 'src/app/services/auth.service';
+import { VinomioAllocationEventService } from 'src/app/services/vinomio-allocation-event.service';
 import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.service';
 import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
@@ -36,8 +37,10 @@ export class AllocationViewComponent implements OnInit {
   lastPurchasedOn:any[] =[]
   constructor(
     private allocationService:VinomioAllocationService,
+    private eventService:VinomioAllocationEventService,
     private authService: AuthService,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    private router: Router,
   ) { 
     this.userProfile = this.authService.getCurrentUser()
     this.route.queryParams.subscribe((params:any) => {
@@ -95,9 +98,9 @@ export class AllocationViewComponent implements OnInit {
     //console.debug(event)
     //this.merchantSelection = merchant
   }
-  onAddAllocation(){
+  //onAddAllocation(){
     //this.showView = false
-  }
+  //}
   resultFormatListValue(value: any) {          
     return value.merchant.name;
   }
@@ -143,11 +146,23 @@ export class AllocationViewComponent implements OnInit {
   onClear(){
     this.ngOnInit();
   }
+  onDeleteEvent(event:any){
+    this.eventService.delete(event.id)
+    .subscribe((resp) => {
+      if(resp.status == 204){
+        let object = this.allocations.filter(p=>p.id == event.allocationId)[0]
+        object.events = object.events?.filter((i:any)=>i.id != event.id)
+        this.router.navigate(['/allocation/mailing'],{queryParams: { action: 'List'}})
+      }
+    })
+  }
   onDelete(allocation:any){
-    console.log(allocation)
-    this.allocationService.delete(allocation.id).subscribe((e)=> { 
-      console.log("done...now refresh")
-      this.getAllocation() 
+    //console.log(allocation)
+    this.allocationService.delete(allocation.id).subscribe((resp)=> { 
+      if(resp.status == 204){
+        this.allocations = this.allocations.filter(p=>p.id != allocation.id)
+        this.router.navigate(['/allocation/mailing'],{queryParams: { action: 'List'}})
+      }
     })
   }
   onViewItem(allocation:any){

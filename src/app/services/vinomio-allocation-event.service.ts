@@ -16,7 +16,7 @@ export class VinomioAllocationEventService {
     private http:HttpClient,
     private baseService:VinomioBaseService
     ) {
-      baseService.apiUrl = this.apiUrl;
+
      }
   
   get(merchantId:number): Observable<AllocationEvent[]>{
@@ -31,10 +31,12 @@ export class VinomioAllocationEventService {
             //);
   }
   getByEvent(id:number){
-    this.baseService.apiUrl = `${this.apiUrl}/${id}`
-   return  this.baseService.get().pipe(map((p)=>p))
+   return  this.baseService.get( `${this.apiUrl}/${id}`).pipe(map((p)=>p))
   }
   put(eventId:number, data:any){
-    return this.http.put(this.apiUrl+"/"+eventId, data);
+    return this.http.put(this.apiUrl+"/"+eventId, data)
+  }
+  delete(eventId:number){
+    return this.http.delete(this.apiUrl+"/"+eventId,{observe : 'response'})
   }
 }

@@ -34,7 +34,7 @@ import { DatePipe } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { Allocation } from 'src/app/models/Allocation';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
   selector: 'app-allocation-form',
@@ -67,7 +67,8 @@ export class AllocationFormComponent implements OnInit {
     private eventService: VinomioAllocationEventService,
     private datePipe: DatePipe,
     private authService: AuthService,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    private router: Router,
   ) {
     this.userProfile = this.authService.getCurrentUser()
   }
@@ -187,11 +188,18 @@ export class AllocationFormComponent implements OnInit {
     //console.log(data)
     
     if (!this.allocationForm.value.allocationId)
-      this.allocationService.add(data).subscribe((p) => this.EmitEvent(p));
+      this.allocationService.add(data)
+      .subscribe((res) =>  this.processResponse(res));
     else
       this.allocationService
         .patch(this.allocationForm.value.allocationId, data)
-        .subscribe((p) => this.EmitEvent(p));
+        .subscribe((res) => this.processResponse(res));
+  }
+  processResponse(response:any){
+    //console.log(response)
+    if(response.status >= 200 && response.status <= 300){
+      this.router.navigate(['/allocation/mailing'],{queryParams: { action: 'List'}})
+    }
   }
   onCancel() {
     //this.EmitEvent();

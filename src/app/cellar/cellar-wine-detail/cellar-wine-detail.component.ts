@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { VinomioReviewService } from 'src/app/services/vinomio-review.service';
 import { Profile } from '../../models/Profile';
 import { Vintage } from '../../models/Vintage';
 
@@ -20,8 +21,11 @@ export class CellarWineDetailComponent implements OnInit {
   activeTab:number=0
   activeYear:number=0
 
+  reviews:any[] =[]
+
   constructor(
     private router: Router,
+    private reviewService: VinomioReviewService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +47,10 @@ export class CellarWineDetailComponent implements OnInit {
       },{})
       this.activeYear = this.vintages[0].year
       this.onVintageSelection(this.activeYear)
+      const wineId=this.wine[0].Vintage.Wine.id
+      const vintageId=this.wine[0].Vintage.id
+      console.log(vintageId)
+      this.reviewService.getListByWine(wineId,vintageId).subscribe((res)=> this.reviews=res)
     }
   }
   isDisabled(item:number){
