@@ -21,12 +21,16 @@ export class WineSearchAddComponent implements OnInit {
 
   addWineForm!:FormGroup
   vintageObject!:any
-  bottleCount:number = 1
-  //searchControl !: FormControl
+  bottleCount:number = 0
+  bottleCollection:{id:number,format:any}[]=[]
+  //searchControl !: FormControl 
+
+  tabNavCollection:{name:string,isActive:boolean}[]=[]
 
   formats: { id: string; name: string }[] = [
-    { id: '750ml', name: '750ml' },
     { id: '1.5L', name: '1.5L' },
+    { id: '375mL', name: '375mL' },
+    { id: '750ml', name: '750ml' },
   ];
   search!: OperatorFunction<string, readonly any[]>;
   vintages: { id: number; year: string }[] = []
@@ -61,13 +65,40 @@ export class WineSearchAddComponent implements OnInit {
       searchControl : new FormControl('',[Validators.required,this.forbiddenYearValidator(/[0-9]{4}/i)])
     })
     */
-    
+    this.addWineForm = new FormGroup({
+      format : new FormControl(this.formats[this.formats.length-1].id),
+    })
+    this.tabNavCollection.push({name:this.addWineForm.get('format')?.value, isActive:true})
+  }
+  setNavTabActiveTab(selectedSize:any){
+    this.tabNavCollection.forEach(i => { i.isActive=false;})
+    if(this.tabNavCollection.some(i => i && i.name===selectedSize))
+      this.tabNavCollection.filter(i => i.name === this.addWineForm.get('format')?.value)[0].isActive = true
+    else
+      this.tabNavCollection.push({name:this.addWineForm.get('format')?.value, isActive:true})
+  }
+  onNavTabClick(navTab:any){
+    this.addWineForm.patchValue({format:navTab.name})
+    this.setNavTabActiveTab(navTab.name)
+  }
+  onChange(event:any){
+    const options:HTMLOptionsCollection=event.target['options']
+    const selectedSize=options[options.selectedIndex].text
+    this.setNavTabActiveTab(selectedSize)
   }
   onAdd(){
-    this.bottleCount++
+    if(!this.bottleCollection)
+      this.bottleCollection=[]
+    this.bottleCollection.push({id:this.bottleCount++,format:this.addWineForm.get('format')?.value})
   }
   onRemove(){
-    if(this.bottleCount > 1) this.bottleCount--;
+    if(this.bottleCount > 0){
+      this.bottleCollection.pop()
+      this.bottleCount--;
+    } 
+  }
+  public get getAddBottleCollection(){
+    return this.bottleCollection.filter(i => i.format === this.addWineForm.get('format')?.value)
   }
   forbiddenYearValidator(nameRe: RegExp): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
