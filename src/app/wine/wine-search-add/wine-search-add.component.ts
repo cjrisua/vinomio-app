@@ -62,7 +62,7 @@ export class WineSearchAddComponent implements OnInit {
       price : new FormControl('',[Validators.required]),
       format : new FormControl("750ml",[Validators.required]),
       state : new FormControl(false),
-      searchControl : new FormControl('',[Validators.required,this.forbiddenYearValidator(/[0-9]{4}/i)])
+      searchControl : new FormControl('',[Validators.required,this.forbiddenYearValidator(/([0-9]{4}|N\.V\.)/i)])
     })
     */
     this.addWineForm = new FormGroup({
@@ -106,8 +106,9 @@ export class WineSearchAddComponent implements OnInit {
       const forbidden = nameRe.test(vintage);
       //console.log(forbidden)
       return forbidden && 
-             Number(vintage) > 1800 &&  
-             Number(vintage) <= Number(new Date().getFullYear()) + 1 ?  null : {forbiddenYear: {value: control.value}};
+           (Number(vintage) > 1900 &&  
+            Number(vintage) <= Number(new Date().getFullYear()) + 1) ||  
+            vintage === "N.V." ?  null : {forbiddenYear: {value: control.value}}
     };
   }
   onBack(){
@@ -126,8 +127,8 @@ export class WineSearchAddComponent implements OnInit {
     //    /*locationId: 0,
     //    acquiringSourceId: 0,
     //    allocationEventId: this.allocationEvent.id,*/
-    //    purchasedOn:this.addWineForm.value.price,
-    //    deliverBy: this.addWineForm.value.price,
+    //    purchasedOn:this.addWineForm.value.purchasedOn,
+    //    deliverBy: this.addWineForm.value.deliverBy,
     //    statusId:  this.addWineForm.value.state ? 'allocated' : 'pending'
     //  }];
       //console.log(data)
@@ -153,6 +154,7 @@ export class WineSearchAddComponent implements OnInit {
     //this.wines = []
     //this.wines.push(selection.item)
     //console.log(this.addWineForm.get('searchControl')?.status)
+    this.addWineForm.patchValue({searchControl:selection.item})
   }
   onKeyUp(event:any,keyword:any){
     //if(event.key == "Enter")
