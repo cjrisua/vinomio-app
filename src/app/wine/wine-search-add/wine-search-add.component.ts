@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, Observable, OperatorFunction, startWith, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, max, Observable, OperatorFunction, startWith, switchMap } from 'rxjs';
 import { Profile } from 'src/app/models/Profile';
 import { AuthService } from 'src/app/services/auth.service';
 import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
@@ -21,8 +21,8 @@ export class WineSearchAddComponent implements OnInit {
 
   addWineForm!:FormGroup
   vintageObject!:any
-  bottleCount:number = 0
-  bottleCollection:{id:number,format:any}[]=[]
+  //bottleCount:number = 0
+  bottleCollection:{id:number,label:number,format:any}[]=[]
   //searchControl !: FormControl 
 
   tabNavCollection:{name:string,isActive:boolean}[]=[]
@@ -52,6 +52,10 @@ export class WineSearchAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this.addWineForm = new FormGroup({
+    //  format : new FormControl("750ml",[Validators.required]),
+    //  wines: new FormArray([],[Validators.required])
+    //})
     /*
     this.vintages = this.navData.data.wine.Vintages.map((x:any) =>  {return {id:x.id,year:x.year}})
 
@@ -66,9 +70,18 @@ export class WineSearchAddComponent implements OnInit {
     })
     */
     this.addWineForm = new FormGroup({
-      format : new FormControl(this.formats[this.formats.length-1].id),
+      format : new FormControl(this.formats[this.formats.length-1].id, [Validators.required]),
+      wines: new FormArray([],[Validators.required])
     })
+    this.addWineFormat()
     this.tabNavCollection.push({name:this.addWineForm.get('format')?.value, isActive:true})
+  }
+  addWineFormat(){
+    //let formArray = this.addWineForm.get('wines') as FormArray;
+   const wineFormItem = new FormGroup({
+      purchasedDate: new FormControl('hello',[Validators.required])
+    })
+    this.formWines.push(wineFormItem)
   }
   setNavTabActiveTab(selectedSize:any){
     this.tabNavCollection.forEach(i => { i.isActive=false;})
@@ -87,15 +100,47 @@ export class WineSearchAddComponent implements OnInit {
     this.setNavTabActiveTab(selectedSize)
   }
   onAdd(){
-    if(!this.bottleCollection)
-      this.bottleCollection=[]
-    this.bottleCollection.push({id:this.bottleCount++,format:this.addWineForm.get('format')?.value})
+    const tabName = this.tabNavCollection.filter(i=>i.isActive)[0].name
+    const maxId = this.bottleCollection.filter(i => i.format == tabName).length == 0 ? 0 : Math.max(...this.bottleCollection.filter(f => f.format==tabName).map(o => o.label)) 
+    if(!this.bottleCollection) this.bottleCollection=[]
+    this.bottleCollection.push(
+      {
+        id: this.bottleCollection.length == 0 ? 0 : Math.max(...this.bottleCollection.map(o => o.id)) + 1, 
+        label:maxId+1,
+        format:this.addWineForm.get('format')?.value
+      })
   }
   onRemove(){
-    if(this.bottleCount > 0){
-      this.bottleCollection.pop()
-      this.bottleCount--;
-    } 
+    const tabName = this.tabNavCollection.filter(i=>i.isActive)[0].name
+    const maxId = this.bottleCollection.filter(i => i.format == tabName).length == 0 ? 0 : Math.max(...this.bottleCollection.filter(f => f.format==tabName).map(o => o.label)) 
+    const popId = this.bottleCollection.filter(f => f.format == tabName && f.label == maxId)
+    if(popId.length > 0)
+      this.bottleCollection = this.bottleCollection.filter(f => f.id != popId[0].id)
+    //if(tabName && this.bottleCollection.length > 0){
+    //  const bottleTabName= this.bottleCollection.filter(i => i.format == tabName)
+    //  this.bottleCollection = this.bottleCollection.filter(i => i.id != bottleTabName[bottleTabName.length-1].id)
+    //}
+    //if(this.bottleCount > 0){
+    //  this.bottleCollection.pop()
+    //  this.bottleCount--;
+    //} 
+  }
+  public get formWines():FormArray{
+    //return this.addWineForm.controls["wines"] as FormArray;
+    return this.addWineForm.get('wines') as FormArray;
+  }
+  public get formGroupWines() : FormGroup{
+    //return this.addWineForm.controls["wines"] as FormArray;
+    return this.formWines.controls[0] as FormGroup;
+  }
+
+  public  get getActiveTabBottleCount(){
+    const tabName = this.tabNavCollection.filter(i=>i.isActive)
+    if(tabName.length > 0){
+      const maxId = this.bottleCollection.filter(i => i.format == tabName[0].name).length == 0 ? 0 : Math.max(...this.bottleCollection.filter(f => f.format==tabName[0].name).map(o => o.label)) 
+      return maxId
+    }
+    return 0
   }
   public get getAddBottleCollection(){
     return this.bottleCollection.filter(i => i.format === this.addWineForm.get('format')?.value)
@@ -110,6 +155,17 @@ export class WineSearchAddComponent implements OnInit {
             Number(vintage) <= Number(new Date().getFullYear()) + 1) ||  
             vintage === "N.V." ?  null : {forbiddenYear: {value: control.value}}
     };
+  }
+  onDeleteTab(navigationTabEvent:any){
+    //if(this.tabNavCollection.length > 1){
+    //  this.bottleCollection = this.bottleCollection.filter(i=>i.format != navigationTabEvent.name)
+    //  this.tabNavCollection =  this.tabNavCollection.filter(i =>i.name !=  navigationTabEvent.name)
+    //}
+    this.tabNavCollection = this.tabNavCollection.filter(i =>i.name !=  navigationTabEvent.name).map( i => { i.isActive = false; return i })
+    this.bottleCollection = this.bottleCollection.filter(i=>i.format != navigationTabEvent.name)
+    this.tabNavCollection[this.tabNavCollection.length-1].isActive = true
+    this.addWineForm.patchValue({format: this.tabNavCollection[this.tabNavCollection.length-1].name})
+    //this.tabNavCollection[this.tabNavCollection.length].isActive = true
   }
   onBack(){
     //this.navEvent.emit({history:this.navData.history})
