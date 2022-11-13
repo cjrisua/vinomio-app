@@ -245,42 +245,4 @@ export class WineSearchAddComponent implements OnInit {
   updateStatus(){
     this.addWineForm.patchValue({"state" : !this.addWineForm.value.state})
   }
-/**
- * 
- *  {
-  "data": {
-    "vintageId": 58,
-    "wine": {
-      "id": 24,
-      "slug": "memento-mori-las-piedras-vineyard",
-      "name": "Memento Mori Las Piedras Vineyard",
-      "color": "Red",
-      "type": "Red",
-      "Producer": {
-        "id": 7,
-        "name": "Memento Mori"
-      },
-      "Region": {
-        "id": 7,
-        "name": "St Helena"
-      },
-      "MasterVarietal": {
-        "id": 5,
-        "name": "Cabernet Sauvignon"
-      },
-      "Vintages": [
-        {
-          "id": 58,
-          "year": 2019
-        },
-        {
-          "id": 62,
-          "year": 2018
-        }
-      ]
-    }
-  },
-  "history": "mem"
-} 
- */
 }
