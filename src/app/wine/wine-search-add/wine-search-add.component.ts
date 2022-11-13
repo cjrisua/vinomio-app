@@ -12,6 +12,7 @@ interface BottleFormat{
   id:string;
   name:string;
 }
+const castArray = (value: any) => Array.isArray(value) ? value : [value];
 
 @Component({
   selector: 'app-wine-search-add',
@@ -128,30 +129,26 @@ export class WineSearchAddComponent implements OnInit {
     return `#${value}`
   }
   onAdd(){
-    let location = this.formatCollection.controls.find( i => i.value.size == this.selectedFormat.id)?.value.cellarLocationList as FormArray
-    location.push(this.allocateCellarLocation())
-   console.log(this.addWineForm)
+    const formatCollection = this.formatCollection.controls.find( i => i.value.size == this.selectedFormat.id) as FormGroup
+    const cellarLocationList = formatCollection.get('cellarLocationList') as FormArray
+    cellarLocationList.push(this.allocateCellarLocation())
   }
   onRemove(){
-    let location = this.formatCollection.controls.find( i => i.value.size == this.selectedFormat.id) as FormGroup
-    console.debug(location.controls)
-    //location.removeAt(location.length-1)
-  }
-  public getCellarLocationByIndex(group:FormGroup, index:number):FormGroup{
-    if((group.get('cellarLocationList') as FormArray).length == 0){
-      (group.get('cellarLocationList') as FormArray).push(this.allocateCellarLocation())
+    const formatCollection = this.formatCollection.controls.find( i => i.value.size == this.selectedFormat.id) as FormGroup
+    const cellarLocationList = formatCollection.get('cellarLocationList') as FormArray
+    if(cellarLocationList){
+      cellarLocationList.removeAt(cellarLocationList.length-1)
     }
-    return (group.get('cellarLocationList') as FormArray).controls[index] as FormGroup;
   }
   public get formatCollection():FormArray{
     return this.addWineForm.get('formatCollection') as FormArray;
   }
+  public get cellarLocationList():FormArray{
+    const formArray = this.formatCollection.controls.find( i => i.value.size == this.selectedFormat.id)?.get('cellarLocationList') as FormArray
+    return formArray
+  }
   public getFormatGroup(data:any){
     return data as FormGroup
-  }
-  public getFormatCollectionById(tabControl:any) : FormGroup{
-    const index = this.formatCollection.controls.findIndex(i => i.value.size == tabControl.size)
-    return this.formatCollection.controls[index] as FormGroup;
   }
   public debug(data:any){
     console.log(data)
@@ -159,8 +156,7 @@ export class WineSearchAddComponent implements OnInit {
   public isActive(tabName:string){
     return tabName === this.selectedFormat.id ? true : false
   }
-  public get tabNavCollection()
-  {
+  public get tabNavCollection(){
     return this.formatCollection.value
   }
   public  get getActiveTabBottleCount(){
@@ -169,10 +165,6 @@ export class WineSearchAddComponent implements OnInit {
       return tabInfo.value.cellarLocationList.length
     }
     return 0
-  }
-  public get getAddBottleCollection(){
-    //return this.bottleCollection.filter(i => i.format === this.selectedFormat.id)
-    return []
   }
   forbiddenYearValidator(nameRe: RegExp): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -189,9 +181,12 @@ export class WineSearchAddComponent implements OnInit {
     //this.tabNavCollection = this.tabNavCollection.filter(i =>i.name !=  navigationTabEvent.name).map( i => { i.isActive = false; return i })
     //this.bottleCollection = this.bottleCollection.filter(i=>i.format != navigationTabEvent.name)
     //this.tabNavCollection[this.tabNavCollection.length-1].isActive = true
-    //this.selectedFormat = this.formats.filter(i => i.id == this.tabNavCollection[this.tabNavCollection.length-1].name)[0]
-    const droppedTab = this.formatCollection.controls.findIndex(i => i.value.size == navigationTabEvent.name)
+
+    const navToTab = this.tabNavCollection.filter((i: { size: any; }) => i.size != navigationTabEvent.size ).map((i: { size: any; }) => {return {size:i.size}})[0]
+    console.log(navToTab)
+    const droppedTab = this.formatCollection.controls.findIndex(i => i.value.size == navigationTabEvent.size)
     this.formatCollection.removeAt(droppedTab)
+    this.onNavTabClick(navToTab)
   }
   onBack(){
   

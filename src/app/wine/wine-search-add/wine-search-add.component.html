@@ -131,7 +131,7 @@
                       <div class="accordion-body">
                         <div *ngIf="format.value.cellarLocationList.length==0 else elseBlock">Add Wine to Collection</div>
                         <ng-template #elseBlock>
-                          <table class="table">
+                         <table class="table">
                             <thead>
                               <tr>
                                 <th scope="col">#</th>
@@ -141,8 +141,15 @@
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr *ngFor="let bottle of format.value.cellarLocationList;index as b;" [formGroup] ="getFormatGroup(bottle)">
+                            <tbody formArrayName="cellarLocationList">
+                              <!--<tr *ngFor="let bottle of cellarLocationList.controls;index as b;">
+                                <th scope="row">{{b+1}}</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>-->
+                              <tr *ngFor="let bottle of cellarLocationList.controls;index as b;" [formGroup] ="getFormatGroup(bottle)">
                                 <th scope="row">{{b+1}}</th>
                                 <td>
                                   <div class="input-group input-group-sm">
@@ -175,109 +182,6 @@
                 </div>
               </div>
             </div>
-            <!--<div class="tab-content" formArrayName="formatCollection">
-              <div class="tab-pane fade" [class.show]="true" role="tabpanel" [class.active]="isActive(tabNav.size)"
-                *ngFor="let tabNav of tabNavCollection; index as i;" [formGroup]="getFormatCollectionById(i)">
-                {{}}
-                <div class="form-group mt-3 mb-2">
-                  <div class="d-flex justify-content-between">
-                    <div class="form-group">
-                      <label for="name">Purchased Date</label>
-                      <input type="text" class="form-control" formControlName="purchasedDate">
-                    </div>
-                    <div class="form-group">
-                      <label for="name">Delivery Date</label>
-                      <input type="text" class="form-control" formControlName="deliveryDate">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="name">Merchant</label>
-                  <input type="text" class="form-control" formControlName="merchant">
-                </div>
-                <div class="form-group">
-                  <div class="row">
-                    <label class="col-5 col-form-label" style="padding: 0px 12px;">Cost</label>
-                    <label class="col-5 col-form-label" style="padding: 0px 12px;">Status</label>
-                  </div>
-                  <div class="row mb-2">
-                    <div class="col-5">
-                      <div class="input-group">
-                        <span class="input-group-text">$</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
-                          formControlName="cost">
-                      </div>
-                    </div>
-                    <div class="col-7 py-2">
-                      <div class="form-check form-switch" style="align-self:center;">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                          formControlName="status">
-                        <label class="form-check-label" for="flexSwitchCheckChecked"> <span
-                            class="h6 fw-lighter">Pending
-                            Delivery</span></label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion mt-3" id="accordionExample">
-                  <div class="accordion-item">
-                    <p class="accordion-header" id="headingTwo">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
-                        style="padding: 10px 20px 0 20px;">
-                        Storage Location
-                      </button>
-                    </p>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                      data-bs-parent="#accordionExample">
-                      <div class="accordion-body">
-                        <div *ngIf="getAddBottleCollection.length==0 else elseBlock">Add Wine to Collection</div>
-                        <ng-template #elseBlock>
-                          <table class="table">
-                            <thead>
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Location</th>
-                                <th scope="col">Section</th>
-                                <th scope="col">Bin</th>
-                                <th scope="col">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody formArrayName="cellarLocationList">
-                              <tr *ngFor="let bottle of getAddBottleCollection;index as b;"
-                                [formGroup]="getCellarLocationByIndex(getFormatCollectionById(i),b)">
-                                <th scope="row"></th>
-                                <td>
-                                  <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" aria-label="Sizing example input"
-                                      aria-describedby="inputGroup-sizing-sm" formControlName="location">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" aria-label="Sizing example input"
-                                      aria-describedby="inputGroup-sizing-sm" formControlName="section">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" aria-label="Sizing example input"
-                                      aria-describedby="inputGroup-sizing-sm" formControlName="bin">
-                                  </div>
-                                </td>
-                                <td><span class="material-icons-outlined mx-2">
-                                    delete
-                                  </span></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </ng-template>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>-->
           </div>
         </div>
       </div>
