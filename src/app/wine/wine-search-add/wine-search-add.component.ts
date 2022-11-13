@@ -24,19 +24,8 @@ export class WineSearchAddComponent implements OnInit {
 
   profile!: Profile
   submitted = false;
-  //@Input() navData!: any
-
-  //@Output() navEvent =  new EventEmitter<{}>();
-
   addWineForm!:FormGroup
   vintageObject!:any
-  //bottleCount:number = 0
-  //bottleCollection:{id:number,label:number,format:any}[]=[]
-  //searchControl !: FormControl 
-  //currentFormat!:string
-  
-  //tabNavCollection:{name:string,isActive:boolean}[]=[]
-  
   selectedFormat!:BottleFormat
   formats: BottleFormat[] = [
     { id: '750ml', name: '750ml' },
@@ -58,48 +47,28 @@ export class WineSearchAddComponent implements OnInit {
       const regExp: RegExp = /^[0-9]+$/g;
       if (params.get('id') && regExp.test(params.get('id') || '')) {
        const vintageId = params.get('id')
-       //this.wineService.getByWine(wineId).subscribe((res) => { console.log(res); this.wineObject = res })
-        this.vintageService.getByVintageId(vintageId).subscribe((res:any[]) => this.vintageObject=res[0])
+       this.vintageService.getByVintageId(vintageId).subscribe((res:any[]) => this.vintageObject=res[0])
       }
     });
   }
 
   ngOnInit(): void {
-    //this.currentFormat = this.formats[this.formats.length-1].id
     this.selectedFormat = this.formats[0]
-    //this.addWineForm = new FormGroup({
-    //  format : new FormControl("750ml",[Validators.required]),
-    //  wines: new FormArray([],[Validators.required])
-    //})
-    /*
-    this.vintages = this.navData.data.wine.Vintages.map((x:any) =>  {return {id:x.id,year:x.year}})
-
     this.addWineForm = new FormGroup({
-      purchasedOn : new FormControl('',[Validators.required, Validators.pattern('[0-1][0-9]/[0-3][0-9]/[0-9]{4}')]),
-      deliverBy : new FormControl('',[Validators.required, Validators.pattern('[0-1][0-9]/[0-3][0-9]/[0-9]{4}')]),
-      numOfBottles : new FormControl('1',[Validators.required, Validators.pattern('[0-9]+')]),
-      price : new FormControl('',[Validators.required]),
-      format : new FormControl("750ml",[Validators.required]),
-      state : new FormControl(false),
-      searchControl : new FormControl('',[Validators.required,this.forbiddenYearValidator(/([0-9]{4}|N\.V\.)/i)])
-    })
-    */
-    this.addWineForm = new FormGroup({
-      /*format : new FormControl(this.formats[this.formats.length-1].id, [Validators.required]),*/
-      notes : new FormControl(),
+      note : new FormControl(),
       formatCollection: new FormArray([],[Validators.required])
     })
     this.formatCollection.push(this.addWineFormat())
-    //this.tabNavCollection.push({name:this.selectedFormat.id, isActive:true})
   }
   addWineFormat(): FormGroup{
    const wineFormatItem = new FormGroup({
       purchasedDate: new FormControl(`${formatDate(Date.now(), 'MM/dd/yyyy', this.locale)}`,),
-      deliveryDate: new FormControl("",),
-      merchant: new FormControl("",),
-      cost: new FormControl("",),
+      deliveryDate: new FormControl("",[Validators.required]),
+      merchant: new FormControl("",[Validators.required]),
+      cost: new FormControl("",[Validators.required]),
       status: new FormControl(),
-      size: new FormControl(this.selectedFormat.id), 
+      size: new FormControl(this.selectedFormat.id,[Validators.required]),
+      count: new FormControl(0,[Validators.required,Validators.min(1)]),
       cellarLocationList: new FormArray([])
     })
     return wineFormatItem
@@ -131,6 +100,8 @@ export class WineSearchAddComponent implements OnInit {
   onAdd(){
     const formatCollection = this.formatCollection.controls.find( i => i.value.size == this.selectedFormat.id) as FormGroup
     const cellarLocationList = formatCollection.get('cellarLocationList') as FormArray
+    const count:number = formatCollection.get('count')?.value
+    formatCollection.patchValue({count:count+1})
     cellarLocationList.push(this.allocateCellarLocation())
   }
   onRemove(){
@@ -138,6 +109,8 @@ export class WineSearchAddComponent implements OnInit {
     const cellarLocationList = formatCollection.get('cellarLocationList') as FormArray
     if(cellarLocationList){
       cellarLocationList.removeAt(cellarLocationList.length-1)
+      const count:number = formatCollection.get('count')?.value
+      formatCollection.patchValue({count:count-1})
     }
   }
   public get formatCollection():FormArray{
@@ -170,7 +143,6 @@ export class WineSearchAddComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors | null => {
       const vintage = control.value?.year ? control.value?.year : control.value;
       const forbidden = nameRe.test(vintage);
-      //console.log(forbidden)
       return forbidden && 
            (Number(vintage) > 1900 &&  
             Number(vintage) <= Number(new Date().getFullYear()) + 1) ||  
@@ -178,10 +150,6 @@ export class WineSearchAddComponent implements OnInit {
     };
   }
   onDeleteTab(navigationTabEvent:any){
-    //this.tabNavCollection = this.tabNavCollection.filter(i =>i.name !=  navigationTabEvent.name).map( i => { i.isActive = false; return i })
-    //this.bottleCollection = this.bottleCollection.filter(i=>i.format != navigationTabEvent.name)
-    //this.tabNavCollection[this.tabNavCollection.length-1].isActive = true
-
     const navToTab = this.tabNavCollection.filter((i: { size: any; }) => i.size != navigationTabEvent.size ).map((i: { size: any; }) => {return {size:i.size}})[0]
     console.log(navToTab)
     const droppedTab = this.formatCollection.controls.findIndex(i => i.value.size == navigationTabEvent.size)
@@ -192,30 +160,56 @@ export class WineSearchAddComponent implements OnInit {
   
   }
   onSubmit(){
-    console.debug(this.addWineForm)
-    //const data:any[] = [{
-    //    //vintageId: this.navData.data.vintageId,
-    //    vintage: ""+(this.addWineForm.get('searchControl')?.value?.year | this.addWineForm.get('searchControl')?.value),
-    //    wineId: this.navData.data.wine.id,
-    //    cellarId: this.profile.cellar,
-    //    price: this.addWineForm.value.price,
-    //    bottleCount: this.addWineForm.value.numOfBottles,
-    //    bottleSize: this.addWineForm.value.format,
-    //    /*locationId: 0,
-    //    acquiringSourceId: 0,
-    //    allocationEventId: this.allocationEvent.id,*/
-    //    purchasedOn:this.addWineForm.value.purchasedOn,
-    //    deliverBy: this.addWineForm.value.deliverBy,
-    //    statusId:  this.addWineForm.value.state ? 'allocated' : 'pending'
-    //  }];
-      //console.log(data)
-    /*
+    const data:any[] = this.formatCollection.controls.map(f => {
+       let data = {
+          vintage:this.vintageObject.year,
+          wineId:this.vintageObject.wineId,
+          cellarId: this.profile.cellar,
+          price: f.value.cost,
+          bottleCount: f.value.count,
+          bottleSize: f.value.size,
+          bottleLocation:[],
+          purchasedOn: f.value.purchasedDate,
+          deliverBy: f.value.deliveryDate,
+          statusId:  f.value.status == true ? 'pending' : 'allocated',
+          comment: this.addWineForm.value.note
+       }
+       data.bottleLocation = f.value.cellarLocationList.map((l: any) => {
+          return {
+              storage:l.location,
+              section:l.section,
+              bin:l.bin
+            }
+       })
+       return data;
+    })
     if(data.length > 0){
-      this.collectionService.add(data).pipe(
-        catchError((err) => { console.debug(err); return EMPTY})
-      )
-      .subscribe((r) =>this.navEvent.emit({}));
-    }*/
+      /*[
+    {
+        "vintage": "N.V.",
+        "wineId": 30,
+        "cellarId": 2,
+        "price": "75.00",
+        "bottleCount": 1,
+        "bottleSize": "750ml",
+        "bottleLocation": [
+            {
+                "storage": "kitchen",
+                "section": null,
+                "bin": null
+            }
+        ],
+        "purchasedOn": "11/13/2022",
+        "deliverBy": "11/13/2022",
+        "statusId": "allocated",
+        "comment": null
+    }
+]*/
+      //this.collectionService.add(data).pipe(
+      //  catchError((err) => { console.debug(err); return EMPTY})
+      //)
+      //.subscribe((r) =>this.navEvent.emit({}));
+    }
   }
   onClear():void{
     //this.searchControl.setValue('')
@@ -228,9 +222,6 @@ export class WineSearchAddComponent implements OnInit {
      return value.year;
   }
   onSearchSelection(selection:any):any{
-    //this.wines = []
-    //this.wines.push(selection.item)
-    //console.log(this.addWineForm.get('searchControl')?.status)
     this.addWineForm.patchValue({searchControl:selection.item})
   }
   onKeyUp(event:any,keyword:any){
@@ -254,16 +245,6 @@ export class WineSearchAddComponent implements OnInit {
   updateStatus(){
     this.addWineForm.patchValue({"state" : !this.addWineForm.value.state})
   }
-/*
-  public get WineName():string{
-    return `${this.navData.data.wine.name}`
-  }
-  public get Region():string{
-    return `${this.navData.data.wine.Region.name}`
-  }
-  public get MasterVarietal():string{
-    return `${this.navData.data.wine.MasterVarietal.name}`
-  }*/
 /**
  * 
  *  {
