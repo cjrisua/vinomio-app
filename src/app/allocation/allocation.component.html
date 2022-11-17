@@ -1,10 +1,10 @@
-<div class="container my-3 col-sm-8">
+<div class="container mt-2 col-sm-8">
   <div *ngIf="userSelectionEvent else elseBlock">
     <app-allocation-merchant *ngIf="userSelectionEvent.Module == userSelectionEvent.EnumModule.Merchant" (ItemEvent)="NavigateEventResponse($event)" ></app-allocation-merchant>
     <app-allocation-view *ngIf="userSelectionEvent.Module == userSelectionEvent.EnumModule.Allocation" (ItemEvent)="NavigateEventResponse($event)" [action]="userSelectionEvent"></app-allocation-view>
   </div>
   <ng-template #elseBlock>
-    <h2>Allocation</h2>
+    <p class="h5">Allocation</p>
     <div class="d-sm-flex">
         <div class="card mx-sm-5 col-sm-6" style="margin-left: 0 !important;">
           <div class="card-header">

@@ -1,6 +1,6 @@
-<div class="container my-5 col-sm-6">
+<div class="container mt-2 col-sm-6">
 
-    <h2>Profile</h2>
+    <p class="h5">Profile</p>
 
     <h4>Update your account details.</h4>
     <mat-tab-group (selectedTabChange)="onTabChanged($event);">
@@ -13,8 +13,9 @@
                                 <div class="col mb-3">
                                     <label class="form-control-label" for="first_name">First Name <span
                                             class="required">*</span></label>
-                                    <input class="form-control" id="first_name" name="data[first_name]"
-                                        type="text" placeholder="" required="" formControlName="firstname"  value="{{profile?.firstname}}">
+                                    <input class="form-control" id="first_name" name="data[first_name]" type="text"
+                                        placeholder="" required="" formControlName="firstname"
+                                        value="{{profile?.firstname}}">
                                     <div class="invalid-feedback">
                                         First Name is required
                                     </div>
@@ -22,8 +23,9 @@
                                 <div class="col mb-3">
                                     <label class="form-control-label" for="last_name">Last Name <span
                                             class="required">*</span></label>
-                                    <input class="form-control" id="last_name" name="data[last_name]" formControlName="lastname" type="text"
-                                        placeholder="" required="" value="{{profile?.lastname}}">
+                                    <input class="form-control" id="last_name" name="data[last_name]"
+                                        formControlName="lastname" type="text" placeholder="" required=""
+                                        value="{{profile?.lastname}}">
                                     <div class="invalid-feedback">
                                         Last Name is required
                                     </div>
@@ -31,16 +33,21 @@
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-control-label" for="data[email]">Primary Email <span class="required">*</span></label>
+                            <label class="form-control-label" for="data[email]">Primary Email <span
+                                    class="required">*</span></label>
                             <div class="controls">
-                                <input class="form-control" id="data[email]" name="data[email]" type="email" formControlName="email"  value="{{profile?.email}}">
+                                <input class="form-control" id="data[email]" name="data[email]" type="email"
+                                    formControlName="email" value="{{profile?.email}}">
                             </div>
-                            <small class="form-text text-muted">A personal email address is highly recommended due to work related email filtering.</small>
+                            <small class="form-text text-muted">A personal email address is highly recommended due to
+                                work related email filtering.</small>
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-control-label" for="data[handler]">Handler <span class="required">*</span></label>
+                            <label class="form-control-label" for="data[handler]">Handler <span
+                                    class="required">*</span></label>
                             <div class="controls">
-                                <input class="form-control" id="data[handler]" name="data[handler]"  formControlName="handler"  value="{{profile?.handler}}">
+                                <input class="form-control" id="data[handler]" name="data[handler]"
+                                    formControlName="handler" value="{{profile?.handler}}">
                             </div>
                         </div>
                     </form>
@@ -48,15 +55,16 @@
             </div>
         </mat-tab>
         <mat-tab label="Cellar">
-            <div class="card mt-3">
-                <div *ngIf="!profile?.cellar" class="card-body">
-                    <label *ngIf="!showForm" class="form-control-label">Cellar: <a class="text-decoration-none mx-2 pointer" (click)="onAddCellar()">Add Cellar</a></label>
-                    <app-profile-cellar-add-form  *ngIf="showForm"></app-profile-cellar-add-form>
+            <div class="mt-3">
+                <div *ngIf="!profile?.cellar">
+                    <label *ngIf="!showForm" class="form-control-label">Cellar: <a
+                            class="text-decoration-none mx-2 pointer" (click)="onAddCellar()">Add Cellar</a></label>
+                    <app-profile-cellar-add-form *ngIf="showForm"></app-profile-cellar-add-form>
                 </div>
-                <div *ngIf="profile?.cellar" class="card-body">
+                <div *ngIf="profile?.cellar">
                     <app-profile-cellar></app-profile-cellar>
                 </div>
             </div>
         </mat-tab>
-      </mat-tab-group>
+    </mat-tab-group>
 </div>

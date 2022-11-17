@@ -132,6 +132,13 @@ const routes: Routes = [
       {path:'details/:id',pathMatch:'full',component:WineSearchViewComponent},
       {path:'add/:id',pathMatch:'full',component:WineSearchAddComponent}
     ]
+  },
+  {
+    path:'profile',
+    canActivate: [AuthGuard],
+    children:[
+      {path:'',pathMatch:'full',component:ProfileInfoComponent},
+    ]
   }
   
 ];
