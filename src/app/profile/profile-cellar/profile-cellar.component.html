@@ -1,4 +1,59 @@
-<div class="row">
+<div class="container">
+    <form  (ngSubmit)="onSubmit()" [formGroup]="cellarForm" autocomplete="off">
+        <div class="card">
+            <div class="card-header fw-bolder p-0">
+                <div class="d-flex justify-content-between" style="align-items:baseline">
+                    <p class="px-3">Cellar</p>
+                    <a type="button" class="btn btn-link btn-sm px-3">Edit</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <p>id: {{userCellar?.id}}</p>
+                    <p>Added on: {{userCellar?.createdAt | date}}</p>
+                </div>
+                <p>Owner: {{owner?.firstname}} {{owner?.lastname}}</p>
+            
+                <table class="table">
+                    <thead>
+                        <tr>
+                          <th scope="col">Attribute</th>
+                          <th scope="col">Value</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="userCellar">
+                        <tr *ngFor="let attribute of features; index as i">
+                            <td id="{{i}}">
+                                <div>
+                                    <div #item [attr.contenteditable]="!attribute.readonly" placeholder="Enter Attribute" (click)="isClicked(i)">{{attribute.key}}</div>
+                                    <div *ngIf="showAttributes(i) && !attribute.readonly">
+                                        <ul class="dropdown-menu" style="display:block;">
+                                            <li><span class="dropdown-item" *ngFor="let option of CellarAttributes" (click)="onAddNewAttribute(option,item)">{{option}}</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div contenteditable="true" placeholder="Enter Value">{{attribute.value}}</div>
+                            </td>
+                            <td></td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <td><span class="material-icons" style="font-size:large;" (click)="addAttribute()">add_circle_outline</span></td>
+                        <td></td>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="d-grid gap-sm-2 my-3">
+        <button type="button" class="btn btn-outline-secondary">Add Storage</button>
+    </div>
+</div>
+
+<!--<div class="row">
     <label class="form-control-label">Cellar: {{userCellar?.id}}</label>
     
 </div>
@@ -18,3 +73,4 @@
     <label class="form-control-label">Distribution thresholds:</label>
     <span class="mx-1" *ngFor="let item of userCellar?.attributes?.distribution">{{item.country}} = {{item.max}}%</span>
 </div>
+-->

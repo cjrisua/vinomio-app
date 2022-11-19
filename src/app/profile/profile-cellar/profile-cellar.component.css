@@ -1,0 +1,14 @@
+.add-new {
+    float: right;
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+}
+[contentEditable=true]:empty:before {
+    content: attr(placeholder);
+    opacity: 0.6;
+  }
