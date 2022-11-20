@@ -1,12 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { fromEventPattern } from 'rxjs';
 import { Cellar } from 'src/app/models/Cellar';
 import { Profile } from 'src/app/models/Profile';
 import { User } from 'src/app/models/User';
 import { AuthService } from 'src/app/services/auth.service';
 import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 
- 
+ export interface CellarAttribute{
+   key:string, 
+   value:string, 
+   readonly:boolean
+ }
 
 @Component({
   selector: 'app-profile-cellar',
@@ -20,10 +25,9 @@ export class ProfileCellarComponent implements OnInit {
   userCellar!:Cellar
   owner!:User
   cellarForm!: FormGroup;
-  features:any[]=[]
-  _clickedId:number = -1
-  _show = false
-  CellarAttributes=['Name','Locations','Bins']
+  features:CellarAttribute[]=[]
+  CellarAttributes=['size','Name','Locations','Bins']
+  _showAddStatus:boolean=true
 
   constructor(
     private cellarService: VinomioCellarService,
@@ -40,7 +44,9 @@ export class ProfileCellarComponent implements OnInit {
       this._initAttributes()
       this.owner = this.userCellar.Users.filter( user => user.Subscribers?.role_id == 1)[0]
     })
+
   }
+
   getOwner(): User{
     return this.owner
   }
@@ -50,26 +56,32 @@ export class ProfileCellarComponent implements OnInit {
   onSubmit(){
 
   }
-  showDropdown(){
+  _setAddButtonStatus(){
+    this._showAddStatus = !this._showAddStatus
+  }
+  get isAddDisabled(){
+    return !this._showAddStatus
+  }
+  get cellarAttributes(){
+    return new Set([...this.CellarAttributes].filter(x => new Set(this.features.map(i=>i.key)).has(x)==false))
+    //console.log(diff)
 
+    //return this.CellarAttributes
   }
-  showAttributes(id:number){
-   if(this._clickedId == id){
-     this._show = !this._show
-     this._clickedId = -1
-     return this._show
-   }
-    return false
+  onSelectedAttribute(attr:any){
+    this._setAddButtonStatus()
+    this.features[this.features.length-1].key=attr
+    this.features[this.features.length-1].readonly=true
   }
-  isClicked(id:number){
-    this._clickedId = id
-  }
-  onAddNewAttribute(attr:string,element:any){
-    element.innerHTML=attr
-  }
-  addAttribute(){
+  onAddNewAttribute(){
+    this._setAddButtonStatus()
     this.features.push({key:"", value:"", readonly:false})
-    console.log(this.features)
+  }
+  onRemoveNewAttribute(attr:any){
+    console.debug(attr)
+    //this._setAddButtonStatus()
+    this.features = this.features.filter(x => x.key != attr.key)
+    this._showAddStatus = true
   }
   _initAttributes(){
     this.features =Object.keys(this.userCellar.attributes).map((key:string) => {
