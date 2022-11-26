@@ -7,64 +7,148 @@
           <a type="button" class="btn btn-link btn-sm px-3">Edit</a>
         </div>
       </div>
-      <div class="card-body">
-        <div class="d-flex">
-          <p>id: {{userCellar?.id}}</p>
-          <p>Added on: {{userCellar?.createdAt | date}}</p>
-        </div>
-        <p>Owner: {{owner?.firstname}} {{owner?.lastname}}</p>
-
-        <div class="d-flex" *ngFor="let attribute of features; index as i">
-          <div class="dropdown">
-            <button class="btn btn-sm px-2 m-0" [class.dropdown-toggle]="!attribute.readonly" type="button"
-              data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 85px;text-align: end;">
-              <span *ngIf="attribute.key">{{attribute.key}}:</span>
-              <span *ngIf="!attribute.key">Select</span>
-            </button>
-            <div class="d-inline-block px-2" contenteditable style="min-width: 100px;border: solid lightsteelblue;border-radius: 5px;">{{attribute.value}}</div>
-            <!--<input type="text" class="form-control-sm m-0 px-1" id="name">-->
-            <ul class="dropdown-menu d-none" [class.d-none]="attribute.readonly" style="margin-top:20px !important">
-              <li><span class="dropdown-item" *ngFor="let attribute of cellarAttributes"
-                  (click)="onSelectedAttribute(attribute)">{{attribute}}</span></li>
-            </ul>
+      <div class="card-body p-0 pt-3">
+        <div class="row mx-2">
+          <label for="cellarId" class="col-4 col-form-label fw-bold text-end">Id:</label>
+          <div class="col-8" style="padding-right: 10px;">
+            <input type="text" class="form-control form-control-sm" id="cellarId" readonly formControlName="id">
           </div>
-          <!--<button type="button" class="btn btn-sm p-0 m-0" (click)="onRemoveNewAttribute(attribute)">
-            <span class="material-icons" style="font-size:large;">remove_circle_outline</span>
-          </button>-->
+        </div>
+        <div class="row mx-2">
+          <label for="createdAt" class="col-4 col-form-label fw-bold text-end">Create On:</label>
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm" id="createdAt" readonly formControlName="createdAt">
+          </div>
+        </div>
+        <div class="row mx-2">
+          <label for="owner" class="col-4 col-form-label fw-bold text-end">Owner:</label>
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm" id="owner" readonly formControlName="owner">
+          </div>
+        </div>
+        <div class="row mx-2 pt-2" style="vertical-align: bottom;border-bottom: 2px solid #dee2e6;">
+          <div class="col-4 m-0 p-0 pb-2 text-center"><span class="fw-bold">Attribute</span></div>
+          <div class="col-4"><span class="fw-bold">Value</span></div>
+          <div class="col-4 text-center"><span class="fw-bold">Action</span></div>
         </div>
         <div>
-          <button type="button" class="btn btn-sm p-0 m-0"
-            [class.disabled]="isAddDisabled ||  cellarAttributes.size == 0" (click)="onAddNewAttribute()">
-            <span class="material-icons" style="font-size:large;">add_circle_outline</span>
-          </button>
+        <div class="mx-2" #source *ngFor="let attribute of features; index as i"
+          style="border-top: 1px solid rgba(0,0,0,.125);" [formGroup]="AttributesFormGroup">
+          <div #source class="row parent m-0 p-0 pt-2">
+            <div class="col-4">
+              <div class="dropdown">
+                <button id="{{attribute.slug}}-btn" name={{attribute.slug}} class="btn btn-sm px-2 m-0 p-0 key" [class.dropdown-toggle]="!attribute.readonly" type="button"
+                  data-bs-toggle="dropdown" aria-expanded="false"
+                  style="min-width: 85px;text-align: end;vertical-align:baseline">
+                  <span *ngIf="attribute.key">{{attribute.key}}:</span>
+                  <span *ngIf="!attribute.key">Select</span>
+                </button>
+                <ul class="dropdown-menu d-none" [class.d-none]="attribute.readonly" style="margin-top:20px !important">
+                  <li><span class="dropdown-item" *ngFor="let attribute of cellarAttributes"
+                      (click)="onSelectedAttribute(attribute)">{{attribute.key}}</span></li>
+                </ul>
+              </div>
+            </div>
+            <!--Empty Attribute -->
+            <div *ngIf="!attribute.key" class="col-4 pb-2"></div>
+             <!--Attributes -->
+            <div *ngIf="attribute.key" class="col-4 pb-2">
+              <div *ngIf="!attribute?.type; else elseBlock" class="d-inline-block px-2">
+                <input type="text" class="p-0 m-0" style="max-width:75%;" readonly formControlName={{attribute.key}}/>
+              </div>
+              <ng-template #elseBlock>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+                    (click)="showAdditionalAttributes(source.lastChild, source.firstChild)">
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Enable</label>
+                </div>
+              </ng-template>
+            </div>
+            <div class="col-4" style="text-align:center">
+              <button #item *ngIf="true; else elseBlock2 " type="button" class="btn btn-sm p-0 m-0" (click)="onRemoveNewAttribute(attribute,item.firstElementChild)">
+                <div><span class="material-icons-outlined" style="font-size:large;">delete</span></div>
+              </button>
+              <ng-template #elseBlock2>
+                <a type="button" class="btn btn-link btn-sm m-0 p-0">Hide</a>
+              </ng-template>
+            </div>
+          </div>
+          <div  [ngSwitch]="attribute?.slug" class="row child d-none m-0 p-0 sub-section-end" >
+            <div *ngSwitchCase="'distribution'" style="text-align-last: center;">
+              <div class="row">
+                <div class="col" style="text-align-last:end;"><span class="fw-bold" id="country">Country</span></div>
+                <div class="col" style="text-align-last:start;"><span class="fw-bold" id="threshold">Goal</span></div>
+              </div>
+              <div class="row" *ngFor="let distribution of distributions;index as d" [formGroup]="AttributesChildFormGroup(attribute?.slug,d)">
+         
+                <div class="col" style="text-align-last:end;">
+                  <input type="text"  placeholder="country name" formControlName="country"/>
+                </div>
+                <div class="col" style="text-align-last:start;">
+                  <input type="text" placeholder ="threshold number" formControlName="threshold"/>
+                </div>
+              </div>
+              <div class="d-grid gap-sm-2 my-3">
+                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onAddDistribution()">Add</button>
+              </div>
+            </div>
+            <div *ngSwitchCase="'partition'" style="text-align-last: center;">
+              <div class="row">
+                <div class="col" style="text-align-last:end;"><span class="fw-bold" id="name">Name</span></div>
+                <div class="col"><span class="fw-bold" id="segment">Segment</span></div>
+                <div class="col" style="text-align-last:start;"><span class="fw-bold" id="count">Size</span></div>
+              </div>
+              <div>
+                <div class="row" *ngFor="let partition of partitions;index as p" [formGroup]="AttributesChildFormGroup(attribute?.slug,p)">
+                <div class="col-4" style="text-align-last:end;" placeholder="name">
+                  <input class="form-control form-control-sm" type="text"  placeholder="country name" formControlName="name"/>
+                </div>
+                <div class="col-4" placeholder="segment">
+                  <input class="form-control form-control-sm" type="text"  placeholder="country name" formControlName="segment"/>
+                </div>
+                <div class="col-4" style="text-align-last:start;" placeholder="size">
+                  <input class="form-control form-control-sm" type="text"  placeholder="country name" formControlName="count"/>
+                </div>
+                </div>
+              </div>
+              <div class="d-grid gap-sm-2 my-3">
+                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onAddPartition(attribute?.slug)">Add</button>
+              </div>
+            </div>
+            <div *ngSwitchDefault class="row">
+              Not template Found!
+            </div>
+            <!--
+              <div class="row">
+              <div class="col">Country</div>
+              <div class="col">Max</div>
+            </div>
+            <div class="row">
+              <div contenteditable class="col"></div>
+              <div contenteditable class="col"></div>
+            </div>
+            -->
+            
+          </div>
+        </div>
+        </div>
+        <div class="row m-2 mt-0" style="border-top: 1px solid #dee2e6;">
+          <div class="col-8"></div>
+          <div class="col-4 py-1 text-center">
+            <button type="button" class="btn rounded-circle" style="background-color:lightgrey;height: 30px;width: 33px;padding: 2px 3px;"
+              [class.disabled]="isAddDisabled ||  cellarAttributes.size == 0" (click)="onAddNewAttribute()">
+               <span class="material-icons "
+                style="font-size:x-large;vertical-align: text-bottom;color:darkslategray">add_circle_outline</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
+    <div class="d-flex justify-content-between pt-3 px-1">
+      <button type="button" [routerLink]="['/admin/role']"
+        class="btn btn btn-outline-dark">Cancel</button>
+      <button type="submit" class="btn btn-success" [disabled]="!cellarForm.valid">Submit</button>
+    </div>
   </form>
-  <div class="d-grid gap-sm-2 my-3">
-    <button type="button" class="btn btn-outline-secondary">Add Storage</button>
-  </div>
-
+  {{cellarForm.get('attributes')?.value|json}}
 </div>
-
-<!--<div class="row">
-    <label class="form-control-label">Cellar: {{userCellar?.id}}</label>
-    
-</div>
-<div class="row">
-    <label class="form-control-label">Added on: {{userCellar?.createdAt}}</label>
-</div>
-<div class="row">
-    <label class="form-control-label">Owner on: {{owner?.firstname}} {{owner?.lastname}}</label>
-</div>
-<div class="row">
-    <label class="form-control-label">Members subscribed to cellar: {{SubscriberCount()}}</label>
-</div>
-<div class="row">
-    <label class="form-control-label">Cellar size: {{userCellar?.attributes?.size}}</label>
-</div>
-<div class="">
-    <label class="form-control-label">Distribution thresholds:</label>
-    <span class="mx-1" *ngFor="let item of userCellar?.attributes?.distribution">{{item.country}} = {{item.max}}%</span>
-</div>
--->

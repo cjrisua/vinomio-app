@@ -114,7 +114,7 @@ export class WineSearchAddComponent implements OnInit {
     }
   }
   public get formatCollection():FormArray{
-    return this.addWineForm.get('formatCollection') as FormArray;
+    return <FormArray>this.addWineForm.get('formatCollection');
   }
   public get cellarLocationList():FormArray{
     const formArray = this.formatCollection.controls.find( i => i.value.size == this.selectedFormat.id)?.get('cellarLocationList') as FormArray

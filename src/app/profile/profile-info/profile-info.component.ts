@@ -20,12 +20,13 @@ export class ProfileInfoComponent implements OnInit {
     private authService: AuthService
   ) {
     this.profile = this.authService.getCurrentUser()
+    console.debug(this.profile)
    }
 
   ngOnInit(): void {
     this.profileForm = new FormGroup({
-      firstname:  new FormControl(this.profile?.firstname,[Validators.required,Validators.minLength(3)]),
-      lastname:  new FormControl(this.profile?.lastname,[Validators.required,Validators.minLength(3)]),
+      firstName:  new FormControl(this.profile?.firstName,[Validators.required,Validators.minLength(3)]),
+      lastName:  new FormControl(this.profile?.lastName,[Validators.required,Validators.minLength(3)]),
       email:  new FormControl(this.profile?.email,[Validators.required,Validators.minLength(3)]),
       handler:  new FormControl(this.profile?.handler,[Validators.required,Validators.minLength(3)]),
     })

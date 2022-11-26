@@ -1,8 +1,6 @@
 <div class="container mt-2 col-sm-6">
 
     <p class="h5">Profile</p>
-    <app-profile-cellar></app-profile-cellar>
-<!--
     <h4>Update your account details.</h4>
     <mat-tab-group (selectedTabChange)="onTabChanged($event);">
         <mat-tab label="Personal Information">
@@ -15,8 +13,8 @@
                                     <label class="form-control-label" for="first_name">First Name <span
                                             class="required">*</span></label>
                                     <input class="form-control" id="first_name" name="data[first_name]" type="text"
-                                        placeholder="" required="" formControlName="firstname"
-                                        value="{{profile?.firstname}}">
+                                        placeholder="" required="" formControlName="firstName"
+                                        value="{{profile.firstName}}">
                                     <div class="invalid-feedback">
                                         First Name is required
                                     </div>
@@ -25,8 +23,8 @@
                                     <label class="form-control-label" for="last_name">Last Name <span
                                             class="required">*</span></label>
                                     <input class="form-control" id="last_name" name="data[last_name]"
-                                        formControlName="lastname" type="text" placeholder="" required=""
-                                        value="{{profile?.lastname}}">
+                                        formControlName="lastName" type="text" placeholder="" required=""
+                                        value="{{profile.lastName}}">
                                     <div class="invalid-feedback">
                                         Last Name is required
                                     </div>
@@ -38,7 +36,7 @@
                                     class="required">*</span></label>
                             <div class="controls">
                                 <input class="form-control" id="data[email]" name="data[email]" type="email"
-                                    formControlName="email" value="{{profile?.email}}">
+                                    formControlName="email" value="{{profile.email}}">
                             </div>
                             <small class="form-text text-muted">A personal email address is highly recommended due to
                                 work related email filtering.</small>
@@ -48,7 +46,7 @@
                                     class="required">*</span></label>
                             <div class="controls">
                                 <input class="form-control" id="data[handler]" name="data[handler]"
-                                    formControlName="handler" value="{{profile?.handler}}">
+                                    formControlName="handler" value="{{profile.handler}}">
                             </div>
                         </div>
                     </form>
@@ -68,5 +66,4 @@
             </div>
         </mat-tab>
     </mat-tab-group>
--->
 </div>
