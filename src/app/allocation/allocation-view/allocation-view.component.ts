@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, map, Observable, of, OperatorFunction } from 'rxjs';
-import { Action, Module, UserEventAction } from 'src/app/app.module';
+import { Action, Module, Months, UserEventAction } from 'src/app/app.module';
 import { Allocation } from 'src/app/models/Allocation';
 import { AllocationEvent } from 'src/app/models/AllocationEvent';
 import { Collection } from 'src/app/models/Collection';
@@ -66,15 +66,37 @@ export class AllocationViewComponent implements OnInit {
     
     this.allocationService.get(this.userProfile.id)
     .pipe(
-      map((d:Allocation[])=> d),
+      map((d:Allocation[])=> this._sort(d)),
       catchError((val)=> of([])))
     .subscribe(
       (allocations)=>{
-        //console.debug("setting allocations...")
+        //console.debug(allocations)
         this.allocations = allocations
         this.totalCount = allocations.length
         this.getUserLastAllocations();
       })
+  }
+  
+  private _sort(allocation:Allocation[]){
+    //get month
+    let month_now:number = new Date().getMonth() + 1
+    //int array of months by proximity
+    const monthSortFilter:number[] = [...new Set(Array(14).join(".").split(".").map(i => { return  month_now < 13 ? month_now++ : (month_now=1) }))]
+    allocation.map(a =>{
+      a.events?.sort((e1:AllocationEvent,e2:AllocationEvent) => {
+        const month1:number = monthSortFilter.indexOf(Number(Months[<any>e1.month]))
+        const month2:number = monthSortFilter.indexOf(Number(Months[<any>e2.month]))
+        //console.log(`${month1} ${month2}`)
+        return month1 > month2 ? 1 : -1
+      })
+    })
+    allocation.sort((a:any,b:any) => {
+        const month1:number = monthSortFilter.indexOf(Number(Months[<any>a.events[0].month||0]))
+        const month2:number = monthSortFilter.indexOf(Number(Months[<any>b.events[0].month||0]))
+        //console.log(`${month1} ${month2}`)
+        return month1 > month2 ? 1 : -1
+    })
+    return allocation
   }
   public offerPriceAverage(event:any){
     //console.log(event)
@@ -150,6 +172,8 @@ export class AllocationViewComponent implements OnInit {
     this.eventService.delete(event.id)
     .subscribe((resp) => {
       if(resp.status == 204){
+        //console.log("done2")
+        this.getAllocation()
         let object = this.allocations.filter(p=>p.id == event.allocationId)[0]
         object.events = object.events?.filter((i:any)=>i.id != event.id)
         this.router.navigate(['/allocation/mailing'],{queryParams: { action: 'List'}})
@@ -160,7 +184,9 @@ export class AllocationViewComponent implements OnInit {
     //console.log(allocation)
     this.allocationService.delete(allocation.id).subscribe((resp)=> { 
       if(resp.status == 204){
-        this.allocations = this.allocations.filter(p=>p.id != allocation.id)
+        //console.log("done!")
+        this.getAllocation()
+        //this.allocations = this.allocations.filter(p=>p.id != allocation.id)
         this.router.navigate(['/allocation/mailing'],{queryParams: { action: 'List'}})
       }
     })

@@ -3,13 +3,33 @@
     <!--<div class="mt-3">
         <img src="/assets/img/1.png" alt="image" style="height:450px;" />
     </div>-->
+    
     <div class="row mt-4 shadow-none p-3 mb-3 bg-light rounded">
-        <div class="col mt-3">
+        <div class="d-flex">
+            <div class="mt-3 mx-3">
+                <img src="/assets/img/IMG_0803.png" alt="image" style="height:150px; width: 150px;" />
+            </div>
+            <div class="mt-3">
+                <div style="text-align: normal;">
+                    <div class="h3 fw-light">{{wineObject.name}}</div>
+                </div>
+                <div>
+                    <div class="h6 fw-light"> {{wineObject.MasterVarietal.name}}, {{wineObject.Region.name}}</div>
+                </div>
+                <div>
+                    <div class="h6 fw-light">{{wineObject.Region.country.name}}</div>
+                </div>
+                <div>
+                    <!--<div class="h6 fw-light">95.5 Points (7 user reviews)</div>-->
+                </div>
+            </div>
+        </div>
+        <!--<div class="col mt-3">
             <div style="text-align: normal;">
-                <div class="h3 fw-light">{{wineObject[0].name}}</div>
+                <div class="h3 fw-light">{{wineObject.name}}</div>
             </div>
             <div>
-                <div class="h6 fw-light"> {{wineObject[0].MasterVarietal.name}}, {{wineObject[0].Region.name}}</div>
+                <div class="h6 fw-light"> {{wineObject.MasterVarietal.name}}, {{wineObject.Region.name}}</div>
             </div>
             <div>
                 <div class="h6 fw-light">United States</div>
@@ -20,19 +40,25 @@
             <div *ngIf="false" style="text-align-last:right;">
                 <button class="btn btn-sm btn-outline-primary" >Add Vintage</button>
             </div>  
-        </div>
+        </div>-->
     </div>       
     <div>
-        <div class="row my-2 shadow p-2 bg-white rounded" *ngFor="let vintage of wineObject[0].Vintages" [routerLink]="['/search/add',vintage.id]">
+        <div class="row my-2 shadow p-2 bg-white rounded" *ngFor="let vintage of wineObject.Vintages" [routerLink]="['/search/add',vintage.id]">
             <div class="col-8" style="align-self: center;" >
                 <div>
-                    {{vintage.year}} {{wineObject[0].name}}
+                    {{vintage.year}} {{wineObject.name}}
                 </div>
                 <div>
                     <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="true"></ngb-rating>
                 </div>
                 <div>
-                    <div class="fw-light">Score: 92 | 7 Review</div>
+                    <div *ngIf="vintage?.average || vintage?.total; else elseBlock" class="fw-light my-1"><span *ngIf="vintage?.average">Score:<span class="px-1 fw-bold">{{vintage?.average | number:'1.0-1' }}</span></span>
+                        <span *ngIf="vintage?.average" class="fw-bolder" >|</span>
+                        <span *ngIf="vintage?.total"><span class="px-1 fw-bold">{{vintage?.total | number }}</span>Review</span>
+                    </div>
+                    <ng-template #elseBlock>
+                        <div class="fw-light">No Reviews Found</div>
+                    </ng-template>
                 </div>
             </div>
             <div class="col-4 p-0">

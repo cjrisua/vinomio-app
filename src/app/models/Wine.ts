@@ -18,7 +18,8 @@ export class Wine {
         //public region?: string
         //public releaseprice?:number
         public color?:string,
-        public type?:string
+        public type?:string,
+        public review?:{vintageId?:string}[]
     ){
     }
 }

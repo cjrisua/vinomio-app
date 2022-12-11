@@ -13,6 +13,7 @@ import { Profile } from 'src/app/models/Profile';
 import { User } from 'src/app/models/User';
 import { AuthService } from 'src/app/services/auth.service';
 import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
+import {v4 as uuidv4} from 'uuid';
 
 export const slugify = (str: string): string =>
   str
@@ -56,6 +57,7 @@ export class ProfileCellarComponent implements OnInit {
     { key: 'Distribution', type: 'Toggle' },
   ];
   _showAddStatus: boolean = true;
+  editName:boolean = false 
 
   constructor(
     private cellarService: VinomioCellarService,
@@ -68,6 +70,7 @@ export class ProfileCellarComponent implements OnInit {
   ngOnInit(): void {
     this.cellarForm = new FormGroup({
       id: new FormControl(),
+      name: new FormControl('Cellar', [Validators.required]),
       createdAt: new FormControl(),
       owner: new FormControl(),
       attributes: new FormArray([]),
@@ -83,6 +86,7 @@ export class ProfileCellarComponent implements OnInit {
         id: res.id,
         createdAt: res.createdAt,
         owner: `${this.owner.firstName} ${this.owner.lastName}`,
+        name: res.name ? res.name : "No Name"
       });
       Object.keys(this.userCellar.attributes).forEach((attrKey) => {
         let data:any
@@ -125,6 +129,14 @@ export class ProfileCellarComponent implements OnInit {
     const formGroup: FormGroup = <FormGroup>formArray.at(index);
     return formGroup;
   }
+  public onEditCellarName(name:any){
+    this.editName = !this.editName
+    const newName = <string>name.trim()
+    if(!this.editName && this.cellarForm.get('name')?.value !== newName){
+      this.cellarForm.patchValue({'name':newName})
+      this.cellarService.put(this.cellarForm.get('id')?.value,{name:newName}).subscribe(res => console.log("done"))
+    }
+  }
   getOwner(): User {
     return this.owner;
   }
@@ -148,7 +160,7 @@ export class ProfileCellarComponent implements OnInit {
   
   onSubmit() {
     const id:number = this.cellarForm.get('id')?.value
-    //console.log(this.cellarForm.value[0])
+    console.log(this.Attributes.value[0])
     if(id){
       console.log(id)
       const data:{attributes:any} = {attributes:this.Attributes.value[0]}
@@ -222,11 +234,10 @@ export class ProfileCellarComponent implements OnInit {
     }
   }
   _onAddRowControl(slug: string, columns: string[]): FormGroup {
-    console.log(slug);
     const formArray: FormArray = <FormArray>this.AttributesFormGroup.get(slug);
     const formGroup: FormGroup = new FormGroup({});
     columns.forEach((c) => {
-      formGroup.addControl(c, new FormControl('', []));
+      formGroup.addControl(c, new FormControl(c==="id" ? uuidv4() : '', []));
     });
     formArray.push(formGroup);
     console.log(formGroup);
@@ -238,7 +249,7 @@ export class ProfileCellarComponent implements OnInit {
     this.distributions.push(formGroup.value);
   }
   onAddPartition(slug: any) {
-    const columns: string[] = ['name', 'segment', 'count'];
+    const columns: string[] = ['id','name', 'segment', 'count'];
     const formGroup = this._onAddRowControl('partition', columns);
     this.partitions.push(formGroup.value);
   }

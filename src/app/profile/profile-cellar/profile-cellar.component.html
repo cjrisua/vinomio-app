@@ -1,10 +1,16 @@
 <div *ngIf="userCellar" class="container">
+  <div class="pb-2 text-end">
+    <button type="button" class="btn btn-sm btn-link">Add Storage</button>
+  </div>
+  
   <form (ngSubmit)="onSubmit()" [formGroup]="cellarForm" autocomplete="off">
     <div class="card">
       <div class="card-header fw-bolder p-0">
         <div class="d-flex justify-content-between" style="align-items:baseline">
-          <p class="px-3">Cellar</p>
-          <a type="button" class="btn btn-link btn-sm px-3">Edit</a>
+          <div #label class="mx-2" [attr.contenteditable]="editName ? true:null" [class.edit]="editName ? true:null">
+            {{cellarForm.get('name')?.value}}
+          </div>
+          <a type="button" class="btn btn-link btn-sm px-3" (click)="onEditCellarName(label.innerText)">{{!editName ? "Edit":"Save"}}</a>
         </div>
       </div>
       <div class="card-body p-0 pt-3">
@@ -44,7 +50,7 @@
                     <span *ngIf="!attribute.key">Select</span>
                   </button>
                   <ul class="dropdown-menu d-none" [class.d-none]="attribute.readonly"
-                    style="margin-top:20px !important">
+                    style="margin-top:20px !important; ">
                     <li><span class="dropdown-item" *ngFor="let attribute of cellarAttributes"
                         (click)="onSelectedAttribute(attribute)">{{attribute.key}}</span></li>
                   </ul>
@@ -55,7 +61,7 @@
               <!--Attributes -->
               <div *ngIf="attribute.key" class="col-4 pb-2">
                 <div *ngIf="!attribute?.type; else elseBlock" class="d-inline-block px-2">
-                  <input type="text" class="p-0 m-0" style="max-width:75%;" readonly
+                  <input type="text" class="p-0 m-0" style="max-width:75%;"
                     formControlName={{attribute.slug}} />
                 </div>
                 <ng-template #elseBlock>

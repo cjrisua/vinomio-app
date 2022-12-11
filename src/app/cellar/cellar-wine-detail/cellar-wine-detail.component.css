@@ -6,3 +6,26 @@
     padding: 5px;
     border-radius: 50%;
 }
+[contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-text);
+    opacity: 0.6;
+    font-size: large;
+}
+[contentEditable=true]:empty:focus:after {
+    content:"|";
+    font-size: 25px;
+    margin-left: -2px;
+    animation: blink-animation .8s steps(5, start) infinite;
+    -webkit-animation: blink-animation .8s steps(5, start) infinite;
+}
+
+  @keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }

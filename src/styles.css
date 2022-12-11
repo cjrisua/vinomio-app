@@ -5,17 +5,15 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 /*html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
-.dropdown-menu.show {
+/*.dropdown-menu.show {
    position: absolute !important; 
-   /*position: inherit !important;*/
    inset: 0px auto auto 0px;
    margin-top: 40px !important; 
-   /*margin-top: 0px !important;*/
    transform: none !important; 
    box-shadow:  0 1px 3px hsla(0,0%,0%,0.06),0 2px 6px hsla(0,0%,0%,0.06),0 3px 8px hsla(0,0%,0%,0.09) !important;
    border-radius: 5px;
    width: 99% !important;
-}
+}*/
 
 .form-control:focus {
    border-color: #ced4da !important;

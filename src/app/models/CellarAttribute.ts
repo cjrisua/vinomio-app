@@ -5,9 +5,20 @@ export class Distribution{
         public minAllocation?:number
     ){}
 }
+export class Partition{
+    constructor(
+        public id?:string,
+        public groupkey?:string,
+        public name?:string,
+        public count?:number,
+        public segment?:number
+    ){}
+}
 export class CellarAttribute{
     constructor(
-        public size?:number,
-        public distribution?:Distribution[]
+        public name:string = "cellar",
+        public capacity?:number,
+        public distribution?:Distribution[],
+        public partition?:Partition[]
     ){}
 }
