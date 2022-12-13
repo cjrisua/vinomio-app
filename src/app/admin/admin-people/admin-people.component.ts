@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { VinomioPeopleService } from 'src/app/services/vinomio-people.service';
 import { People } from '../../models/People';
 import { VinomioRegionService } from '../../services/vinomio-region.service';
@@ -16,15 +16,22 @@ export class AdminPeopleComponent implements OnInit {
 
   exclusionColumns=['country','regions','parent']
   dataSource = new MatTableDataSource<People>();
-  isEmpty!:string
-
+  model$!: Observable<any>
+  modelName="People"
   constructor(
     private router: Router,
     private peopleService:VinomioPeopleService
-  ) { }
+  ) {
+    this.model$ = this.peopleService.getList()
+      .pipe(
+        map((data:any[])=> this.dataSource.data = data),
+        map(()=>this.modelName),
+        catchError(()=>of([]))
+      )
+   }
 
   ngOnInit(): void {
-    this.getSourceData()
+    //this.getSourceData()
   }
   private getSourceData(text?:string){
     this.peopleService.getList().pipe(
@@ -32,7 +39,6 @@ export class AdminPeopleComponent implements OnInit {
     )
     .subscribe(data => {
       this.dataSource.data = data;
-      this.isEmpty= data.length == 0 ? 'true':'false';
       });
   }
   public searchEvent(keyword:string){

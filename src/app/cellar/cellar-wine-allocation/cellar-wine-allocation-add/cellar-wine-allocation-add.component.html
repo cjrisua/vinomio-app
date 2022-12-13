@@ -1,4 +1,4 @@
 <div class="container mt-2">
     <p class="h3 mt-3">Add Wine by Allocation</p>
-    <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty"></app-admin-model-searcher>
+    <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="dataSource.data.length == 0 ? true:false"></app-admin-model-searcher>
 </div>

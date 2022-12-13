@@ -1,10 +1,4 @@
-<!--<div class="container">
-  <button class="btn  btn-sm btn-link m-0 p-0" (click)="onDebug()" >Show</button>
-  <div *ngIf="isDebugOn">
-    {{dataSource?.data?.length}}
-  </div>
-</div>-->
-<div class="container mt-4">
+<div *ngIf="obs$ | async" class="container mt-4">
     <div *ngIf="dataSource.data.length==0 else elseBlock">
         <div class="d-flex justify-content-between" style="align-items:baseline">
             <p class="h6">No Review Found!<p>
@@ -12,19 +6,22 @@
         </div>
     </div>
     <ng-template #elseBlock>
-      <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty">
+      <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="dataSource.data.length == 0 ? true:false">
       </app-admin-model-searcher>
-      <div  class="d-flex justify-content-between" style="align-items:baseline">
-        <div><h3><strong>Review Table</strong></h3></div>
-        <div><button class="btn btn-sm btn-link btn-outline-link" [routerLink]="['./add']">Add Review</button></div>
+      <div class="d-flex justify-content-between mt-3">
+        <span class="model-title">Review Table</span>
+        <button class="btn btn-sm btn-primary" style="border-radius:7px" [routerLink]="['./add']"><span
+            class="material-icons model-add">
+            add_box
+          </span>Add Review</button>
       </div>
       <!--<app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" [ModelItems]="dataSource.data"
         [exclusionColumns]="exclusionColumns" (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"></app-admin-model-table>-->
         <div class="card my-2" *ngFor="let modelItem of dataSource.data">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-              <div><a href="javascript:void(0);"><span>{{$any(modelItem).vintage.year}} {{$any(modelItem).vintage.Wine.name}}</span></a></div>
-              <div><span class="material-icons-outlined" style="cursor:pointer;">delete_forever</span></div>
+              <div><a class="model-item-title" href="javascript:void(0);"><span>{{$any(modelItem).vintage.year}} {{$any(modelItem).vintage.Wine.name}}</span></a></div>
+              <div><span class="material-icons-outlined model-delete-button">delete_forever</span></div>
             </div>
             
           </div>
@@ -73,5 +70,4 @@
           </div>
         </div>
     </ng-template>
-    
 </div>

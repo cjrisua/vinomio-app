@@ -1,3 +1,43 @@
-<div *ngIf="userReview" class="container">
-    {{userReview.id | json}}
+<div *ngIf="userReview" class="">
+    <div class="card my-1" style="border: 0.8px solid rgba(0,0,0,.125);">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-1">
+                    <span class="material-icons-round" style="color:lightslategrey; font-size: xx-large;"> account_circle </span>
+                </div>
+                <div class="col-7">
+                    <div class="card-title h6 m-0 p-0">{{userReview.people?.name}}</div>
+                    <div class="fw-light text-muted" style="font-size: small;vertical-align: middle;">
+                        {{userReview.people?.email}}</div>
+                </div>
+                <div class="col">
+                    <div class="d-flex" style="padding-left: 9px;">
+                        <div class="px-1 text-muted" style="text-align-last: center;">
+                            <div class="d-block">Vintage</div>
+                            <div class="d-block fw-light" style="font-size: small;
+                            color: firebrick;">{{userReview.vintage?.year}}</div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-danger">{{userReview.score}}</button>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col px-4">
+                    <blockquote class="blockquote mb-0 mt-2" style="font-size: initial;">
+                        <p [innerHTML]="formatReview(userReview.message||'')"></p>
+                        <!---
+                        <footer class="blockquote-footer" style="padding-top: 7px;">{{userReview.tastingDate| date }} <cite
+                                title="Source Title"> {{userReview.people?.name}}</cite></footer>-->
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted text-center" style="font-size: smaller;">
+            {{userReview.tastingDate| date }}&#8212;{{userReview.people?.name}}
+        </div>
+    </div>
 </div>

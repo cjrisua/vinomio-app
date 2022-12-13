@@ -4,7 +4,7 @@ import { Wine } from '../../models/Wine';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Producer } from '../../models/Producer';
-import { catchError, of } from 'rxjs';
+import { catchError, of, Observable, switchMap, map, OperatorFunction, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-admin-wines',
@@ -22,47 +22,52 @@ export class AdminWinesComponent implements OnInit {
     'vintages',
   ];
   exclusionColumns = [];
-  dataSource = new MatTableDataSource<any>();
-  isEmpty!:string
+  dataSource!:MatTableDataSource<any>
+  model$!: Observable<any>
+  search!: OperatorFunction<string, readonly {name:string, id:number}[]>;
   
   constructor(
     private wineService: VinomioWineService,
     private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.getSourceData()
-  }
-
-  private getSourceData(text?:string){
-    this.wineService.get({name:text})
-    .pipe(
+  ) {
+    this.model$=this.wineService.get().pipe(
+      map((data:any[])=>{
+        const result = data.map((d) => this.mapWineResponse(d));
+        this.dataSource=new MatTableDataSource(result)
+      }),
+      map(()=>"Wine"),
       catchError(()=>of([]))
     )
-    .subscribe((data) => {
-      this.isEmpty= data.length == 0 ? 'true':'false';
-      this.dataSource.data = data.map((d) => {
-        const vintages = d.Vintages.map((u: any) => u.year);
-        const result: Wine = {
-          id: d.id,
-          name: d.name,
-          slug: d.slug,
-          Producer: d.Producer,
-          Region: d.Region,
-          MasterVarietal: d.MasterVarietal,
-          color: d.color,
-          type: d.type,
-          vintages: vintages,
-        };
-        return result;
-      });
-    });
+  }
+
+  ngOnInit(): void {
+   
+  }
+  private mapWineResponse(wine:any):Wine{
+    const vintages = wine.Vintages.map((u: any) => u.year);
+    const result: Wine = {
+      id: wine.id,
+      name: wine.name,
+      slug: wine.slug,
+      Producer: wine.Producer,
+      Region: wine.Region,
+      MasterVarietal: wine.MasterVarietal,
+      color: wine.color,
+      type: wine.type,
+      vintages: vintages,
+    };
+    return result;
   }
   public searchEvent(keyword:string){
-    this.getSourceData(keyword)
+    this.wineService.get({name:keyword}).pipe(
+      map((data:any[])=>{
+        const result = data.map((d) => this.mapWineResponse(d));
+        return new MatTableDataSource(result)
+      }),
+      catchError(()=> of(new MatTableDataSource()))
+    ).subscribe((res:MatTableDataSource<any>)=> this.dataSource = res)
   }
   public ViewOrDeleteModelItem(wine: any) {
-    //console.log(`naviage to id ${JSON.stringify(wine.event)}`);
     if(wine.action=='view')
       this.router.navigateByUrl('/admin/wine/' + wine.event.id, { state: wine.event });
     else if(wine.action=='delete')

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Variety } from '../../models/Variety';
 import { VinomioVarietyService } from '../../services/vinomio-variety.service';
 
@@ -12,18 +12,26 @@ import { VinomioVarietyService } from '../../services/vinomio-variety.service';
 })
 export class AdminVarietyComponent implements OnInit {
 
+  modelName="Variety"
   displayedColumns=['id','name','slug']
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Variety>();
-  isEmpty!:string
-  
+  model$!: Observable<any>
+
   constructor(
     private router:Router,
     private varietyService: VinomioVarietyService
-  ) { }
+  ) { 
+    this.model$ = this.varietyService.get()
+      .pipe(
+        map((data:any[])=> this.dataSource.data = data),
+        map(()=>this.modelName),
+        catchError(()=>of([]))
+      )
+  }
 
   ngOnInit(): void {
-   this.getSourceData()
+   //this.getSourceData()
   }
   private getSourceData(text?:string){
     this.varietyService.get(text)
@@ -32,7 +40,6 @@ export class AdminVarietyComponent implements OnInit {
     )
     .subscribe((data) => {
       this.dataSource.data = data;
-      this.isEmpty= data.length == 0 ? 'true':'false';
     });
   }
   public searchEvent(keyword:string){

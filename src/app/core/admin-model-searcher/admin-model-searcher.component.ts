@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AdminModelSearcherComponent implements OnInit {
   
   @Input() showing!:{limit:number, count:number}
-  @Input() noMatch!:string
+  @Input() noMatch!:boolean
   @Output() searchEvent = new EventEmitter<any>();
   search!: OperatorFunction<string, readonly any[]>;
   adminForm!: FormGroup;
@@ -40,7 +40,7 @@ export class AdminModelSearcherComponent implements OnInit {
       //this.formGroup.controls.name.clearValidators();
   }
   public get setStyles(){
-    return this.noMatch === 'true' ? {'border-style':'solid','border-color':'red'} : {}
+    return this.noMatch ? {'border-style':'solid','border-color':'red'} : {}
   }
   onClear(){
     this.adminForm.patchValue({name:''})

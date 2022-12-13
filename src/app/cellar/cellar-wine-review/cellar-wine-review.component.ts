@@ -21,5 +21,10 @@ export class CellarWineReviewComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  formatReview(raw:string){
+    const regex = /\B#[^ !@#$%^&*(),.?":{}|<>]+/g;
+    const value = raw.replace(regex,(n)=>{return `<span class="hashtag">${n}</span>`})
+    //console.debug(value)
+    return value
+  }
 }

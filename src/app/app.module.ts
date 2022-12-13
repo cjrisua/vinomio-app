@@ -71,6 +71,8 @@ import { AdminPeopleFormComponent } from './admin/admin-people/admin-people-form
 import { AdminReviewComponent } from './admin/admin-review/admin-review.component';
 import { AdminReviewFormComponent } from './admin/admin-review/admin-review-form/admin-review-form.component';
 import { WineSearchViewComponent } from './wine/wine-search-view/wine-search-view.component';
+import { AdminTagFormComponent } from './admin/admin-tag/admin-tag-form/admin-tag-form.component';
+import { AdminTagComponent } from './admin/admin-tag/admin-tag.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +89,6 @@ import { WineSearchViewComponent } from './wine/wine-search-view/wine-search-vie
     AdminMastervarietalComponent,
     AdminVintageComponent,
     AdminRegionFormComponent,
-    AdminVarietyComponent,
     AdminVarietyFormComponent,
     AdminMastervarietalFormComponent,
     AdminVintageFormComponent,
@@ -95,6 +96,8 @@ import { WineSearchViewComponent } from './wine/wine-search-view/wine-search-vie
     AdminPeopleFormComponent,
     AdminReviewComponent,
     AdminReviewFormComponent,
+    AdminTagFormComponent,
+    AdminTagComponent,
     AuthLoginComponent,
     NavbarComponent,
     CellarDashboardComponent,

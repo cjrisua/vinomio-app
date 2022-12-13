@@ -1,14 +1,22 @@
-<div class="container mt-3">
-  <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty"></app-admin-model-searcher>
-  <div *ngIf="dataSource.data && dataSource.data.length > 0">
-  <div  class="d-flex justify-content-between" style="align-items:baseline">
-    <div><h3><strong>Vintage Table</strong></h3></div>
-    <div><button class="btn btn-sm btn-link btn-outline-link" [routerLink]="['./add']">Add Vintage</button></div>
+<div *ngIf="model$ | async;let modelName" class="container mt-4">
+  <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing"
+      [noMatch]="dataSource.data.length == 0 ? true:false"></app-admin-model-searcher>
+  <div *ngIf="!dataSource.data || dataSource.data.length==0 else elseBlock">
+    <p class="h6"><span>No {{modelName}} Found!</span>
+      <span>
+        <button class="btn btn-sm btn-outline-link" [routerLink]="['./add']">Add {{modelName}}</button>
+      </span>
+    </p>
   </div>
-  <app-admin-model-table
-    [ModelItems]="dataSource.data"
-    [exclusionColumns]="exclusionColumns"
-    (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"
-    ></app-admin-model-table>
-  </div>
+  <ng-template #elseBlock>
+    <div class="d-flex justify-content-between mt-3">
+      <span class="model-title">{{modelName}} Table</span>
+      <button class="btn btn-sm btn-primary" style="border-radius:7px" [routerLink]="['./add']"><span
+          class="material-icons model-add">
+          add_box
+        </span>Add {{modelName}}</button>
+    </div>
+    <app-admin-model-table [ModelItems]="dataSource.data" [exclusionColumns]="exclusionColumns"
+      (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"></app-admin-model-table>
+  </ng-template>
 </div>

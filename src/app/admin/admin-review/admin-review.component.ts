@@ -13,20 +13,25 @@ import { VinomioReviewService } from 'src/app/services/vinomio-review.service';
 export class AdminReviewComponent implements OnInit {
 
   exclusionColumns=[]
-  dataSource:MatTableDataSource<Review>;
-  isEmpty!:string
+  dataSource!:MatTableDataSource<Review>;
   isDebugOn:boolean=false
+  obs$!:Observable<any>
 
   constructor(
     private router: Router,
     private reviewService: VinomioReviewService
   ) { 
-    this.dataSource = new MatTableDataSource<Review>();
+    this.obs$ =  this.reviewService.getList().pipe(
+      map((reviews:Review[])=>{
+        this.dataSource = new MatTableDataSource(reviews)
+      }),
+      map(()=>true),
+      catchError(()=>of([]))
+    )
   }
 
   ngOnInit(): void {
-    this.getSourceData()
-    //this.subject = new BehaviorSubject()
+
   }
 
   public searchEvent(keyword:string){
@@ -38,7 +43,6 @@ export class AdminReviewComponent implements OnInit {
     )
     .subscribe(data => {
       this.dataSource.data = data;
-      this.isEmpty= data.length == 0 ? 'true':'false';
       });
   }
   public ViewOrDeleteModelItem(item: any) {

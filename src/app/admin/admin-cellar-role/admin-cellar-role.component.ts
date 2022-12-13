@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Role } from '../../models/Role';
 import { VinomioRoleService } from '../../services/vinomio-role.service';
 
@@ -15,15 +15,22 @@ export class AdminCellarRoleComponent implements OnInit {
   displayedColumns=['id','name','slug']
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Role>();
-  isEmpty!:string
- 
+  model$!: Observable<any>
+  modelName="Role"
   constructor(
     private router: Router,
     private roleService:VinomioRoleService
-  ) { }
+  ) {
+    this.model$ = this.roleService.get()
+      .pipe(
+        map((data:any[])=> this.dataSource.data = data),
+        map(()=>this.modelName),
+        catchError(()=>of([]))
+      )
+  }
 
   ngOnInit(): void {
-    this.getSourceData()
+    //this.getSourceData()
   }
   private getSourceData(text?:string){
     this.roleService.get(text)
@@ -32,7 +39,6 @@ export class AdminCellarRoleComponent implements OnInit {
     )
     .subscribe((data) => {
       this.dataSource.data = data;
-      this.isEmpty= data.length == 0 ? 'true':'false';
     });
   }
   public searchEvent(keyword:string){

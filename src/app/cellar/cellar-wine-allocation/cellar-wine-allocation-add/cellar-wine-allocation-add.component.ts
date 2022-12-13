@@ -17,7 +17,6 @@ export class CellarWineAllocationAddComponent implements OnInit {
 
   @Input() currentUser!:Profile
   dataSource = new MatTableDataSource<Allocation>();
-  isEmpty!:string
 
   constructor(
     private router: Router,
@@ -34,7 +33,6 @@ export class CellarWineAllocationAddComponent implements OnInit {
     )
     .subscribe((data) => {
       this.dataSource.data = data;
-      this.isEmpty= data.length == 0 ? 'true':'false';
     });
   }
   public searchEvent(keyword:string){

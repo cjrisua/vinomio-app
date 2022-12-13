@@ -2,8 +2,8 @@
 <div class="card my-2" *ngFor="let modelItem of ModelItems">
     <div class="card-header">
       <div class="d-flex justify-content-between align-items-center">
-        <div><a href="javascript:void(0);" (click)="onViewItem(modelItem)">{{modelItem.name}}</a></div>
-        <div><span class="material-icons-outlined" (click)="onDelete(modelItem)" style="cursor:pointer;"  >delete_forever</span></div>
+        <div><a class="model-item-title" href="javascript:void(0);" (click)="onViewItem(modelItem)">{{modelItem.name}}</a></div>
+        <div><span class="material-icons-outlined model-delete-button" (click)="onDelete(modelItem)">delete_forever</span></div>
       </div>
       
     </div>

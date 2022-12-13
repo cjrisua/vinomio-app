@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Vintage } from '../../models/Vintage';
 import { VinomioVintageService } from '../../services/vinomio-vintage.service';
 
@@ -14,14 +14,23 @@ export class AdminVintageComponent implements OnInit {
   displayedColumns=['id','year','Wine.name']
   dataSource = new MatTableDataSource<Vintage>();
   exclusionColumns = ['wineId','year'];
-  isEmpty!:string
+  model$!: Observable<any>
+  modelName="Vintage";
   constructor(
     private vintageService: VinomioVintageService,
     private router: Router
-  ) { }
+  ) {
+    this.model$ = this.vintageService.get().pipe(
+      map((data: any[]) => {
+        this.dataSource.data = data.map(m => {m['name']= `${m.year} ${m.Wine.name}`; return m})
+      }),
+      map(() => this.modelName),
+      catchError(() => of([]))
+    );
+   }
 
   ngOnInit(): void {
-    this.getSourceData()
+    //this.getSourceData()
   }
   private getSourceData(text?:string){
     this.vintageService.get()
@@ -29,10 +38,7 @@ export class AdminVintageComponent implements OnInit {
       catchError(()=>of([]))
     )
     .subscribe((data) => {
-      //this.dataSource.data = data;
-      this.isEmpty= data.length == 0 ? 'true':'false';
       this.dataSource.data = data.map(m => {
-        //console.log(JSON.stringify(m))
         m['name']= `${m.year} ${m.Wine.name}`
         return m;
       })

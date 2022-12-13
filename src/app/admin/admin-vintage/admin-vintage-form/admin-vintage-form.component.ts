@@ -93,7 +93,7 @@ export class AdminVintageFormComponent implements OnInit {
       this.vintageService.add({wineId:this.vintageFromCtrl.value.id, year:year})
       .subscribe(()=>{
         if(index+1 == this.addedItemCollection.length)
-          this.route.navigateByUrl('/admin/model?name=vintage')
+          this.route.navigateByUrl('/admin/vintage')
       })
     })
   }

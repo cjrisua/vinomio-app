@@ -3,7 +3,7 @@ import { VinomioProducerService } from '../../services/vinomio-producer.service'
 import {MatTableDataSource} from "@angular/material/table";
 import { Producer } from '../../models/Producer';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-admin-producers',
@@ -12,18 +12,27 @@ import { catchError, of } from 'rxjs';
 })
 export class AdminProducersComponent implements OnInit {
 
+  modelName = "Producer"
   producers: Producer[] = [];
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Producer>();
-  isEmpty!:string
+  model$!: Observable<any>
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private producerService: VinomioProducerService) { }
+    private producerService: VinomioProducerService) { 
+      this.model$ = this.producerService.get()
+      .pipe(
+        map((data:any[])=> this.dataSource.data = data),
+        map(()=>this.modelName),
+        catchError(()=>of([]))
+      )
+    }
 
   ngOnInit(): void {
-    console.debug("AdminProducersComponent [ngOnInit()]")
-    this.getSourceData()
+    //console.debug("AdminProducersComponent [ngOnInit()]")
+    //this.getSourceData()
   }
 
   private getSourceData(text?:string){
@@ -34,7 +43,6 @@ export class AdminProducersComponent implements OnInit {
     .subscribe((data) => {
       //this.producers = data;
       this.dataSource.data = data;
-      this.isEmpty= data.length == 0 ? 'true':'false';
     });
   }
   public searchEvent(keyword:string){
