@@ -35,9 +35,9 @@ export class AdminVarietyFormComponent implements OnInit {
     let data={"name":this.varietyForm.value.name.trim()}
 
     if(this.variety)
-      this.varietyService.put(this.variety.id,data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=variety'));
+      this.varietyService.put(this.variety.id,data).subscribe((response) => this.route.navigateByUrl('/admin/variety'));
     else
-      this.varietyService.add(data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=variety'));
+      this.varietyService.add(data).subscribe((response) => this.route.navigateByUrl('/admin/variety'));
   }
   showFormControls(form: any) {
     return form && form.controls.name &&

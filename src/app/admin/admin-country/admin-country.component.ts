@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { Country } from '../../models/Country';
 import { VinomioCountryService } from '../../services/vinomio-country.service';
 
@@ -17,6 +17,7 @@ export class AdminCountryComponent implements OnInit {
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Country>();
   model$!: Observable<any>
+  clearForm = new Subject()
   
   constructor(
     private router:Router,
@@ -50,7 +51,10 @@ export class AdminCountryComponent implements OnInit {
     if(item.action=='view')
       this.router.navigateByUrl('/admin/country/' + item.event.id, { state: item.event });
     else if(item.action=='delete')
-      this.countryService.delete(item.event.id).subscribe(() => this.ngOnInit())
+      this.countryService.delete(item.event.id).subscribe(() => {
+        this.clearForm.next('')
+        this.getSourceData()
+      })
   }
   public get showing(){
     return {limit:this.dataSource.data.length,count:this.countryService.count}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { Vintage } from '../../models/Vintage';
 import { VinomioVintageService } from '../../services/vinomio-vintage.service';
 
@@ -16,6 +16,8 @@ export class AdminVintageComponent implements OnInit {
   exclusionColumns = ['wineId','year'];
   model$!: Observable<any>
   modelName="Vintage";
+  clearForm = new Subject()
+  
   constructor(
     private vintageService: VinomioVintageService,
     private router: Router
@@ -51,7 +53,10 @@ export class AdminVintageComponent implements OnInit {
     if(wine.action=='view')
     this.router.navigateByUrl('/admin/vintage/' + wine.event.id, { state: wine.event });
   else if(wine.action=='delete')
-    this.vintageService.delete(wine.event.id).subscribe(() => this.ngOnInit())
+    this.vintageService.delete(wine.event.id).subscribe(() => {
+      this.clearForm.next('')
+      this.getSourceData()
+    })
   }
   public get showing(){
     return {limit:this.dataSource.data.length,count:this.vintageService.count}

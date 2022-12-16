@@ -63,16 +63,16 @@ export class AdminMastervarietalFormComponent implements OnInit {
       name: this.mastervarietalForm.value.name.trim(),
       varieties: this.varietyIdCollection.filter( v => !this.mastervarietal?.varieties.some(i => i.id == v)) //new varieties for blend
     }
-    console.debug(data);
+    //console.debug(data);
 
     this.varietyIdRemovalCollection.forEach((id) => 
         this.mastervarietalService.deleteVariety(this.mastervarietal.slug, id)
-        .subscribe(() => console.debug("done")))
+        .subscribe(() => {}))
 
     if(this.mastervarietal)
-      this.mastervarietalService.put(this.mastervarietal.id, data).subscribe(() => this.route.navigateByUrl('/admin/model?name=mastervarietal'));
+      this.mastervarietalService.put(this.mastervarietal.id, data).subscribe(() => this.route.navigateByUrl('/admin/mastervarietal'));
     else
-      this.mastervarietalService.add(data).subscribe(() => this.route.navigateByUrl('/admin/model?name=mastervarietal'));
+      this.mastervarietalService.add(data).subscribe(() => this.route.navigateByUrl('/admin/mastervarietal'));
   }
   onVarietyActionEvent(event:any){
     if(event.status ==='added'){

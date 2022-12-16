@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { Region } from '../../models/Region';
 import { VinomioRegionService } from '../../services/vinomio-region.service';
 
@@ -16,6 +16,7 @@ export class AdminRegionComponent implements OnInit {
   exclusionColumns=['country','regions','parent']
   dataSource = new MatTableDataSource<Region>();
   model$!: Observable<any>
+  clearForm = new Subject()
 
   constructor(
     private router: Router,
@@ -49,7 +50,10 @@ export class AdminRegionComponent implements OnInit {
     if(wine.action=='view')
       this.router.navigateByUrl('/admin/region/' + wine.event.id, { state: wine.event });
     else if(wine.action=='delete')
-      this.regionService.delete(wine.event.id).subscribe(() => this.ngOnInit())
+      this.regionService.delete(wine.event.id).subscribe(() => {
+        this.clearForm.next('')
+        this.getSourceData()
+      })
   }
   public get showing(){
     return {limit:this.dataSource.data.length,count:this.regionService.count}

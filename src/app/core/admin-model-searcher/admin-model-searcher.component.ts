@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AdminModelSearcherComponent implements OnInit {
   
+  @Input() clearAction = new Subject();
   @Input() showing!:{limit:number, count:number}
   @Input() noMatch!:boolean
   @Output() searchEvent = new EventEmitter<any>();
@@ -26,6 +27,7 @@ export class AdminModelSearcherComponent implements OnInit {
       name: new FormControl('', [
         Validators.minLength(3),
       ])})
+    this.clearAction.subscribe(()=> this.adminForm.patchValue({name:''}))
     this.subject
             .pipe(debounceTime(500))
             .subscribe(() => {

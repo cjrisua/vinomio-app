@@ -42,9 +42,13 @@ export class AdminCountryFormComponent implements OnInit {
    let data={"name":this.countryForm.value.name.trim()}
 
    if(this.country)
-    this.countryService.put(this.country.id,data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=country'));
+    this.countryService.put(this.country.id,data)
+    .subscribe((response) => 
+    this.route.navigateByUrl('/admin/country'));
    else
-    this.countryService.add(data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=country'));
+    this.countryService.add(data).subscribe(
+      (response) => 
+      this.route.navigateByUrl('/admin/country'));
 
   }
   private extractData(res: Response) {

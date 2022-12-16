@@ -70,9 +70,9 @@ export class AdminRegionFormComponent implements OnInit {
       parentId: this.regionDropDowmCtrl.value?.id
     };
     if(this.region)
-      this.regionService.put(this.region.id, data).subscribe(() => this.route.navigateByUrl('/admin/model?name=region'));
+      this.regionService.put(this.region.id, data).subscribe(() => this.route.navigateByUrl('/admin/region'));
     else
-      this.regionService.add(data).subscribe(() => this.route.navigateByUrl('/admin/model?name=region'));
+      this.regionService.add(data).subscribe(() => this.route.navigateByUrl('/admin/region'));
   }
   onChangeRegion(e: any){
     this.GetRegionsForCountry(e.target.value)

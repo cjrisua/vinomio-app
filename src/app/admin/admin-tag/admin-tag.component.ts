@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, finalize, map, Observable, of, Subject } from 'rxjs';
 import { VinomioTagService } from 'src/app/services/vinomio-tag.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class AdminTagComponent implements OnInit {
   exclusionColumns=[]
   dataSource = new MatTableDataSource<any>();
   model$!: Observable<any>
+  clearForm = new Subject()
 
   constructor(
     private router:Router,
@@ -24,8 +25,8 @@ export class AdminTagComponent implements OnInit {
     this.model$ = this.tagService.getList()
     .pipe(
       map((data:any[])=> this.dataSource.data = data),
-      map(()=>this.modelName),
-      catchError(()=>of([]))
+      catchError(()=>of([])),
+      finalize(()=>this.modelName)
     )
   }
 
@@ -49,7 +50,10 @@ export class AdminTagComponent implements OnInit {
     if(item.action=='view')
       this.router.navigate(['/admin/tag/', item.event.id]);
     else if(item.action=='delete')
-      this.tagService.delete(item.event.id).subscribe(() => this.ngOnInit())
+      this.tagService.delete(item.event.id).subscribe(() => {
+        this.clearForm.next('')
+        this.getSourceData()
+      })
   }
   public get showing(){
     return { 

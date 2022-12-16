@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { VinomioPeopleService } from 'src/app/services/vinomio-people.service';
 import { People } from '../../models/People';
 import { VinomioRegionService } from '../../services/vinomio-region.service';
@@ -18,6 +18,8 @@ export class AdminPeopleComponent implements OnInit {
   dataSource = new MatTableDataSource<People>();
   model$!: Observable<any>
   modelName="People"
+  clearForm = new Subject()
+
   constructor(
     private router: Router,
     private peopleService:VinomioPeopleService
@@ -33,7 +35,7 @@ export class AdminPeopleComponent implements OnInit {
   ngOnInit(): void {
     //this.getSourceData()
   }
-  private getSourceData(text?:string){
+  private getSourceData(text?:any){
     this.peopleService.getList().pipe(
       catchError(()=>of([]))
     )
@@ -42,13 +44,16 @@ export class AdminPeopleComponent implements OnInit {
       });
   }
   public searchEvent(keyword:string){
-    this.getSourceData(keyword)
+    this.getSourceData({name:keyword})
   }
   public ViewOrDeleteModelItem(item: any) {
     if(item.action=='view')
       this.router.navigate(['/admin/people/', item.event.id]);
     else if(item.action=='delete')
-      this.peopleService.delete(item.event.id).subscribe(() => this.ngOnInit())
+      this.peopleService.delete(item.event.id).subscribe(() => {
+        this.clearForm.next('')
+        this.getSourceData()
+      })
       
   }
   public get showing(){

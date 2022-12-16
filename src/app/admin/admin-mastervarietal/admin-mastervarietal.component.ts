@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { MasterVarietal } from '../../models/MasterVarietal';
 import { VinomioMastervarietalService } from '../../services/vinomio-mastervarietal.service';
 
@@ -16,6 +16,8 @@ export class AdminMastervarietalComponent implements OnInit {
   exclusionColumns = ['varieties'];
   dataSource = new MatTableDataSource<MasterVarietal>();
   model$!: Observable<any>;
+  clearForm = new Subject()
+
   constructor(
     private mastervarietalService: VinomioMastervarietalService,
     private router: Router
@@ -30,7 +32,9 @@ export class AdminMastervarietalComponent implements OnInit {
     //this.getSourceData()
   }
   private getSourceData(text?: string) {
-    this.mastervarietalService.get(text).subscribe((data) => {
+    this.mastervarietalService.get(text).pipe(
+      catchError(()=>of([]))
+    ).subscribe((data) => {
       this.dataSource.data = data;
     });
   }
@@ -38,19 +42,15 @@ export class AdminMastervarietalComponent implements OnInit {
     this.getSourceData(keyword);
   }
   public ViewOrDeleteModelItem(wine: any) {
-    console.log(
-      `naviage action: ${wine.action} with event of ${JSON.stringify(
-        wine.event
-      )}`
-    );
     if (wine.action == 'view')
       this.router.navigateByUrl('/admin/mastervarietal/' + wine.event.id, {
         state: wine.event,
       });
     else if (wine.action == 'delete')
-      this.mastervarietalService
-        .delete(wine.event.id)
-        .subscribe(() => this.ngOnInit());
+      this.mastervarietalService.delete(wine.event.id).subscribe(() => {
+          this.clearForm.next('')
+          this.getSourceData()
+        });
   }
   public get showing() {
     return {

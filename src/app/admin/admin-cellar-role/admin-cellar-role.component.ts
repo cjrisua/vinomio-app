@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { Role } from '../../models/Role';
 import { VinomioRoleService } from '../../services/vinomio-role.service';
 
@@ -17,6 +17,8 @@ export class AdminCellarRoleComponent implements OnInit {
   dataSource = new MatTableDataSource<Role>();
   model$!: Observable<any>
   modelName="Role"
+  clearForm = new Subject()
+
   constructor(
     private router: Router,
     private roleService:VinomioRoleService
@@ -45,11 +47,13 @@ export class AdminCellarRoleComponent implements OnInit {
     this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(item: any) {
-    console.log(`naviage to id ${JSON.stringify(item.event)}`);
     if(item.action=='view')
       this.router.navigateByUrl('/admin/role/' + item.event.id, { state: item.event });
     else if(item.action=='delete')
-      this.roleService.delete(item.event.id).subscribe(() => this.ngOnInit())
+      this.roleService.delete(item.event.id).subscribe(() => {
+        this.clearForm.next('')
+        this.getSourceData()
+      })
   }
   public get showing(){
     return {limit:this.dataSource.data.length,count:this.roleService.count}

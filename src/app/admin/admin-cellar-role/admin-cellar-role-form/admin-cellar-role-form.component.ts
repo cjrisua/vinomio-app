@@ -49,9 +49,9 @@ export class AdminCellarRoleFormComponent implements OnInit {
   onSubmit() { 
     let data={"name":this.roleForm.value.name.trim()}
     if(this.role)
-     this.service.put(this.role.id,data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=role'));
+     this.service.put(this.role.id,data).subscribe((response) => this.route.navigateByUrl('/admin/role'));
     else
-     this.service.add(data).subscribe((response) => this.route.navigateByUrl('/admin/model?name=role'));
+     this.service.add(data).subscribe((response) => this.route.navigateByUrl('/admin/role'));
  
    }
    onRoleChange(event:any){}

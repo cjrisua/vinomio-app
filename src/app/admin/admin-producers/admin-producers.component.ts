@@ -3,7 +3,7 @@ import { VinomioProducerService } from '../../services/vinomio-producer.service'
 import {MatTableDataSource} from "@angular/material/table";
 import { Producer } from '../../models/Producer';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-admin-producers',
@@ -17,6 +17,7 @@ export class AdminProducersComponent implements OnInit {
   exclusionColumns=[]
   dataSource = new MatTableDataSource<Producer>();
   model$!: Observable<any>
+  clearForm = new Subject()
 
   constructor(
     private route: ActivatedRoute,
@@ -49,11 +50,16 @@ export class AdminProducersComponent implements OnInit {
     this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
-    //console.log(`naviage to id ${JSON.stringify(wine.event)}`);
+    //console.log(`naviage to id ${JSON.stringify(wine)}`);
     if(wine.action=='view')
       this.router.navigateByUrl('/admin/producer/' + wine.event.id, { state: wine.event });
-    else if(wine.action=='delete')
-      this.producerService.delete(wine.event.id).subscribe(() => this.ngOnInit())
+    else if(wine.action=='delete'){
+      this.producerService.delete(wine.event.id).subscribe(() => {
+        this.clearForm.next('')
+        this.getSourceData()
+      })
+    }
+      //
   }
   public get showing(){
     return {limit:this.dataSource.data.length,count:this.producerService.count}
