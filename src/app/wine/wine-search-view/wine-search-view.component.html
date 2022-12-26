@@ -52,9 +52,12 @@
                     <ngb-rating [max]="5" [(rate)]="starRating" [readonly]="true"></ngb-rating>
                 </div>
                 <div>
-                    <div *ngIf="vintage?.average || vintage?.total; else elseBlock" class="fw-light my-1"><span *ngIf="vintage?.average">Score:<span class="px-1 fw-bold">{{vintage?.average | number:'1.0-1' }}</span></span>
-                        <span *ngIf="vintage?.average" class="fw-bolder" >|</span>
-                        <span *ngIf="vintage?.total"><span class="px-1 fw-bold">{{vintage?.total | number }}</span>Review</span>
+                    <div *ngIf="vintage.Reviews.length > 0 else elseBlock" class="fw-light my-1">
+                        <div>
+                            <span>Score:<span class="px-1 fw-bold">{{vintage.Reviews | averageScore | number:'1.0-1'}}</span></span>
+                            <span class="fw-bolder" >|</span>
+                            <span ><span class="px-1 fw-bold">{{vintage.Reviews.length }}</span>Review</span>
+                        </div>
                     </div>
                     <ng-template #elseBlock>
                         <div class="fw-light">No Reviews Found</div>

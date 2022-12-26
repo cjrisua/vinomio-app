@@ -6,8 +6,8 @@
         </div>
     </div>
     <ng-template #elseBlock>
-      <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="dataSource.data.length == 0 ? true:false">
-      </app-admin-model-searcher>
+      <app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing"
+      [noMatch]="dataSource.data.length == 0 ? true:false" [clearAction]="clearForm"></app-admin-model-searcher>
       <div class="d-flex justify-content-between mt-3">
         <span class="model-title">Review Table</span>
         <button class="btn btn-sm btn-primary" style="border-radius:7px" [routerLink]="['./add']"><span
@@ -21,7 +21,7 @@
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
               <div><a class="model-item-title" href="javascript:void(0);"><span>{{$any(modelItem).vintage.year}} {{$any(modelItem).vintage.Wine.name}}</span></a></div>
-              <div><span class="material-icons-outlined model-delete-button">delete_forever</span></div>
+              <div><span class="material-icons-outlined model-delete-button" (click)="onDelete(modelItem.id)">delete_forever</span></div>
             </div>
             
           </div>

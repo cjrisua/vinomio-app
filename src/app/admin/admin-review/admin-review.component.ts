@@ -16,13 +16,14 @@ export class AdminReviewComponent implements OnInit {
   dataSource!:MatTableDataSource<Review>;
   isDebugOn:boolean=false
   obs$!:Observable<any>
+  clearForm = new Subject()
 
   constructor(
     private router: Router,
     private reviewService: VinomioReviewService
   ) { 
     this.obs$ =  this.reviewService.getList().pipe(
-      map((reviews:Review[])=>{
+      map((reviews:any)=>{
         this.dataSource = new MatTableDataSource(reviews)
       }),
       map(()=>true),
@@ -45,17 +46,14 @@ export class AdminReviewComponent implements OnInit {
       this.dataSource.data = data;
       });
   }
-  public ViewOrDeleteModelItem(item: any) {
-    /*if(item.action=='view')
-      this.router.navigate(['/admin/people/', item.event.id]);
-    else if(item.action=='delete')
-      this.peopleService.delete(item.event.id).subscribe(() => this.ngOnInit())
-     */ 
+  public onDelete(item: any) {
+      this.reviewService.delete(item).subscribe(() => {
+        this.clearForm.next('')
+        this.getSourceData()
+      })
   }
   public get showing(){
-    return {
-      limit:this.dataSource.data.length,
-      count:0}
+    return {limit:this.dataSource.data.length, count:this.reviewService.count}
   }
   onDebug(){
     this.isDebugOn = !this.isDebugOn

@@ -14,6 +14,7 @@ export class WineSearchViewComponent implements OnInit {
 
   wineObject!:any
   starRating = 4; 
+  score!:{id:number,score:[]}
 
   constructor(
     private wineService:VinomioWineService,
@@ -24,14 +25,9 @@ export class WineSearchViewComponent implements OnInit {
       if (params.get('id') && regExp.test(params.get('id') || '')) {
        const wineId = params.get('id')
        this.wineService.getByWine(wineId).subscribe((res) => { 
-          res[0].Vintages.map((v:any,index:any) =>{
-            //if(res[0].review.scores){
-              const data = res[0].review.scores.find((s:any) =>s.vintageId == v.id)
-              res[0].Vintages[index] = {...v,...data}
-            //}
-            return v
-          })
-          this.wineObject = res[0]
+          const wine=res[0]
+          this.score=wine.Vintages.map((v:any) => {return {id: v.id, scores:v.Reviews.map((s:any) => s.score)}})
+          this.wineObject = wine
         })
       }
     });

@@ -73,6 +73,7 @@ import { AdminReviewFormComponent } from './admin/admin-review/admin-review-form
 import { WineSearchViewComponent } from './wine/wine-search-view/wine-search-view.component';
 import { AdminTagFormComponent } from './admin/admin-tag/admin-tag-form/admin-tag-form.component';
 import { AdminTagComponent } from './admin/admin-tag/admin-tag.component';
+import { AverageScorePipe } from './pipes/average-score.pipe';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,8 @@ import { AdminTagComponent } from './admin/admin-tag/admin-tag.component';
     CellarWineAllocationEditComponent,
     WineReviewViewComponent,
     WineReviewListComponent,
-    CellarWineReviewComponent
+    CellarWineReviewComponent,
+    AverageScorePipe
   ],
   imports: [
     BrowserModule,

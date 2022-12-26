@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, Observable, OperatorFunction, startWith, Subject } from 'rxjs';
 import { People } from 'src/app/models/People';
 import { Wine } from 'src/app/models/Wine';
@@ -26,13 +26,11 @@ export class AdminReviewFormComponent implements OnInit {
   subject: Subject<any> = new Subject();
 
   constructor(
-    private route: ActivatedRoute,
     private router:Router,
     private authService: AuthService,
     private vintageService: VinomioVintageService,
     private peopleService: VinomioPeopleService,
     private reviewService: VinomioReviewService,
-    private tagServices: VinomioTagService
   ) { 
     this.initForm()
     this.routeBack ='/admin/review'
@@ -60,7 +58,6 @@ export class AdminReviewFormComponent implements OnInit {
     );
   }
   onSubmit(){
-    
     const data = {
       review: this.adminForm.get("review")?.value,
       publisherId: this.adminForm.get("publisher")?.value.id,
@@ -68,7 +65,7 @@ export class AdminReviewFormComponent implements OnInit {
       tags: this.tags.map(i => {return {"name":i.name}}),
       score: this.adminForm.get("score")?.value
     }
-    console.debug(data)
+    //console.debug(data)
     this.reviewService.add(data).subscribe((p)=>this.router.navigate(['/admin/review']))
   }
   onReviewerFilterList():void{
@@ -98,7 +95,7 @@ export class AdminReviewFormComponent implements OnInit {
         this.vintageService.getByWineName(searchText).subscribe((res:any) => results=res)
         return results
       }),
-      catchError((e)=>{ console .log(e); return []})
+      catchError((e)=>{ console.debug(e); return []})
     )
   }
   resultFormatListValue(value: any) {
@@ -121,8 +118,7 @@ export class AdminReviewFormComponent implements OnInit {
     };
   }
   onKeyUp(event:any){
-    let tagsfound:any[] = []
-   // console.log(event)
+    let tagsFound:any[] = []
     if(event.key == "Shift" || <string>event.key.includes("Arrow")) return 
     const content:string = event.target.innerText
     const regexp = /\B#[^ !@#$%^&*(),.?":{}|<>]+/g;
@@ -130,23 +126,18 @@ export class AdminReviewFormComponent implements OnInit {
     array.forEach((tag,index)=> { 
       let name = tag[0]
       let tagInfo={id:index,name:name.trim()}
-      tagsfound.push(tagInfo);
+      tagsFound.push(tagInfo);
     })
-
-    if(tagsfound.length>0){
-      this.subject.next(tagsfound)
-      //sync
-      this.tags = tagsfound
+    if(tagsFound.length>0){
+      this.subject.next(tagsFound)
+      this.tags = tagsFound
     }
-
     if(array.length == 0 && this.tags.length > 0)
       this.tags = []
-
     this.adminForm.patchValue({review:content})
   }
   onAddMe(){
     const user = this.authService.getCurrentUser();
-    console.log(user)
-    
+    console.debug(user)
   }
 }

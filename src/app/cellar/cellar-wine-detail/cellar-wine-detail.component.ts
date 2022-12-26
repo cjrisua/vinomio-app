@@ -14,18 +14,18 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
   selector: 'app-cellar-wine-detail',
   templateUrl: './cellar-wine-detail.component.html',
   styleUrls: ['./cellar-wine-detail.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class CellarWineDetailComponent implements OnInit {
   //@Input() currentUser!:Profile
   wine!: any;
   @Output() actionEvent = new EventEmitter<{}>();
 
-  postForm!:FormGroup
-  _postVintageId!:number
-  showAllocated:boolean = false
-  showPending:boolean = false
-  showReviews:boolean = false
+  postForm!: FormGroup;
+  _postVintageId!: number;
+  showAllocated: boolean = false;
+  showPending: boolean = false;
+  showReviews: boolean = false;
 
   cellarItem!: any;
   vintages: any = [];
@@ -59,10 +59,10 @@ export class CellarWineDetailComponent implements OnInit {
     this.postForm = new FormGroup({
       review: new FormControl(''),
       publisherId: new FormControl('1'),
-      vintageId: new FormControl('',[Validators.required]),
+      vintageId: new FormControl('', [Validators.required]),
       tags: new FormArray([]),
-      score: new FormControl('',[Validators.required]),
-    })
+      score: new FormControl('', [Validators.required]),
+    });
     this.wine = <any[]>history.state.data;
     if (this.wine) {
       this.cellarItem = this.wine[0].Vintage.Wine;
@@ -79,34 +79,34 @@ export class CellarWineDetailComponent implements OnInit {
         }
         //res[value.Vintage.year].qty.push(value);
         //allocated
-        if (value.statusId == 'allocated'){
-          this.showAllocated = true
+        if (value.statusId == 'allocated') {
+          this.showAllocated = true;
           res[value.Vintage.year].allocated.push(value);
-        }else if (value.statusId == 'pending'){
-          this.showPending = true
+        } else if (value.statusId == 'pending') {
+          this.showPending = true;
           res[value.Vintage.year].pending.push(value);
         }
         return res;
       }, {});
       this.activeYear = this.vintages[0].year;
       this.onVintageSelection(this.activeYear);
-      //const wineId = 
+      //const wineId =
       const vintageId = this.wine[0].Vintage.id;
       //console.log(vintageId);
-      this.GetReviews(this.wine[0].Vintage.Wine.id)
+      this.GetReviews(this.wine[0].Vintage.Wine.id);
     }
   }
-  GetReviews(wineId:number){
-    this.reviewService
-    .getListByWine(wineId)
-    .pipe(
-      catchError(()=> EMPTY)
-    )
-    .subscribe((res) => {
-      //console.log(res)
-      this.reviews = res
-      this.showReviews = true
-    });
+  GetReviews(wineId: number) {
+    if (this.profile.cellar) {
+      this.reviewService
+        .getListByWine(wineId, { cellarId: this.profile.cellar })
+        .pipe(catchError(() => EMPTY))
+        .subscribe((res) => {
+          //console.log(res)
+          this.reviews = res;
+          this.showReviews = true;
+        });
+    }
   }
   PurchasedOn(collectionEvent: any[]) {
     return collectionEvent.find((i) => i.action === 'PurchasedOn').createdAt;
@@ -139,8 +139,8 @@ export class CellarWineDetailComponent implements OnInit {
   onRelocateItem(item: any) {
     this.actionEvent.emit({ id: 'relocate', data: item });
   }
-  onPostVintageSelection(event:any){
-    this.postForm.patchValue({vintageId:<number>event.value}) 
+  onPostVintageSelection(event: any) {
+    this.postForm.patchValue({ vintageId: <number>event.value });
   }
   onVintageSelection(Year: any) {
     //console.log(this.vintages)
@@ -154,20 +154,21 @@ export class CellarWineDetailComponent implements OnInit {
   onGoBack() {
     //this.actionEvent.emit({id:"back", data:this.wine[0].Vintage.Wine.id})
   }
-  PostNote(note:HTMLDivElement){
+  PostNote(note: HTMLDivElement) {
     //console.log(this.profile)
     //console.log(note.textContent)
     //note.textContent="";
-    this.postForm.patchValue({review:note.textContent})
-    this.reviewService.add(this.postForm.value).pipe(
-      catchError(()=> EMPTY)
-    ).subscribe(()=> {
-      this.GetReviews(this.wine[0].Vintage.Wine.id)
-      note.textContent=""
-    })
+    this.postForm.patchValue({ review: note.textContent });
+    this.reviewService
+      .add(this.postForm.value)
+      .pipe(catchError(() => EMPTY))
+      .subscribe(() => {
+        this.GetReviews(this.wine[0].Vintage.Wine.id);
+        note.textContent = '';
+      });
   }
-  Message(){
+  Message() {
     //console.log( this.vintageSelection)
-    return "Tell me what you think about this wine?"
+    return 'Tell me what you think about this wine?';
   }
 }
