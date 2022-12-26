@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { catchError, EMPTY } from 'rxjs';
 import { People } from 'src/app/models/People';
 import { VinomioPeopleService } from 'src/app/services/vinomio-people.service';
 
@@ -54,7 +55,11 @@ export class AdminPeopleFormComponent implements OnInit {
     return form && form.controls.name && form.controls.name.value; // Dr. IQ
   }
   onSubmit() {
-    this.peopleService.add(this.adminForm.value).subscribe((res) => {
+    this.peopleService.add(this.adminForm.value)
+    .pipe(
+      catchError(error => { console.log(error); return EMPTY })
+    )
+    .subscribe((res) => {
       if (res.status == 201) this.router.navigate(['/admin/people']);
     });
   }
