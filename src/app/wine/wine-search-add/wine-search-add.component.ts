@@ -65,13 +65,30 @@ export class WineSearchAddComponent implements OnInit {
   ngOnInit(): void {
     this.selectedFormat = this.formats[0]
     this.addWineForm = new FormGroup({
-      purchasedOn : new FormControl('',[Validators.required, Validators.pattern('[0-1][1-9]/[0-3][0-9]/[0-9]{4}')]),
-      deliverBy : new FormControl('',[Validators.required, Validators.pattern('[0-1][1-9]/[0-3][0-9]/[0-9]{4}')]),
-      numOfBottles : new FormControl('1',[Validators.required, Validators.pattern('[0-9]+')]),
-      price : new FormControl('',[Validators.required]),
-      format : new FormControl("750ml",[Validators.required]),
-      state : new FormControl(false),
-      searchControl : new FormControl('',[Validators.required,this.forbiddenYearValidator(/[0-9]{4}/i)])
+      note : new FormControl(),
+      formatCollection: new FormArray([],[Validators.required])
+    })
+    this.formatCollection.push(this.addWineFormat())
+  }
+  addWineFormat(): FormGroup{
+   const wineFormatItem = new FormGroup({
+      purchasedDate: new FormControl(`${formatDate(Date.now(), 'MM/dd/yyyy', this.locale)}`,),
+      deliveryDate: new FormControl("",[Validators.required]),
+      merchant: new FormControl("",[Validators.required]),
+      cost: new FormControl("",[Validators.required]),
+      status: new FormControl(),
+      size: new FormControl(this.selectedFormat.id,[Validators.required]),
+      count: new FormControl(0,[Validators.required,Validators.min(1)]),
+      cellarLocationList: new FormArray([])
+    })
+    return wineFormatItem
+  }
+  allocateCellarLocation():FormGroup{
+    const cellarLocationItem = new FormGroup({
+      id: new FormControl(),
+      location: new FormControl(this.cellar.name),
+      section: new FormControl(),
+      bin: new FormControl()
     })
     return cellarLocationItem
   }
@@ -159,23 +176,27 @@ export class WineSearchAddComponent implements OnInit {
   
   }
   onSubmit(){
-    const data:any[] = [{
-        //vintageId: this.navData.data.vintageId,
-        vintage: ""+(this.addWineForm.get('searchControl')?.value?.year | this.addWineForm.get('searchControl')?.value),
-        wineId: this.navData.data.wine.id,
-        cellarId: this.profile.cellar_id,
-        price: this.addWineForm.value.price,
-        bottleCount: this.addWineForm.value.numOfBottles,
-        bottleSize: this.addWineForm.value.format,
-        /*locationId: 0,
-        acquiringSourceId: 0,
-        allocationEventId: this.allocationEvent.id,*/
-        purchasedOn:this.addWineForm.value.price,
-        deliverBy: this.addWineForm.value.price,
-        statusId:  this.addWineForm.value.state ? 'allocated' : 'pending'
-      }];
-      //console.log(data)
-    
+    const data:any[] = this.formatCollection.controls.map(f => {
+       let data = {
+          vintage:`${this.vintageObject.year}`,
+          wineId:this.vintageObject.wineId,
+          cellarId: this.profile.cellar,
+          price: f.value.cost,
+          bottleCount: f.value.count,
+          bottleSize: f.value.size,
+          bottleLocation:[],
+          purchasedOn: f.value.purchasedDate,
+          deliverBy: f.value.deliveryDate,
+          statusId:  f.value.status == true ? 'pending' : 'allocated',
+          purchaseNote: this.addWineForm.value.note,
+          merchant: f.value.merchant
+       }
+       data.bottleLocation = f.value.cellarLocationList.map((l: any) => {
+        const id = this.cellar.attributes.partition?.find(i => i.name == (l.section?.value||"") && i.segment == (l.bin?.value||""))?.id
+          return {id : id}
+       })
+       return data;
+    })
     if(data.length > 0){
       console.log(data)
       this.collectionService.add(data).pipe(
@@ -201,9 +222,7 @@ export class WineSearchAddComponent implements OnInit {
      return value.year;
   }
   onSearchSelection(selection:any):any{
-    //this.wines = []
-    //this.wines.push(selection.item)
-    //console.log(this.addWineForm.get('searchControl')?.status)
+    this.addWineForm.patchValue({searchControl:selection.item})
   }
   onKeyUp(event:any,keyword:any){
     //if(event.key == "Enter")
@@ -239,7 +258,6 @@ export class WineSearchAddComponent implements OnInit {
       filter((i) => i.length > 0),
       map((searchText: string ) => {
           const results = this.vintages.filter(keyword => keyword.year.toString().startsWith(searchText))
-          console.debug(results)
           return results ? results : []
       }),
       catchError((e)=>{ console .log(e); return []})
