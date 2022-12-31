@@ -99,7 +99,7 @@ export class CellarDashboardComponent implements OnInit {
          return Array.from(m.entries()).map((reduced:any) => { 
           const key=reduced[0]
           const value=reduced[1]
-          console.log(value)
+          //console.log(value)
           return { id:key, average:value.average, 
             type:value.data[0].Vintage.Wine.type, 
             wineName: value.data[0].Vintage.Wine.name,
@@ -153,7 +153,7 @@ export class CellarDashboardComponent implements OnInit {
      }
      else{
         //console.debug(this._cellarItemSelection)
-        console.debug(action)
+        //console.debug(action)
         if(action.id==="touched")
           this._cellarItemSelection = action.data
         this.cellarActiveRoute = CellarDashboardActiveRoute.WineDetail
