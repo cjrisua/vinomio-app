@@ -24,13 +24,13 @@ interface LooseObject {
 export class VintagesPipe implements PipeTransform {
   transform(vintage: any[], args?: any): any {
     const vintageList = vintage
-      .map(p => p.Vintage.year)
+      .map(p => p.year)
       .reduce((r:any,a:any) => {
           r[a] = r[a] || [];
           r[a].push(a);
           return r
       },Object.create(null))
-    return Object.values(vintageList).map((p:any) =>`${p[0]}`).join(" , ")
+    return Object.values(vintageList).map((p:any) =>{ return `${p[0]}` }).join(" , ")
   }
 }
 
@@ -49,6 +49,7 @@ export class CellarDashboardComponent implements OnInit {
   
   currentUser!: Profile
   currentCollection: any[] = []
+  wineInCollection:any[] = []
   _selection!:Vintage;
   searchForm!: FormGroup
   _cellarItemSelection!:any
@@ -83,16 +84,37 @@ export class CellarDashboardComponent implements OnInit {
     this.collectionService.getCollection(this.currentUser.cellar)
     .pipe(
       switchMap((m) => m),
-      reduce((r:any,a:any) =>{
-        r[a.Vintage.Wine.id] = r[a.Vintage.Wine.id] || [];
-        r[a.Vintage.Wine.id].push(a);
-        return r
-      },Object.create(null)),
-      map((m:any) => Object.values(m))
+      map((m:any) => { this.currentCollection = m; return m}),
+      reduce((r:Map<number,any[]>,a:any) =>{
+        const key = a.Vintage.Wine.id;
+        const item = r.get(key) || Object.assign({average:[],data:[]})
+        item.data.push(a)
+        const exist = item.average.find((p:any) => p.vintageId == a.Vintage.id)
+        if(a.Vintage.Review.average && !exist){
+          item.average.push({score:+a.Vintage.Review.average , comment:a.Vintage.Review.count, vintageId:a.Vintage.id})
+        }
+        return r.set(key,item)
+      },new Map),
+      map((m:Map<any,any>) => {
+         return Array.from(m.entries()).map((reduced:any) => { 
+          const key=reduced[0]
+          const value=reduced[1]
+          console.log(value)
+          return { id:key, average:value.average, 
+            type:value.data[0].Vintage.Wine.type, 
+            wineName: value.data[0].Vintage.Wine.name,
+            regionName: value.data[0].Vintage.Wine.Region.name,
+            masterVarietalName:value.data[0].Vintage.Wine.MasterVarietal.name,
+            vintage:value.data.map((m:any) =>{return {year:m.Vintage.year}}),
+            data:value.data,
+            comments:value.average.reduce((sum:number,current:any) => sum + (+current.comment), 0)
+          }
+         });
+      })
     )
-    .subscribe((collection) =>
+    .subscribe((collection:any) =>
     {
-      this.currentCollection = collection
+      this.wineInCollection = collection
     })
   }
   public setStyles(Type:string){
@@ -118,7 +140,7 @@ export class CellarDashboardComponent implements OnInit {
     this.cellarActiveRoute = CellarDashboardActiveRoute.AddWine
   }
   onActionEvent(action:any){
-    console.debug(action)
+    //console.debug(action)
      if(action.id=="delete"){
       this.cellarActiveRoute = CellarDashboardActiveRoute.DeleteWine
       this._itemCollectionId= action.data.id

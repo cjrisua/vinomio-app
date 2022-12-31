@@ -178,7 +178,7 @@ export class WineSearchAddComponent implements OnInit {
   onSubmit(){
     const data:any[] = this.formatCollection.controls.map(f => {
        let data = {
-          vintage:this.vintageObject.year,
+          vintage:`${this.vintageObject.year}`,
           wineId:this.vintageObject.wineId,
           cellarId: this.profile.cellar,
           price: f.value.cost,

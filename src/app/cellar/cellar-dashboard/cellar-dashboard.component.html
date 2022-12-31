@@ -28,41 +28,42 @@
     </form>
     <div class="my-4"></div>
     <div  #collectionItems>
-    <div id={{item[0].Vintage.Wine.id}} class="d-flex mt-0" *ngFor="let item of currentCollection">
+    <div id={{item.id}} class="d-flex mt-0" *ngFor="let item of wineInCollection">
       <div class="border rounded-circle position-relative mb-2"
         style="margin:0,0,0,0; padding-top: 12pt; text-align:center;width: 50pt;height: 41pt;">
-        <span class="fw-bold">95.5</span>
-        <div class="position-absolute top-0 start-100 translate-middle" [ngStyle]=setStyles(item[0].Vintage.Wine.type)>
+        <span *ngIf="item.average.length > 0 " class="fw-bold">{{item.average | averageScore | number:'1.0-1'}}</span>
+        <span *ngIf="item.average.length == 0 " class="fw-bold" style="font-size: 8pt;">No Review</span>
+        <div class="position-absolute top-0 start-100 translate-middle" [ngStyle]=setStyles(item.type)>
           <div>
             <span class="material-icons" style="font-size: 30px; padding: 14px 13px 0 0;">wine_bar</span>
           </div>
         </div>
       </div>
       <div class="row w-100">
-        <div class="mx-3" style="width:90%;"><span class="fw-bold">{{item[0].Vintage.Wine.name}}</span><small
-            class="mx-1">&#8212;</small><small class="fw-lighter text-nowrap ">{{item[0].Vintage.Wine.Region.name}}</small></div>
+        <div class="mx-3" style="width:90%;"><span class="fw-bold">{{item.wineName}}</span><small
+            class="mx-1">&#8212;</small><small class="fw-lighter text-nowrap ">{{item.regionName}}</small></div>
         <div class="col">
-          <div class="mx-3 text-muted fw-light">{{item[0].Vintage.Wine.MasterVarietal.name}}</div>
-          <div class="mx-3 text-muted">Vintages:<span class="mx-1 fw-light">{{item | Vintages }}</span></div>
+          <div class="mx-3 text-muted fw-light">{{item.masterVarietalName}}</div>
+          <div class="mx-3 text-muted">Vintages:<span class="mx-1 fw-light">{{item.vintage | Vintages }}</span></div>
           <div class="mx-3 text-muted">Last tasted on:<span class="mx-1 fw-light">Dec 31, 2022</span></div>
         </div>
         <div class="d-grid gap-sm-2 my-2 mx-2">
-          <button class="btn btn-outline-secondary" type="button"  [routerLink]="['./wine']" [state]="{data:item}">View</button>
+          <button class="btn btn-outline-secondary" type="button"  [routerLink]="['./wine']" [state]="{data:item.data}">View</button>
         </div>
         <hr class="mx-2 my-3" />
       </div>
       <div>
-        <div class="position-relative" [routerLink]="['./wine-review']" [queryParams]="{wine:item[0].Vintage.Wine.id}">
+        <div class="position-relative" [routerLink]="['./wine-review']" [queryParams]="{wine:item.id}">
           <span class="material-icons-outlined" style="font-size: 25px;">insert_comment</span>
           <span class="mt-2 position-absolute start-100 translate-middle badge rounded-pill bg-danger">
-            9
+            {{item.comments}}
             <span class="visually-hidden">unread messages</span>
           </span>
         </div>
         <div class="position-relative">
           <span class="material-icons-outlined" style="font-size: 25px;">inventory</span>
           <span class="mt-2 position-absolute start-100 translate-middle badge rounded-pill bg-danger">
-            {{item.length}}
+            {{item.data.length}}
             <span class="visually-hidden">unread messages</span>
           </span>
         </div>
