@@ -1,9 +1,0 @@
-<app-admin-model-searcher (searchEvent)="searchEvent($event)" [showing]="showing" [noMatch]="isEmpty"></app-admin-model-searcher>
-<div *ngIf="dataSource.data && dataSource.data.length > 0">
-  <h3><strong>Role Table</strong></h3>
-  <app-admin-model-table
-    [ModelItems]="dataSource.data"
-    [exclusionColumns]="exclusionColumns"
-    (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"
-    ></app-admin-model-table>
-</div>

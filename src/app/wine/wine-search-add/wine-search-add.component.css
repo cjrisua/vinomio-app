@@ -1,0 +1,8 @@
+.dropdown-menu.show{
+    /*margin-top: auto !important;*/
+    min-width: -webkit-fill-available;
+    width: auto;
+}
+.dropdown-item{
+    padding: 4px 8px !important;
+}

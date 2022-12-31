@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CellarAddWineComponent } from 'src/app/cellar-add-wine/cellar-add-wine.component';
+import { CellarAddWineComponent } from 'src/app/cellar/cellar-add-wine/cellar-add-wine.component';
 import { VinomioMerchantService } from 'src/app/services/vinomio-merchant.service';
 
 @Component({

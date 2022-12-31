@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/Profile';
+import { AuthService } from 'src/app/services/auth.service';
 import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 
 @Component({
@@ -10,18 +11,22 @@ import { VinomioCellarService } from 'src/app/services/vinomio-cellar.service';
 })
 export class ProfileInfoComponent implements OnInit {
 
-  @Input() profile!:Profile
+  profile!:Profile
   profileForm!: FormGroup;
   showForm:boolean = false
   
   constructor(
-    private cellarService: VinomioCellarService
-  ) { }
+    private cellarService: VinomioCellarService,
+    private authService: AuthService
+  ) {
+    this.profile = this.authService.getCurrentUser()
+    console.debug(this.profile)
+   }
 
   ngOnInit(): void {
     this.profileForm = new FormGroup({
-      firstname:  new FormControl(this.profile?.firstname,[Validators.required,Validators.minLength(3)]),
-      lastname:  new FormControl(this.profile?.lastname,[Validators.required,Validators.minLength(3)]),
+      firstName:  new FormControl(this.profile?.firstName,[Validators.required,Validators.minLength(3)]),
+      lastName:  new FormControl(this.profile?.lastName,[Validators.required,Validators.minLength(3)]),
       email:  new FormControl(this.profile?.email,[Validators.required,Validators.minLength(3)]),
       handler:  new FormControl(this.profile?.handler,[Validators.required,Validators.minLength(3)]),
     })

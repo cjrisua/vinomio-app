@@ -1,0 +1,101 @@
+<div class="container mt-2 px-sm-5">
+  <div *ngIf="currentUser?.cellar">
+    <p class="h5">Cellar</p>
+    <p class="m-0 p-0">435 bottles<small class="mx-1">&#8212;</small>
+    <p class="m-0 p-0"><small class="mx-2 text-muted fw-lighter">7 pending delivery</small></p>
+    <p class="m-0 p-0"><small class="mx-2 text-muted fw-lighter">25 pending assignment</small></p>
+
+    <form [formGroup]="searchForm" autocomplete="off">
+      <div class="input-group my-2" [ngStyle]=setStyles>
+        <span class="input-group-text" id="basic-addon1"
+          style="background-color: transparent !important;padding:0pt 2pt !important">
+          <span class="material-icons" style="color: gray;">search</span>
+        </span>
+        <input formControlName="wine" id="wine" placeholder="" class="form-control" type="text" (keyup)="onKeyUp()"
+          (keydown)="onKeyDown()"
+          style="border-left: none !important;border-right: none !important;padding:0pt 3pt !important">
+        <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+          (click)="onClear()">
+          <span class="material-icons" style="color: gray;">close</span>
+        </span>
+      </div>
+      <div class="d-flex justify-content-between m-0 p-0">
+        <p class="text-right text-muted  m-0 p-0">showing: 1 of 433</p>
+        <p class="text-right text-muted  m-0 p-0"><span class="mx-1"><a class="link"
+              href="javascript:void(0)">Previous</a></span>|<span class="mx-1"><a class="link"
+              href="javascript:void(0)">Next</a></span></p>
+      </div>
+    </form>
+    <div class="my-4"></div>
+    <div  #collectionItems>
+    <div id={{item.id}} class="d-flex mt-0" *ngFor="let item of wineInCollection">
+      <div class="border rounded-circle position-relative mb-2"
+        style="margin:0,0,0,0; padding-top: 12pt; text-align:center;width: 50pt;height: 41pt;">
+        <span *ngIf="item.average.length > 0 " class="fw-bold">{{item.average | averageScore | number:'1.0-1'}}</span>
+        <span *ngIf="item.average.length == 0 " class="fw-bold" style="font-size: 8pt;">No Review</span>
+        <div class="position-absolute top-0 start-100 translate-middle" [ngStyle]=setStyles(item.type)>
+          <div>
+            <span class="material-icons" style="font-size: 30px; padding: 14px 13px 0 0;">wine_bar</span>
+          </div>
+        </div>
+      </div>
+      <div class="row w-100">
+        <div class="mx-3" style="width:90%;"><span class="fw-bold">{{item.wineName}}</span><small
+            class="mx-1">&#8212;</small><small class="fw-lighter text-nowrap ">{{item.regionName}}</small></div>
+        <div class="col">
+          <div class="mx-3 text-muted fw-light">{{item.masterVarietalName}}</div>
+          <div class="mx-3 text-muted">Vintages:<span class="mx-1 fw-light">{{item.vintage | Vintages }}</span></div>
+          <div class="mx-3 text-muted">Last tasted on:<span class="mx-1 fw-light">Dec 31, 2022</span></div>
+        </div>
+        <div class="d-grid gap-sm-2 my-2 mx-2">
+          <button class="btn btn-outline-secondary" type="button"  [routerLink]="['./wine']" [state]="{data:item.data}">View</button>
+        </div>
+        <hr class="mx-2 my-3" />
+      </div>
+      <div>
+        <div class="position-relative" [routerLink]="['./wine-review']" [queryParams]="{wine:item.id}">
+          <span class="material-icons-outlined" style="font-size: 25px;">insert_comment</span>
+          <span class="mt-2 position-absolute start-100 translate-middle badge rounded-pill bg-danger">
+            {{item.comments}}
+            <span class="visually-hidden">unread messages</span>
+          </span>
+        </div>
+        <div class="position-relative">
+          <span class="material-icons-outlined" style="font-size: 25px;">inventory</span>
+          <span class="mt-2 position-absolute start-100 translate-middle badge rounded-pill bg-danger">
+            {{item.data.length}}
+            <span class="visually-hidden">unread messages</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <!--
+  <ng-template #elseBlock></ng-template>
+  <app-cellar-add-wine 
+    [currentUser]="currentUser" 
+    *ngIf="cellarActiveRoute == activeRoute.AddWine">
+  </app-cellar-add-wine>
+  <app-cellar-wine-allocation-add 
+    [currentUser]="currentUser" 
+    *ngIf="cellarActiveRoute == activeRoute.WineAllocation">
+  </app-cellar-wine-allocation-add>
+  <app-cellar-wine-detail 
+    [wine]="_cellarItemSelection" 
+    [currentUser]="currentUser"
+    (actionEvent)="onActionEvent($event)"
+    *ngIf="cellarActiveRoute == activeRoute.WineDetail && _cellarItemSelection"></app-cellar-wine-detail>
+  <app-cellar-wine-allocation-edit 
+    [currentUser]="currentUser" 
+    (actionEvent)="onActionEvent($event)"
+    *ngIf="cellarActiveRoute == activeRoute.EditWine"></app-cellar-wine-allocation-edit>
+  <app-cellar-wine-allocation-delete 
+    [currentUser]="currentUser" 
+    (actionEvent)="onActionEvent($event)"
+    [collectionId]="_itemCollectionId"
+    [wine]="_cellarItemSelection"
+    *ngIf="cellarActiveRoute == activeRoute.DeleteWine && _itemCollectionId"></app-cellar-wine-allocation-delete>
+-->
+</div>
+<router-outlet> </router-outlet>

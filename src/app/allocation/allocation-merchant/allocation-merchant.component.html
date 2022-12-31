@@ -1,0 +1,58 @@
+<div class="my-sm-3 col-sm-8">
+  <!-- Merchant List -->
+  <div *ngIf="showMerchants">
+    <div class="d-flex mb-2" style="height: auto;justify-content: space-evenly;align-items: center;">
+      <p class="h2" style="padding-top: 10px;">Merchant List</p>
+      <button type="button" class="btn btn-primary my-1 btn-sm" (click)="addMerchant()" style="border-radius: 100px;">
+        <div class="mx-1">
+          <span class="material-icons" style="vertical-align: middle;
+        font-size: larger;">add_circle_outline</span>
+          <small class="px-1">Add Merchant</small>
+        </div>
+      </button>
+    </div>
+    <!-- Add Merchant button -->
+    <!-- search merchant -->
+    <form autocomplete="off">
+      <div class="form-group mt-4">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"> 
+            <span class="material-icons" style="color: gray;">search</span>
+          </span>
+          <input [formControl]="searchControl" id="merchant-name" placeholder="Merchant name" class="form-control" type="text" 
+          [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+          [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onMerchantSelection($event)" (click)="onFilterMerchantList()"
+          style="border-left: none !important;border-right: none !important">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;" (click)="onClear()"> 
+            <span class="material-icons" style="color: gray;">close</span>
+          </span>
+        </div>
+      </div>
+      <div class="d-flex" style="justify-content: end; padding-right: 5px;">
+        <p class="h6"><small class="text-muted">showing {{merchants ? merchants.length :0 }} of {{totalCount}}</small></p>
+      </div>
+    </form>
+    <!--List of all Merchants-->
+    <p class="h5"></p>
+    <div *ngFor="let m of merchants"  class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <div><a href="javascript:void(0);" (click)="updateMerchant(m)">{{m.name}}</a></div>
+          <div><span class="material-icons-outlined"  (click)="deleteMerchant(m)" style="cursor:pointer;">delete_forever</span></div>
+        </div>
+      </div>
+    </div>
+    <ul class="list-group">
+      <!--<button *ngFor="let m of merchants" type="button" class="list-group-item list-group-item-action" (click)="updateMerchant(m)">{{m.name}}</button>-->
+      
+      
+    </ul>
+  </div>
+  <div *ngIf="merchants && merchants.length == 0">
+    <p>No merchants found</p>
+  </div>
+  <!-- Merchant Add/Update -->
+  <div *ngIf="!showMerchants">
+   <app-allocation-merchant-form  (ItemEvent)="NavigateEventResponse($event)"  [merchant]="merchantSelection"></app-allocation-merchant-form>
+  </div>
+</div>

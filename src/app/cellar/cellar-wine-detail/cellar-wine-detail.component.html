@@ -1,0 +1,148 @@
+<!--<div class="my-2">
+    <button type="button" class="btn btn-sm btn-light" (click)="onGoBack()">
+        <span class="material-icons-outlined " style="vertical-align:bottom">
+            arrow_circle_left
+            </span>
+        Previous Page</button>
+</div>-->
+<div *ngIf="cellarItem && cellar" class="container my-sm-5">
+    <div class="d-flex">
+        <div class="mt-3 mx-3">
+            <img src="/assets/img/IMG_2709.png" alt="image" style="height:150px;width: 150px;" />
+        </div>
+        <div class="mt-3">
+            <div style="text-align: normal;">
+                <div class="h3 fw-light">{{cellarItem.name}}</div>
+            </div>
+            <div>
+                <div class="h6 fw-light"> {{cellarItem.MasterVarietal.name}}, {{cellarItem.Region.name}}</div>
+            </div>
+            <div>
+                <div class="h6 fw-light"> {{cellarItem.Region.country?.name}}</div>
+            </div>
+            <div>
+                <!--<div class="h6 fw-light">95.5 Points (7 user reviews)</div>-->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-3">
+            <div class="d-inline-flex">
+                <div class="my-2 mx-2" *ngFor="let item of vintages">
+                    <!--<div  class="h6 text-muted fw-light">{{item.year}} - {{item.qty.length}} bottle(s)</div>-->
+                    <button type="button" class="btn btn-sm btn-primary position-relative"
+                        (click)="onVintageSelection(item.year)">
+                        {{item.year}}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{item.allocated.length}}<span
+                                *ngIf="item.pending.length != 0">+{{item.pending.length}}</span>
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <ul class="nav nav-tabs my-2">
+                <li *ngIf="showAllocated" class="nav-item">
+                    <a class="nav-link" [class.active]="isActive(0)" [class.disabled]="isDisabled(0)"
+                        (click)="onSelection(0)" aria-current="page">Allocated</a>
+                </li>
+                <li *ngIf="showPending" class="nav-item">
+                    <a class="nav-link" [class.active]="isActive(1)" [class.disabled]="isDisabled(1)"
+                        (click)="onSelection(1)">Pending</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="isActive(2)" [class.disabled]="isDisabled(2)"
+                        (click)="onSelection(2)">Reviews</a>
+                </li>
+            </ul>
+            <div *ngIf="activeTab == 2">
+                <div class="row row my-3">
+                    <div class="col-2">
+                        <span class="material-icons-round"
+                            style="color: lightslategrey; font-size: xxx-large;padding-left: 17px;"> account_circle
+                        </span>
+                    </div>
+                    <div class="col" style="align-self:center">
+                        <input type="text" class="form-control" id="review"
+                            placeholder="What's on your mind, {{profile.firstName}}?" data-bs-toggle="modal"
+                            data-bs-target="#reviewModal" />
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
+                            aria-hidden="true" [formGroup]="postForm">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header p-1 m-1">
+                                        <p class="modal-title h4 my-2" id="reviewModalLabel">Create Review</p>
+                                        <select class="form-select" (change)="onPostVintageSelection($event.target)" formControlName="vintageId">
+                                            <option>Please Vintage</option>
+                                            <option *ngFor="let vintage of vintages"
+                                                [value]="vintage.id">{{vintage.year}}</option>
+                                          </select>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div #tastingNote class="test" contentEditable=true style="outline: 0px solid transparent;" [attr.data-text]=Message()>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-block">
+                                        <div class="d-flex p-0 m-0">
+                                        <input type="text" class="form-control mx-1" placeholder="Tasting Date" id="date">
+                                        <input type="text" class="form-control mx-1" placeholder="Rating" id="score" formControlName="score">
+                                        </div>
+                                        <div class="d-grid gap-sm-2">
+                                            <button class="btn btn-outline-primary" type="button"  data-bs-dismiss="modal" (click)="PostNote(tastingNote)">Post</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="reviews.length==0 else elseBlock">
+                    <!--<p class="h6">No Reviews Found<span class="mx-2">Add Review!</span></p>-->
+                </div>
+                <ng-template #elseBlock>
+                    <div *ngFor="let r of reviews">
+                        <app-cellar-wine-review [userReview]="r"></app-cellar-wine-review>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="my-2 border rounded" *ngFor="let item of vintageSelection">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="d-flex flex-wrap">
+                            <div class="m-1">
+                                <div class="h6 m-0">Size</div>
+                                <div class="small fw-light">{{item.bottleSize}}</div>
+                            </div>
+                            <div class="m-1">
+                                <div class="h6 m-0">{{Location(item.locationId)}}</div>
+                                <div *ngIf="Segment(item.locationId); let segment" class="small fw-light">Bin:
+                                    {{segment}}</div>
+                            </div>
+                            <div class="m-1">
+                                <div class="h6 m-0">Price</div>
+                                <div class="small fw-light">${{item.price}}</div>
+                            </div>
+                            <div class="m-1">
+                                <div class="h6 m-0">Purchased On</div>
+                                <div class="small fw-light">{{PurchasedOn(item.CollectionEvent) | date}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6" style="align-self: center;">
+                        <button class="btn btn-outline-primary btn-circle m-1"><span class="material-icons-outlined"
+                                (click)="onRelocateItem(item)">move_down</span></button>
+                        <button class="btn btn-outline-primary btn-circle m-1"><span class="material-icons-outlined"
+                                (click)="onEditItem(item)">edit</span></button>
+                        <button class="btn btn-outline-primary btn-circle m-1"><span class="material-icons-outlined"
+                                (click)="onDeleteItem(item)">delete</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

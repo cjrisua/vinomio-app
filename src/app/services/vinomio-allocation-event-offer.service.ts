@@ -17,8 +17,8 @@ export class VinomioAllocationEventOfferService {
     return this.http.get<AllocationEventOffer[]>(`${this.apiUrl}?allocationEventId=${eventid}`)
   }
   add(data:any){
-    console.debug(data)
-    return this.http.post(`${this.apiUrl}`,data)
+    //console.debug(data)
+    return this.http.post(`${this.apiUrl}`,data,  {observe : 'response'})
   }
   delete(id:any){
     return this.http.delete(`${this.apiUrl}/${id}`)

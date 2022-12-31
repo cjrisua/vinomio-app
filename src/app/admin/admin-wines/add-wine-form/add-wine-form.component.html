@@ -1,0 +1,85 @@
+<div class="container">
+  <div [hidden]="submitted">
+    <h1>Wine Form</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="wineForm" autocomplete="off">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="producer">Producer</label>
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
+            <span class="material-icons" style="color: gray;">search</span>
+          </span>
+          <input #producercontrol formControlName="producer" id="merchant-name" placeholder="" class="form-control"
+            type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+            [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onSearchSelection($event)"
+            (click)="onFilterList(producercontrol.getAttribute('formcontrolname'))"
+            style="border-left: none !important;border-right: none !important">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+            (click)="onClear(producercontrol.getAttribute('formcontrolname'))">
+            <span class="material-icons" style="color: gray;">close</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="mastervarietal">Master Varietal</label>
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
+            <span class="material-icons" style="color: gray;">search</span>
+          </span>
+          <input #mastervarietalcontrol formControlName="mastervarietal" id="mastervarietal-name" placeholder=""
+            class="form-control" type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+            [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onSearchSelection($event)"
+            (click)="onFilterList(mastervarietalcontrol.getAttribute('formcontrolname'))"
+            style="border-left: none !important;border-right: none !important">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+            (click)="onClear(mastervarietalcontrol.getAttribute('formcontrolname'))">
+            <span class="material-icons" style="color: gray;">close</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="region">Region</label>
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;">
+            <span class="material-icons" style="color: gray;">search</span>
+          </span>
+          <input #regioncontrol formControlName="region" id="region-name" placeholder="" class="form-control"
+            type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue"
+            [inputFormatter]="inputFormatListValue" [editable]='false' (selectItem)="onSearchSelection($event)"
+            (click)="onFilterList(regioncontrol.getAttribute('formcontrolname'))"
+            style="border-left: none !important;border-right: none !important">
+          <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
+            (click)="onClear(regioncontrol.getAttribute('formcontrolname'))">
+            <span class="material-icons" style="color: gray;">close</span>
+          </span>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <label for="name">Color</label>
+        <select class="form-control" id="color" formControlName="color" (change)="onColorChange($event)">
+          <option value="">Select a Color</option>
+          <option *ngFor="let color of Colors" [value]="color.id">{{color.name}}</option>
+        </select>
+      </div>
+      <div class="form-group mb-3">
+        <label for="name">Type</label>
+        <select class="form-control" id="type" formControlName="type" (change)="onTypeChange($event)">
+          <option value="">Select a Type</option>
+          <option *ngFor="let type of Types" [value]="type.id">{{type.name}}</option>
+        </select>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" [routerLink]="[routeBack]"
+          class="btn btn btn-outline-dark">Cancel</button>
+        <button type="submit" class="btn btn-success" [disabled]="!wineForm.valid">Submit</button>
+      </div>
+      <div (click)="debug()">
+        <hr>
+        Name via form.controls = {{showFormControls(wineForm)}}
+      </div>
+    </form>
+  </div>
+</div>

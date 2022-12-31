@@ -1,128 +1,210 @@
-<div class="container mt-3">
-  <p class="h5 mb-5">Add to My Cellar</p>
-  <!--{{navData | json}}-->
-  <form autocomplete="off" [formGroup]="addWineForm" (ngSubmit)="onSubmit()">
-    <div class="row mb-2">
-      <div class="col-3 text-muted mb-2">Wine</div>
-      <div class="col">
-        <div>{{WineName}}</div>
-        <div><small class="fw-lighter">{{Region}}</small></div>
-        <div><small class="fw-lighter">{{MasterVarietal}}</small></div>
+<div *ngIf="vintageObject" class="container px-sm-5 mt-3">
+  <div class="row mt-4 shadow-none p-3 mb-3 bg-light rounded">
+    <div class="d-flex">
+      <div class="mt-3 mx-3">
+        <img src="/assets/img/b4804b4882b3e43c0c2c5480c18ee966.jpeg" alt="image" style="height:55px; width: 55px;" />
       </div>
-    </div>
-    <div class="row mb-1">
-      <div class="col-3 text-muted mb-1">Status</div>
-      <div class="col-auto">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" [checked]="addWineForm.value.state == false"
-            (click)="updateStatus()">
-          <label class="form-check-label" for="flexRadioDefault1">
-            Pending Delivery
-          </label>
+      <div class="mt-3">
+        <div style="text-align: normal;">
+          <div class="h3 fw-light">{{vintageObject.year}} {{vintageObject.Wine.name}}</div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" [checked]="addWineForm.value.state"
-            (click)="updateStatus()">
-          <label class="form-check-label" for="flexRadioDefault2">
-            In My Cellar
-          </label>
+        <div *ngIf="false" style="text-align-last:right;">
+          <button class="btn btn-sm btn-outline-primary">Add Vintage</button>
         </div>
       </div>
-    </div>
-    <div class="row my-1">
-      <div class="col-3 text-muted">Purchased on</div>
-      <div class="col">
-        <div class="input-group input-group-sm">
-          <input type="text" class="form-control"  formControlName="purchasedOn" aria-label="" aria-describedby="">
-        </div>
-      </div>
-    </div>
-    <div class="row my-1">
-      <div class="col-3 text-muted">Delivery date</div>
-      <div class="col">
-        <div class="input-group input-group-sm">
-          <input type="text" class="form-control" formControlName="deliverBy" aria-label="" aria-describedby="">
-        </div>
-      </div>
-    </div>
-    <div class="row my-2">
-      <div class="col-3"><span class="text-muted">Vintage</span></div>
-      <div class="col">
-      <div class="input-group input-group-sm">
-        <span class="input-group-text" id="basic-addon1"
-            style="background-color: transparent !important;padding:0pt 2pt !important">
-            <span class="material-icons" style="color: gray;">search</span>
-        </span>
-        <input #keyword formControlName="searchControl" id="merchant-name" placeholder="Enter vintage..." class="form-control"
-            type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue" [focusFirst]="false"
-            [inputFormatter]="inputFormatListValue" [editable]="true" (selectItem)="onSearchSelection($event)"
-            (click)="onFilterList()" (keyup)="onKeyUp($event,keyword.value)"
-            style="border-left: none !important;border-right: none !important;padding:0pt 2pt !important">
-        <span class="input-group-text" id="basic-addon1"
-            style="background-color: transparent !important;padding:5pt 2pt !important" (click)="onClear()">
-            <span class="material-icons" style="color: gray;">close</span>
-        </span>
     </div>
   </div>
+  <div class="px-sm-3 mt-2" style="max-width: 97%;">
+    <div class="input-group">
+      <label class="m-0 form-label fw-lighter" for="name">Bottle Size</label>
     </div>
-    <div class="row my-2">
-      <div class="col-3"><span class="text-muted">Number of bottles</span></div>
-      <div class="col">
-        <input  type="text" class="form-control" formControlName="numOfBottles" aria-label="" aria-describedby="">
-      </div>
-    </div>
-    <div class="row my-2">
-      <div class="col-3"><span class="text-muted">Price</span></div>
-      <div class="col">
-        <div class="input-group input-group-sm">
-          <span class="input-group-text">$</span>
-          <input  type="text" class="form-control" formControlName="price" aria-label="" aria-describedby="" >
-      </div>
-      </div>
-    </div>
-    <div class="row my-2">
-      <div class="col-3"><span class="text-muted">Bottle size</span></div>
-      <div class="col">
-        <select class="form-select form-select-sm" id="format" >
-          <option *ngFor="let format of formats" [value]="format.id">{{format.name}}</option>
+    <div class="input-group mb-3">
+      <select [(ngModel)]="selectedFormat" class="form-select form-select-sm" (change)="onChange($event)">
+        <option *ngFor="let format of formats" [ngValue]="format" [selected]="true">
+          {{format.name}}
+        </option>
       </select>
+      <div class="input-group-append" style="margin: 0 0 0 15pt;">
+        <div class="bg-white rounded" style="width: auto;text-align: -webkit-center;">
+          <div class="row" style="height: 28pt;">
+            <div class="col-4" style="background-color:lightgray; border-radius: 5px 0px 0px 5px;padding-top: 5px;">
+              <span class="material-icons-outlined" (click)="onAdd()">add</span>
+            </div>
+            <div class="col-4" style="border-style: solid;border-color: burlywood;padding-top: 4px;">
+              <div class="" style="padding-top:3px">
+                <span>{{getActiveTabBottleCount}}</span>
+              </div>
+            </div>
+            <div class="col-4" style="background-color:lightgray; border-radius: 0px 5px 5px 0px;padding-top: 5px;">
+              <span class="material-icons-outlined" (click)="onRemove()">remove</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!--<div class="row my-1">
-      <div class="col-3" style="display: grid;">
-          <div class="d-inline text-muted  mb-2">Vintage</div>
-          <div class="d-inline text-muted  mb-2"></div>
-          <div class="d-inline text-muted  mb-2">Price</div>
-          <div class="d-inline text-muted  mb-2">Bottle size</div>
+  </div>
+  <div [hidden]="submitted">
+    <form (ngSubmit)="onSubmit()" [formGroup]="addWineForm">
+      <div class="px-sm-3 bg-white rounded">
+        <div class="pb-3 mb-5 bg-white rounded">
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label fw-lighter">Purchase Note</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="note"></textarea>
+          </div>
+          <div class="wrapper">
+            <ul class="nav nav-tabs" id="wineTab" role="tablist">
+              <li class="nav-item" *ngFor="let tabNav of tabNavCollection" role="presentation">
+                <button class="nav-link" [class.active]="isActive(tabNav.size)" id="{{tabNav.size}}-tab"
+                  data-bs-toggle="tab" type="button" role="tab" [attr.aria-controls]="tabNav.size"
+                  [attr.aria-selected]="isActive(tabNav.size)" (click)="onNavTabClick(tabNav)"
+                  style="width: 73.27px !important">{{tabNav.size}}</button>
+                <div *ngIf="isActive(tabNav.size) && tabNavCollection.length > 1" class="position-absolute"
+                  style="margin: -35px 73px;" (click)="onDeleteTab(tabNav)">
+                  <span class="position-absolute top-100 start-0 translate-middle badge rounded-pill bg-secondary">
+                    <span class="material-icons fw-bold" style="font-size: small;">
+                      close
+                    </span>
+
+                  </span>
+                </div>
+              </li>
+            </ul>
+            <div class="tab-content" formArrayName="formatCollection">
+              <div class="tab-pane fade" id="{{format.value.size}}" role="tabpanel"
+                [class.show]="isActive(format.value.size)" [class.active]="isActive(format.value.size)"
+                *ngFor="let format of formatCollection.controls; index as i" [formGroup]="getFormatGroup(format)">
+                <div class="form-group mt-3 mb-2">
+                  <div class="d-flex justify-content-between">
+                    <div class="form-group">
+                      <label for="name" class="fw-lighter">Purchased Date</label>
+                      <input type="text" class="form-control" formControlName="purchasedDate">
+                    </div>
+                    <div class="form-group">
+                      <label for="name" class="fw-lighter">Delivery Date</label>
+                      <input type="text" class="form-control" formControlName="deliveryDate">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb-2">
+                  <label for="name" class="fw-lighter">Merchant</label>
+                  <input formControlName="merchant" id="merchant" placeholder="" class="form-control" type="text"
+                    [ngbTypeahead]="merchant" [resultFormatter]="merchantResultFormatListValue"
+                    [inputFormatter]="merchantInputFormatListValue" [editable]='true'
+                    (selectItem)="MerchantSelection($event.item)" (click)="onFilterMerchantList()" />
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <label class="col-5 col-form-label fw-lighter" style="padding: 0px 12px;">Cost</label>
+                    <label class="col-5 col-form-label fw-lighter" style="padding: 0px 12px;">Status</label>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-5">
+                      <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                          formControlName="cost">
+                      </div>
+                    </div>
+                    <div class="col-7 py-2">
+                      <div class="form-check form-switch" style="align-self:center;">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                          formControlName="status">
+                        <label class="form-check-label fw-lighter" for="flexSwitchCheckChecked"> <span
+                            class="h6 fw-lighter">Pending
+                            Delivery</span></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion mt-3" id="accordionExample">
+                  <div class="accordion-item">
+                    <p class="accordion-header" id="headingTwo">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                        style="padding: 10px 20px 0 20px;">
+                        Storage Location
+                      </button>
+                    </p>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        <div *ngIf="format.value.cellarLocationList.length==0 else elseBlock">Add Wine to Collection
+                        </div>
+                        <ng-template #elseBlock>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Section</th>
+                                <th scope="col">Bin</th>
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody formArrayName="cellarLocationList">
+                              <!--<tr *ngFor="let bottle of cellarLocationList.controls;index as b;">
+                                <th scope="row">{{b+1}}</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>-->
+                              <tr *ngFor="let bottle of cellarLocationList.controls;index as b;"
+                                [formGroup]="getFormatGroup(bottle)">
+                                <th scope="row">{{b+1}}</th>
+                                <td>
+                                  <div class="input-group input-group-sm">
+                                    <input readonly type="text" class="form-control" aria-label="Sizing example input"
+                                      aria-describedby="" formControlName="location">
+                                    <!--<input readonly formControlName="location" id="location" placeholder="" class="form-control" type="text"
+                                      [ngbTypeahead]="partition" [resultFormatter]="partitionResultFormatListValue"
+                                      [inputFormatter]="partitionInputFormatListValue" [editable]='false'
+                                      (selectItem)="SearchSelection($event)" (click)="onReviewerFilterList(b,$any($event.target).id)">-->
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="input-group input-group-sm">
+                                    <!--<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" >-->
+                                    <input formControlName="section" id="section" placeholder="" class="form-control"
+                                      type="text" [ngbTypeahead]="partition"
+                                      [resultFormatter]="partitionResultFormatListValue"
+                                      [inputFormatter]="partitionInputFormatListValue" [editable]='false'
+                                      (selectItem)="SearchSelection($event)"
+                                      (click)="onReviewerFilterList(b,$any($event.target).id)">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="input-group input-group-sm">
+                                    <input formControlName="bin" id="bin" placeholder="" class="form-control"
+                                      type="text" [ngbTypeahead]="partition"
+                                      [resultFormatter]="partitionResultFormatListValue"
+                                      [inputFormatter]="partitionInputFormatListValue" [editable]='false'
+                                      (selectItem)="SearchSelection($event)"
+                                      (click)="onReviewerFilterList(b,$any($event.target).id)">
+                                  </div>
+                                </td>
+                                <td><span class="material-icons-outlined mx-2">
+                                    delete
+                                  </span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-6" style="display: grid;">
-          <div class="input-group input-group-sm  mb-2">
-              <select class="form-select form-select-sm" id="vintage" >
-                  <option *ngFor="let vintage of vintages" [value]="vintage.id">{{vintage.name}}</option>
-              </select>
-          </div>
-          <div class="input-group input-group-sm mb-2">
-              <input  type="text" class="form-control" aria-label="" aria-describedby="">
-          </div>
-          <div class="input-group input-group-sm  mb-2">
-              <span class="input-group-text">$</span>
-              <input  type="text" class="form-control" aria-label="" aria-describedby="" >
-          </div>
-          <div class="input-group input-group-sm  mb-2">
-              <select class="form-select form-select-sm" id="format" >
-                  <option *ngFor="let format of formats" [value]="format.id">{{format.name}}</option>
-              </select>
-          </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" [routerLink]="['/search/details/',vintageObject.wineId]"
+          class="btn btn btn-outline-dark">Cancel</button>
+
+        <button type="submit" class="btn btn-success" [disabled]="!addWineForm.valid">Submit</button>
       </div>
-    </div>-->
-    <hr>
-    <div class="d-flex justify-content-between mt-4">
-      <button class="btn btn-outline-dark" (click)="onBack()">
-        Back
-      </button>
-      <button class="btn btn-outline-success"  [disabled]="!addWineForm.valid">
-        Add data
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>

@@ -1,0 +1,10 @@
+<tr style=" padding: 1rem 1.25rem;">
+   <td colspan="6" class="mat-cell cdk-cell cdk-column-name mat-column-name">
+      <div class="row my-1">
+         <div class="col-3 mx-5"><strong>Event</strong></div>
+         <div class="col-2"><strong>Month</strong></div>
+         <div class="col-2 mx-2"><strong>Action</strong></div>
+     </div>
+      <app-allocation-event-item  *ngFor="let event of events" [event]="event" ></app-allocation-event-item>
+   </td>
+</tr>

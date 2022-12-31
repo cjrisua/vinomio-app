@@ -1,0 +1,93 @@
+<div class="container" *ngIf="allocation">
+    <p class="h5 mt-2 mb-4">Add to My Cellar</p>
+
+    <form autocomplete="off" [formGroup]="allocationForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-3 text-muted mb-1">Merchant</div>
+            <div class="col-auto">{{allocation.merchant.name}}</div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-3 text-muted mb-1">Event</div>
+            <div class="col-auto">{{allocation.events.name}}</div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-3 text-muted mb-1">Status</div>
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" [checked]="allocationForm.value.inmycellar == false" (click)="updateStatus()">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Pending Delivery 
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"  [checked]="allocationForm.value.inmycellar" (click)="updateStatus()">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        In My Cellar
+                    </label>
+                  </div>
+            </div>
+        </div>
+        <div class="row" style="align-items: baseline;">
+            <div class="col-3 text-muted">Purchased on</div>
+            <div class="col-auto mb-1">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" formControlName="purchaseddate" aria-label=""
+                        aria-describedby="">
+                </div>
+            </div>
+        </div>
+        <div class="row"  style="align-items: baseline;">
+            <div class="col-3 text-muted">Delivery Date</div>
+            <div class="col-auto mb-1">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" formControlName="deliverydate" aria-label=""
+                        aria-describedby="">
+                </div>
+            </div>
+        </div>
+        <hr />
+        
+        <div *ngFor="let offer of offers" class="row my-1">
+            <div class="d-inline mb-2"> 
+                <span>{{$any(offer.get('name')?.value)}}</span></div>
+            <div class="col-3" style="display: grid;">
+                <div class="d-inline text-muted  mb-1">Vintage</div>
+                <div class="d-inline text-muted  mb-1">Number of bottles</div>
+                <div class="d-inline text-muted  mb-1">Price</div>
+                <div class="d-inline text-muted  mb-1">Bottle size</div>
+            </div>
+            <div class="col-6" style="display: grid;">
+                <div class="input-group input-group-sm  mb-1">
+                    <select class="form-select form-select-sm" id="vintage" [formControl]="$any(offer.get('vintage'))">
+                        <option *ngFor="let vintage of vintages" [value]="vintage.id">{{vintage.name}}</option>
+                    </select>
+                </div>
+                <div class="input-group input-group-sm mb-1">
+                    <input *ngIf="offer.get('bottles')" type="text" class="form-control" aria-label="" aria-describedby="" [formControl]="$any(offer.get('bottles'))">
+                </div>
+                <div class="input-group input-group-sm  mb-1">
+                    <span class="input-group-text">$</span>
+                    <input *ngIf="offer.get('amount')" type="text" class="form-control" aria-label="" aria-describedby="" [formControl]="$any(offer.get('amount'))">
+                </div>
+                <div class="input-group input-group-sm  mb-1">
+                    <select class="form-select form-select-sm" id="format" [formControl]="$any(offer.get('formats'))">
+                        <option *ngFor="let format of formats" [value]="format.id">{{format.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-3 p-0" style="align-items: center;"><button type="button"
+                    class="btn btn-outline-primary btn-sm" (click)="onAddToOffer($any(offer))">{{$any(offer.get('accepted')).value == false ? "Add Offer" : "Remove Offer" }}</button></div>
+            <hr class="mt-2" />
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <button type="button" class="btn btn btn-outline-dark" [routerLink]="['/allocation/mailing']" [queryParams]="{action:'List'}">Cancel</button>
+            <button type="submit" class="btn btn-success" [disabled]="!allocationForm.valid">Submit</button>
+        </div>
+    </form>
+</div>
+<hr />
+<!--
+<p class="text-muted small">{{userProfile | json}}</p>
+<p class="text-muted small">{{allocationEvent | json}}</p>
+<p class="text-muted small">{{allocation | json}}</p>
+-->

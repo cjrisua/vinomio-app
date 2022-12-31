@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MODEL } from '../app.module';
 
 
@@ -10,7 +11,10 @@ import { MODEL } from '../app.module';
 export class AdminComponent implements OnInit {
 
   modelCollection: any[] = []
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
      Object.keys(MODEL).map((name) => {
@@ -22,7 +26,10 @@ export class AdminComponent implements OnInit {
       })
       //console.log(this.modelCollection)
   }
-
+  onNavigateToModel(model?:any)
+  { 
+    this.router.navigate([model], {relativeTo:this.route})
+  }
   setModelNameEvent(model:string):void{
     
   }

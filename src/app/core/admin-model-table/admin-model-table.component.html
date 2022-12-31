@@ -2,8 +2,8 @@
 <div class="card my-2" *ngFor="let modelItem of ModelItems">
     <div class="card-header">
       <div class="d-flex justify-content-between align-items-center">
-        <div><a href="javascript:void(0);" (click)="onViewItem(modelItem)">{{modelItem.name}}</a></div>
-        <div><span class="material-icons-outlined" (click)="onDelete(modelItem)" style="cursor:pointer;"  >delete_forever</span></div>
+        <div><a class="model-item-title" href="javascript:void(0);" (click)="onViewItem(modelItem)">{{modelItem.name}}</a></div>
+        <div><span class="material-icons-outlined model-delete-button" (click)="onDelete(modelItem)">delete_forever</span></div>
       </div>
       
     </div>
@@ -12,8 +12,8 @@
         <div class="d-flex" *ngIf="displayColumn(item.key)">
           <div class=""><strong>{{item.key}}</strong><span class="mx-1">:</span></div>
           <div class="" *ngIf="isObject(item.value)">{{item.value}}</div>
-          <div class="" *ngIf="!isObject(item.value) && item.value.name">{{item.value.name}}</div>
-          <div class="" *ngIf="!isObject(item.value) && !item.value.name">{{item.value}}</div>
+          <div class="" *ngIf="!isObject(item.value) && item.value.name">{{item.value.name }}</div>
+          <div class="" *ngIf="!isObject(item.value) && !item.value.name">{{item.value |json }}</div>
         </div>
       </div>
     </div>

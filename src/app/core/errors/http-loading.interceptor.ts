@@ -17,7 +17,7 @@ export class HttpLoadingInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.debug(`Request [${request.method}]: + ${request.url} ${JSON.stringify(request.body)}`)
+    //console.debug(`Request [${request.method}]: + ${request.url} ${JSON.stringify(request.body)}`)
     //this.loadingDialogService.openDialog();
     return next.handle(request).pipe(
       finalize(() => {

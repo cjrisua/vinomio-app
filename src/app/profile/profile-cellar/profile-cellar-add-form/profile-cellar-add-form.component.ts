@@ -20,7 +20,7 @@ export class ProfileCellarAddFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.mainForm = new FormGroup({
-      owner: new FormControl(`${this.profile.firstname} ${this.profile.lastname}`),
+      owner: new FormControl(`${this.profile.firstName} ${this.profile.lastName}`),
       role: new FormControl(null),
       size: new FormControl('',[Validators.required, Validators.pattern('[0-9]+')])
     });

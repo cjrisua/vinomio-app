@@ -1,34 +1,67 @@
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: slategrey;">
+<nav class="navbar navbar-expand-sm navbar-light" style="background-color: slategrey;">
   <div class="container-fluid">
     <a class="navbar-brand" style="color: aliceblue;" href="#">Vinomio</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="collapse navbar-collapse " id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mt-2 mb-lg-0 ">
+      <ul class="navbar-nav ms-auto mt-2 mb-sm-0 ">
         <li *ngIf="!authService.isLoggedIn()" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" style="color: aliceblue;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Register
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" routerLink="/signup">Sing Up</a></li>
-            <!--<li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>-->
           </ul>
         </li>
       </ul>
-      <form *ngIf="authService.isLoggedIn()" class="d-flex">
-        <button class="btn btn-outline-light" (click)="Logout()" type="button">Logout</button>
-      </form>
-      <!--
-      <div class="list-group list-group-flush d-sm-none mt-3">
-        <h3 class="my-1"><a class="list-group-item p-0" >Dashboard</a></h3>
-        <h3 class="my-1"><a class="list-group-item p-0" >Cellar</a></h3>
-        <h3 class="my-1"><a class="list-group-item p-0" >Profile</a></h3>
     </div>
-     -->
-    </div>
+    <form *ngIf="authService.isLoggedIn()" class="d-flex">
+      
+      <div class="dropdown">
+        <button class="btn btn-link" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+          <span class="material-icons-round" style="color: aliceblue;font-size:xx-large">
+            account_circle
+            </span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end px-1" style="top:10px;right: 0;left: auto;min-width:fit-content">
+          <li style="position: absolute;
+          top: -11px;
+          right: 15px;
+          width: 0;
+          height: 0;
+          border-left: 16px solid transparent;
+          border-right: 12px solid transparent;
+          border-bottom: 12px solid #fff;"></li>
+          <li class="pb-1">
+            <a class="dropdown-item fw-light" href="javascript:void(0)" [routerLink]="['/profile']">
+              <div class="d-flex">
+                <div>
+                  <span class="material-icons-round" style="font-size: 20px;padding-right: 6px;color: burlywood;">
+                    person_4
+                    </span>
+                </div>
+                <div>
+                  <span style="font-weight: 400;font-size: 14px;color: rgb(99,100,100);">Profile</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li class="" style="border-top: ridge;">
+            
+            <a class="dropdown-item fw-light" href="javascript:void(0)" (click)="Logout()">
+              <div class="d-flex">
+                <div>
+                  <span class="material-icons-round" style="font-size: 20px;padding-right: 6px;color: dimgray;">
+                    logout
+                    </span>
+                </div>
+                <div>
+                  <span style="font-weight: 400;font-size: 14px;color: rgb(99,100,100);">Sign Out</span>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </form>
   </div>
 </nav>
  <!-- Bootstrap core JS-->

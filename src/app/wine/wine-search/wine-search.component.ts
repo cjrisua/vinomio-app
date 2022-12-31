@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ViewEncapsulation, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, Observable, of, OperatorFunction, startWith, switchMap } from 'rxjs';
 import { UserEventAction, WineType, Action, Module } from 'src/app/app.module';
@@ -11,7 +11,8 @@ import { VinomioWineService } from 'src/app/services/vinomio-wine.service';
 @Component({
   selector: 'app-wine-search',
   templateUrl: './wine-search.component.html',
-  styleUrls: ['./wine-search.component.css']
+  styleUrls: ['./wine-search.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WineSearchComponent implements OnInit {
 

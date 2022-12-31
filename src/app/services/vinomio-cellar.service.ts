@@ -13,11 +13,14 @@ export class VinomioCellarService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(cellarid:number) : Observable<Cellar>{
-    return this.httpClient.get<Cellar>(`${this.apiUrl}/${cellarid}`)
+  get(id:number) : Observable<Cellar>{
+    return this.httpClient.get<Cellar>(`${this.apiUrl}/${id}`)
   }
 
   add(data:any): Observable<any> {
     return this.httpClient.post(this.apiUrl, data);
+  }
+  put(id:number, data:any){
+    return this.httpClient.put(`${this.apiUrl}/${id}`,data,  {observe : 'response'})
   }
 }
