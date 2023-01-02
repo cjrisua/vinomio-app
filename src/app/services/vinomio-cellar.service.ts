@@ -23,4 +23,7 @@ export class VinomioCellarService {
   put(id:number, data:any){
     return this.httpClient.put(`${this.apiUrl}/${id}`,data,  {observe : 'response'})
   }
+  delete(id:number){
+    return this.httpClient.delete(`${this.apiUrl}/${id}`, {observe : 'response'})
+  }
 }

@@ -8,7 +8,7 @@ import { Vintage } from '../../models/Vintage';
 import { VinomioCollectionService } from '../../services/vinomio-collection.service';
 import { Profile } from '../../models/Profile';
 import { VinomioCellarService } from '../../services/vinomio-cellar.service';
-import { map, reduce, switchMap } from 'rxjs';
+import { filter, map, reduce, switchMap } from 'rxjs';
 import { Collection } from '../../models/Collection';
 import { FormControl, FormGroup } from '@angular/forms';
 import { query } from '@angular/animations';
@@ -80,11 +80,12 @@ export class CellarDashboardComponent implements OnInit {
     this.searchForm = new FormGroup({
       wine: new FormControl('')
     })
-
+    const filterStatus=['allocated','pending']
     this.collectionService.getCollection(this.currentUser.cellar)
     .pipe(
       switchMap((m) => m),
       map((m:any) => { this.currentCollection = m; return m}),
+      filter((item:any) => filterStatus.includes(item.statusId)),
       reduce((r:Map<number,any[]>,a:any) =>{
         const key = a.Vintage.Wine.id;
         const item = r.get(key) || Object.assign({average:[],data:[]})
@@ -140,7 +141,7 @@ export class CellarDashboardComponent implements OnInit {
     this.cellarActiveRoute = CellarDashboardActiveRoute.AddWine
   }
   onActionEvent(action:any){
-    //console.debug(action)
+    console.debug(action)
      if(action.id=="delete"){
       this.cellarActiveRoute = CellarDashboardActiveRoute.DeleteWine
       this._itemCollectionId= action.data.id

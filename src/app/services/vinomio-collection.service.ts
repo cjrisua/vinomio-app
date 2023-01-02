@@ -33,4 +33,7 @@ export class VinomioCollectionService {
   delete(id:number){
     return this.httpClient.delete(`${this.apiUrl}/${id}`)
   }
+  put(id:number, data:any){
+    return this.httpClient.put(`${this.apiUrl}/${id}`,data,  {observe : 'response'})
+  }
 }

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, map } from 'rxjs';
 import { Cellar } from 'src/app/models/Cellar';
@@ -9,6 +18,8 @@ import { Profile } from '../../models/Profile';
 import { Vintage } from '../../models/Vintage';
 import { plainToClass } from 'class-transformer';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-cellar-wine-detail',
@@ -22,6 +33,11 @@ export class CellarWineDetailComponent implements OnInit {
   @Output() actionEvent = new EventEmitter<{}>();
 
   postForm!: FormGroup;
+  drunkObject: { id: number; status: string; source: string } = {
+    id: 0,
+    status: 'drunk',
+    source: '',
+  };
   _postVintageId!: number;
   showAllocated: boolean = false;
   showPending: boolean = false;
@@ -39,9 +55,11 @@ export class CellarWineDetailComponent implements OnInit {
 
   constructor(
     private cellarService: VinomioCellarService,
+    private collectionService: VinomioCollectionService,
     private authService: AuthService,
     private router: Router,
-    private reviewService: VinomioReviewService
+    private reviewService: VinomioReviewService,
+    @Inject(LOCALE_ID) private locale: string
   ) {
     this.profile = this.authService.getCurrentUser();
     this.cellarService
@@ -131,6 +149,8 @@ export class CellarWineDetailComponent implements OnInit {
     this.onVintageSelection(this.activeYear);
   }
   onDeleteItem(item: any) {
+    this.drunkObject.id = item.id;
+    this.drunkObject.status = this.activeTab == 1 ? 'deleted' : this.drunkObject.status
     this.actionEvent.emit({ id: 'delete', data: item });
   }
   onEditItem(item: any) {
@@ -143,21 +163,26 @@ export class CellarWineDetailComponent implements OnInit {
     this.postForm.patchValue({ vintageId: <number>event.value });
   }
   onVintageSelection(Year: any) {
-    //console.log(this.vintages)
+    this.activeYear = Year;
     const filtered = this.vintages.filter((i: any) => i.year == Year);
+
+    if(filtered[0]?.allocated.length == 0 && filtered[0]?.pending.length == 0){
+      this.vintages = this.vintages.filter((i:any) => i.year != Year)
+      if(this.vintages.length != 0)
+        this.onVintageSelection(this.vintages[0].vintage)
+    }
+    
     if (this.activeTab == 0)
-      this.vintageSelection = filtered.map((i: any) => i.allocated)[0];
+        this.vintageSelection = filtered.map((i: any) => i?.allocated)[0];
     else if (this.activeTab == 1)
-      this.vintageSelection = filtered.map((i: any) => i.pending)[0];
+        this.vintageSelection = filtered.map((i: any) => i?.pending)[0];
     else this.vintageSelection = [];
+    
   }
   onGoBack() {
-    //this.actionEvent.emit({id:"back", data:this.wine[0].Vintage.Wine.id})
+    
   }
   PostNote(note: HTMLDivElement) {
-    //console.log(this.profile)
-    //console.log(note.textContent)
-    //note.textContent="";
     this.postForm.patchValue({ review: note.textContent });
     this.reviewService
       .add(this.postForm.value)
@@ -165,6 +190,33 @@ export class CellarWineDetailComponent implements OnInit {
       .subscribe(() => {
         this.GetReviews(this.wine[0].Vintage.Wine.id);
         note.textContent = '';
+      });
+  }
+  onDeleteVintage() {
+    const data = { statusId: this.drunkObject.status , actionDate:  `${formatDate(Date.now(), 'yyyy-MM-dd HH:mm:ss', this.locale)}` }
+    
+    this.collectionService
+      .put(this.drunkObject.id, data)
+      .pipe(catchError(() => EMPTY))
+      .subscribe(() => {
+        this.vintages
+          .filter((v: any) => v.year == this.activeYear)
+          .map((vintage: any) => {
+            if (this.activeTab == 0)
+              vintage.allocated = vintage.allocated.filter(
+                (i: any) => i.id != this.drunkObject.id
+              );
+            else if (this.activeTab == 1)
+              vintage.pending = vintage.pending.filter(
+                (i: any) => i.id != this.drunkObject.id
+              );
+            this.onVintageSelection(this.activeYear);
+            
+            //console.log(this.vintages)
+
+            if(this.vintages.length == 0)
+              this.router.navigateByUrl('/cellar')
+          });
       });
   }
   Message() {

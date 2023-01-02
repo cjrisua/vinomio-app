@@ -58,18 +58,4 @@ export class WineSearchViewComponent implements OnInit {
      this.mapWineObject(this.vintageForm.get('wineId')?.value)
    });
   }
-  /*
-  PostNote(note: HTMLDivElement) {
-    //console.log(this.profile)
-    //console.log(note.textContent)
-    //note.textContent="";
-    this.postForm.patchValue({ review: note.textContent });
-    this.reviewService
-      .add(this.postForm.value)
-      .pipe(catchError(() => EMPTY))
-      .subscribe(() => {
-        this.GetReviews(this.wine[0].Vintage.Wine.id);
-        note.textContent = '';
-      });
-  }*/
 }
