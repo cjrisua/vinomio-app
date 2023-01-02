@@ -32,7 +32,7 @@
       <div class="border rounded-circle position-relative mb-2"
         style="margin:0,0,0,0; padding-top: 12pt; text-align:center;width: 50pt;height: 41pt;">
         <span *ngIf="item.average.length > 0 " class="fw-bold">{{item.average | averageScore | number:'1.0-1'}}</span>
-        <span *ngIf="item.average.length == 0 " class="fw-bold" style="font-size: 8pt;">No Review</span>
+        <span *ngIf="item.average.length == 0 " class="fw-bold" style="font-size: 7pt;">No Review</span>
         <div class="position-absolute top-0 start-100 translate-middle" [ngStyle]=setStyles(item.type)>
           <div>
             <span class="material-icons" style="font-size: 30px; padding: 14px 13px 0 0;">wine_bar</span>

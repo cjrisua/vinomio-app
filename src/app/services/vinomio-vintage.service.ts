@@ -43,7 +43,7 @@ export class VinomioVintageService {
     const query_params = [`wine__name=${encodeURI((<string>name).trim())}`].filter(p => p.match(".+?\=.+?")).join("&")
     return this.httpClient.get<any>(`${this.apiUrl}?${query_params}`).pipe(map(res => this.map(res)))
   }
-  add(data:any){
+  add(data: { wineId?: number; year?: any;}){
     return this.httpClient
     .post(this.apiUrl, data, {observe : 'response'})
   }

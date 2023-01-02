@@ -8,7 +8,8 @@
 <div *ngIf="cellarItem && cellar" class="container my-sm-5">
     <div class="d-flex">
         <div class="mt-3 mx-3">
-            <img src="/assets/img/IMG_2709.png" alt="image" style="height:150px;width: 150px;" />
+            <img *ngIf="false" src="/assets/img/IMG_2709.png" alt="image" style="height:150px;width: 150px;" />
+            <img *ngIf="true" src="/assets/img/default.jpg" alt="image" style="height:150px;width: 150px;" />
         </div>
         <div class="mt-3">
             <div style="text-align: normal;">
