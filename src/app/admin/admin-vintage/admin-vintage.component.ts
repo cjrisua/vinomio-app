@@ -24,7 +24,10 @@ export class AdminVintageComponent implements OnInit {
   ) {
     this.model$ = this.vintageService.get().pipe(
       map((data: any[]) => {
-        this.dataSource.data = data.map(m => {m['name']= `${m.year} ${m.Wine.name}`; return m})
+        this.dataSource.data = data.map(m => {
+          m['name']= `${m.year} ${m.Wine.name}`; 
+          return m
+        })
       }),
       map(() => this.modelName),
       catchError(() => of([]))
@@ -34,8 +37,9 @@ export class AdminVintageComponent implements OnInit {
   ngOnInit(): void {
     //this.getSourceData()
   }
-  private getSourceData(text?:string){
-    this.vintageService.get()
+  private getSourceData(keyword?:string){
+    const vintage = keyword?.match(/[0-9]{4}/) || undefined
+    this.vintageService.get(keyword?.replace(/[0-9]{4}/,''),vintage)
     .pipe(
       catchError(()=>of([]))
     )

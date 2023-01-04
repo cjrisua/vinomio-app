@@ -21,11 +21,15 @@ export class AdminWinesComponent implements OnInit {
     'varietal',
     'vintages',
   ];
+  displayedColumnsExtendedAttributes=[{
+    column:{name: 'vintages', type:'link', route:''}
+  }]
   exclusionColumns = [];
   dataSource!:MatTableDataSource<any>
   model$!: Observable<any>
   search!: OperatorFunction<string, readonly {name:string, id:number}[]>;
   clearForm = new Subject()
+  routeLinkEvent = new Subject()
   
   constructor(
     private wineService: VinomioWineService,
@@ -79,6 +83,9 @@ export class AdminWinesComponent implements OnInit {
         this.clearForm.next('')
         this.getSourceData()
       })
+  }
+  public subjectRouteLinkEvent(event:any){
+    this.router.navigateByUrl('/admin/vintage/' + event.data.id, { state: {navigation:'wine', id:10, Wine:{id:event.data.id,name:event.data.name,slug:event.data.slug, } } });
   }
   public get showing(){
     return {limit:this.dataSource.data.length,count:this.wineService.count}

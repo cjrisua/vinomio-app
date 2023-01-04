@@ -37,8 +37,8 @@ export class AdminVintageFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //console.log(this.location.getState())
     const state: any = this.location.getState();
+    //console.log(state)
     if(state.id)
       this.vintage=state
 
@@ -79,6 +79,15 @@ export class AdminVintageFormComponent implements OnInit {
       }))
     .subscribe((d:any[])=> this.eventsSubject.next(d));
   }
+  onCancel() {
+    //this.route.navigateByUrl('/admin/vintage')
+    //this.route.navigateByUrl('/admin/vintage')
+    //console.log(this.vintage.navigation)
+    if(this.vintage?.navigation)
+      this.route.navigateByUrl(`/admin/${this.vintage.navigation}`)
+    else 
+      this.route.navigateByUrl('/admin/vintage')
+  }
   onSubmit() {
 
     this.removedItemCollection.forEach((i,x) =>{
@@ -92,8 +101,12 @@ export class AdminVintageFormComponent implements OnInit {
       //  console.log("done!")
       this.vintageService.add({wineId:this.vintageFromCtrl.value.id, year:year})
       .subscribe(()=>{
-        if(index+1 == this.addedItemCollection.length)
+        if(index+1 == this.addedItemCollection.length){
+          if(this.vintage?.navigation)
+          this.route.navigateByUrl(`/admin/${this.vintage.navigation}`)
+        else 
           this.route.navigateByUrl('/admin/vintage')
+        }
       })
     })
   }

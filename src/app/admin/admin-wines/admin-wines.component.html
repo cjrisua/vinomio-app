@@ -16,7 +16,7 @@
           add_box
         </span>Add {{modelName}}</button>
     </div>
-    <app-admin-model-table [ModelItems]="dataSource.data" [exclusionColumns]="exclusionColumns"
-      (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"></app-admin-model-table>
+    <app-admin-model-table [ModelItems]="dataSource.data" [exclusionColumns]="exclusionColumns" [attributes]="displayedColumnsExtendedAttributes"
+      (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)" (routeEvent)="subjectRouteLinkEvent($event)"></app-admin-model-table>
   </ng-template>
 </div>

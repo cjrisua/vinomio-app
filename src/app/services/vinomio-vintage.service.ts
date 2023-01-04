@@ -22,8 +22,9 @@ export class VinomioVintageService {
     this.count = result.count;
     return result.rows
   }
-  get(): Observable<Vintage[]>{
-    return this.httpClient.get<any>(this.apiUrl).pipe(map(res => this.map(res)))
+  get(name?:string,year:any = undefined): Observable<Vintage[]>{
+    const query_params = [`year=${year}`,`wine__name__iLike=${name ? encodeURI((<string>name).trim()) : undefined}`].filter(p => !p.includes('undefined') && p.match(".+?\=.+?")).join("&")
+    return this.httpClient.get<any>(`${this.apiUrl}?${query_params}`).pipe(map(res => this.map(res)))
   }
   getByVintageId(id:any): Observable<Vintage[]>{
     return this.baseService.get(`${this.apiUrl}`,{id:id}).pipe(

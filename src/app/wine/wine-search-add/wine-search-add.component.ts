@@ -232,7 +232,7 @@ export class WineSearchAddComponent implements OnInit {
     let result:any[]=[]
     this.merchant = (text$: Observable<string>) =>
     text$.pipe(
-      debounceTime(200),
+      debounceTime(100),
       distinctUntilChanged(),
       startWith(''),
       filter((i) => i.length > 0),
