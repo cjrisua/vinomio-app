@@ -39,7 +39,8 @@ export class AdminReviewComponent implements OnInit {
     this.getSourceData(keyword)
   }
   private getSourceData(text?:string){
-    this.reviewService.getList().pipe(
+    const data={vintage__wine__name__iLike:text}
+    this.reviewService.getList(data).pipe(
       catchError(()=>of([]))
     )
     .subscribe(data => {

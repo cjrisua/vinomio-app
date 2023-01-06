@@ -17,16 +17,20 @@ export class VinomioBaseService {
     this.count = result.count | 0;
     return result.rows?  result.rows : <any>result;
   }
-  get(apiURL:string, query?: {}): Observable<any> {
+  get(apiURL:string, query?:any): Observable<any> {
+      
     let params="";
     if (query){
-      params = Object.entries(query)
-        .map((p) => `${p[0]}=${p[1]}`)
-        .filter((p) => p.match('.+?=.+?'))
-        .join('&');
+      //params = Object.entries(query)
+      //  .map((p) => `${p[0]}=${p[1]}`)
+      //  .filter((p) => p.match('.+?=.+?'))
+      //  .join('&');
+      params = Object.keys(query)
+      .filter(f => query[f] &&  query[f].trim().length > 0)
+      .map(i => `${i}=${encodeURI(query[i].trim())}`).join("&")
       params = params? `?${params}`: ""
     }
-    //console.debug(`${this.apiUrl}${params}`);
+    console.debug(`${apiURL}${params}`);
     return this.http.get<any>(`${apiURL}${params}`).pipe(map((res) => this.map(res)));
   }
   add(apiURL:string,data: any) {

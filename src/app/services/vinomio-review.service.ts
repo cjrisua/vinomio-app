@@ -16,7 +16,7 @@ export class VinomioReviewService {
   constructor(private baseService: VinomioBaseService) { 
     
   }
-  private get(filter?:{}):Observable<any>{
+  private get(filter?:any):Observable<any>{
     return this.baseService.get(this.apiUrl,filter).pipe(
       map(res => {
         this.count = this.baseService.count;
@@ -24,8 +24,8 @@ export class VinomioReviewService {
       })
     )
   }
-  getList():Observable<any>{
-    return this.get()
+  getList(filter?:{}):Observable<any>{
+    return this.get(filter)
   }
   getListByWine(wineId:number,filter?:{cellarId:number}){
     return this.baseService.get(`${this.apiUrl}/wine/${wineId}`, filter).pipe(
