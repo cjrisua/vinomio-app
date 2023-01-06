@@ -17,8 +17,11 @@ export class VinomioCollectionService {
     return this.httpClient.get<Collection[]>(this.apiUrl)
   }
 
-  getCollection(id:any) : Observable<Collection[]>{
-    return this.httpClient.get<Collection[]>(`${this.apiUrl}?cellarId=${id}`)
+  getCollection(id:any,filter?:any) : Observable<Collection[]>{
+    let params:any=""
+    if(filter)
+       params = Object.keys(filter).filter(f => filter[f]).map(i => `${i}=${encodeURI(filter[i].trim())}`).join("&")
+    return this.httpClient.get<Collection[]>(`${this.apiUrl}?cellarId=${id}&${params}`)
     .pipe(
       map((res: Collection[]) => {
         return res || []

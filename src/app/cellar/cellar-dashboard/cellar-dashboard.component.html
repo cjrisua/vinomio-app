@@ -11,9 +11,14 @@
           style="background-color: transparent !important;padding:0pt 2pt !important">
           <span class="material-icons" style="color: gray;">search</span>
         </span>
-        <input formControlName="wine" id="wine" placeholder="" class="form-control" type="text" (keyup)="onKeyUp()"
+        <!--<input formControlName="wine" id="wine" placeholder="" class="form-control" type="text" (keyup)="onKeyUp()"
           (keydown)="onKeyDown()"
-          style="border-left: none !important;border-right: none !important;padding:0pt 3pt !important">
+          style="border-left: none !important;border-right: none !important;padding:0pt 3pt !important">-->
+        <input #keyword [formControl]="searchControl" id="merchant-name" placeholder="" class="form-control"
+          type="text" [ngbTypeahead]="search" [resultFormatter]="resultFormatListValue" [focusFirst]="false"
+          [inputFormatter]="inputFormatListValue" [editable]="true" (selectItem)="onSearchSelection($event)"
+          (click)="onFilterList()" (keyup)="onKeyUp($event,keyword.value)"
+          style="border-left: none !important;border-right: none !important;padding:0pt 2pt !important;">
         <span class="input-group-text" id="basic-addon1" style="background-color: transparent !important;"
           (click)="onClear()">
           <span class="material-icons" style="color: gray;">close</span>

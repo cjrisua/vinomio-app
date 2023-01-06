@@ -8,7 +8,7 @@ import { Vintage } from '../../models/Vintage';
 import { VinomioCollectionService } from '../../services/vinomio-collection.service';
 import { Profile } from '../../models/Profile';
 import { VinomioCellarService } from '../../services/vinomio-cellar.service';
-import { filter, map, reduce, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, Observable, OperatorFunction, reduce, startWith, Subject, switchMap } from 'rxjs';
 import { Collection } from '../../models/Collection';
 import { FormControl, FormGroup } from '@angular/forms';
 import { query } from '@angular/animations';
@@ -56,6 +56,10 @@ export class CellarDashboardComponent implements OnInit {
   _itemCollectionId!:number
   _focusTo:number = -1;
 
+  searchControl !: FormControl
+  search!: OperatorFunction<string, readonly any[]>;
+  //subject: Subject<any> = new Subject();
+
   cellarActiveRoute:CellarDashboardActiveRoute = CellarDashboardActiveRoute.Dashboard
   
   constructor(
@@ -76,50 +80,56 @@ export class CellarDashboardComponent implements OnInit {
         inline: 'center'
     });
   }
-  ngOnInit(): void {
-    this.searchForm = new FormGroup({
-      wine: new FormControl('')
-    })
+  private groupByWineId(map:Map<number,any[]>,Item:any){
+    const key = Item.Vintage.Wine.id;
+    const value = map.get(key) || Object.assign({average:[],data:[]})
+    value.data.push(Item)
+    const exist = value.average.find((p:any) => p.vintageId == Item.Vintage.id)
+    if(Item.Vintage.Review.average && !exist){
+      value.average.push({score:+Item.Vintage.Review.average , comment:Item.Vintage.Review.count, vintageId:Item.Vintage.id})
+    }
+    return map.set(key,value)
+  }
+  private processWineGrouping(m:Map<any,any>){
+    return Array.from(m.entries()).map((reduced:any) => { 
+      const key=reduced[0]
+      const value=reduced[1]
+      return { 
+        id:key, average:value.average, 
+        type:value.data[0].Vintage.Wine.type, 
+        wineName: value.data[0].Vintage.Wine.name,
+        regionName: value.data[0].Vintage.Wine.Region.name,
+        masterVarietalName:value.data[0].Vintage.Wine.MasterVarietal.name,
+        vintage:value.data.map((m:any) =>{return {year:m.Vintage.year}}),
+        data:value.data,
+        comments:value.average.reduce((sum:number,current:any) => sum + (+current.comment), 0)
+      }
+     });
+  }
+  private getCollection(Filter?:{}){
     const filterStatus=['allocated','pending']
-    this.collectionService.getCollection(this.currentUser.cellar)
+    this.collectionService.getCollection(this.currentUser.cellar,Filter)
     .pipe(
       switchMap((m) => m),
       map((m:any) => { this.currentCollection = m; return m}),
       filter((item:any) => filterStatus.includes(item.statusId)),
-      reduce((r:Map<number,any[]>,a:any) =>{
-        const key = a.Vintage.Wine.id;
-        const item = r.get(key) || Object.assign({average:[],data:[]})
-        item.data.push(a)
-        const exist = item.average.find((p:any) => p.vintageId == a.Vintage.id)
-        if(a.Vintage.Review.average && !exist){
-          item.average.push({score:+a.Vintage.Review.average , comment:a.Vintage.Review.count, vintageId:a.Vintage.id})
-        }
-        return r.set(key,item)
-      },new Map),
-      map((m:Map<any,any>) => {
-         return Array.from(m.entries()).map((reduced:any) => { 
-          const key=reduced[0]
-          const value=reduced[1]
-          //console.log(value)
-          return { id:key, average:value.average, 
-            type:value.data[0].Vintage.Wine.type, 
-            wineName: value.data[0].Vintage.Wine.name,
-            regionName: value.data[0].Vintage.Wine.Region.name,
-            masterVarietalName:value.data[0].Vintage.Wine.MasterVarietal.name,
-            vintage:value.data.map((m:any) =>{return {year:m.Vintage.year}}),
-            data:value.data,
-            comments:value.average.reduce((sum:number,current:any) => sum + (+current.comment), 0)
-          }
-         });
-      })
+      reduce((r:Map<number,any[]>,a:any) =>this.groupByWineId(r,a), new Map),
+      map((m:Map<any,any>) => this.processWineGrouping(m)),
+      catchError(()=> { console.log("ERROR"); return EMPTY})
     )
     .subscribe((collection:any) =>
     {
       this.wineInCollection = collection
     })
   }
+  ngOnInit(): void {
+    this.searchControl = new FormControl()
+    this.searchForm = new FormGroup({
+      wine: new FormControl('')
+    })
+    this.getCollection()
+  }
   public setStyles(Type:string){
-
     const type: WineType = <WineType> Type;
     //console.log(Type)
     return {'color': 
@@ -127,6 +137,47 @@ export class CellarDashboardComponent implements OnInit {
       type == WineType.Red ? '#651827' :
       'black' 
     }
+  }
+  onFilterList() : void {
+    var Filter!:{vintage__year?:any,wine__name__iLike?:any};
+    this.search = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      startWith(''),
+      filter((i) => i.trim().length > 0),
+      switchMap((searchText: string ) => {
+          const vintage = searchText.match(/[0-9]{4}/) || undefined;
+          const keyword = searchText.replace(/[0-9]{4}/, '') || undefined;
+          Filter = {
+            vintage__year: vintage ? vintage[0] : vintage,
+            wine__name__iLike: keyword,
+          };
+          this.getCollection(Filter);
+          //console.log("Running")
+          //console.log(searchText)
+        return EMPTY;
+      }),
+      catchError((e)=>{ console .log(e); return []})
+    )
+  }
+  resultFormatListValue(value: any): string {
+    return value.name;
+  }
+  inputFormatListValue(value: any): string {
+     return value.name;
+  }
+  onSearchSelection(selection:any):any{
+    //this.wines = []
+    //this.wines.push(selection.item)
+  }
+  onKeyUp(event:any,keyword:any){
+    //console.log(event)
+    if(keyword.trim().length==0){
+      this.getCollection()
+      console.log("Run")
+    }
+    
   }
   onSelection(selection:Vintage){
     this._selection = selection;
@@ -178,65 +229,11 @@ export class CellarDashboardComponent implements OnInit {
       purchaseNote: "",
 
     }
-    /*
-    this.collectionService.add(collection_item).subscribe(
-        //() => this.router.navigateByUrl('/cellar', { skipLocationChange: true })
-        //.then(() => { this.router.navigate(['cellar']);}) 
-        () => { this.currentCollection['size'] = this.currentCollection['size']+1; }
-    );*/
   }
-  /*
-  public get myCollection():any[]{
-    
-    let result:any[] = []
-
-    this.currentCollection.map((item:any) =>{
-      //console.log(item)
-      const collectionItem:{
-          vintageId:number,
-          wineId:number,
-          name:string,
-          mastervarietal:string,
-          region:string, 
-          bottleCount:number,
-          bottleSize:string,
-          price?:string,
-          location?:string,
-          status?:string,
-          color?:string,
-          type?:string,
-          collectionevent?:any[]
-        } = {
-        vintageId: item.vintageId | 0,
-        wineId: item.Vintage.Wine.id | 0,
-        name: `${item.Vintage.year} ${item.Vintage.Wine.name}`,
-        mastervarietal: item.Vintage.Wine.MasterVarietal.name,
-        region: item.Vintage.Wine.Region.name,
-        bottleCount: 1,
-        bottleSize: item.bottleSize,
-        price: item.price,
-        status:item.status,
-        location:item.location,
-        color: item.Vintage.Wine.color,
-        type: item.Vintage.Wine.type,
-        collectionevent: item.CollectionEvents
-      }
-      const wineIndex = result.findIndex((i:any) => i?.vintageId == item.vintageId)
-      if(wineIndex == -1)
-        result.push(collectionItem)
-      else
-        result[wineIndex].bottleCount++
-
-      return collectionItem
-    })
-
-   
-    return result
-  }*/
   ngOnDestroy(): void {
     
   }
-  onKeyUp(){}
+  //onKeyUp(){}
   onKeyDown(){}
   onClear(){}
 }
