@@ -39,7 +39,7 @@ export class CellarWineAllocationAddComponent implements OnInit {
     this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(item: any) {
-    console.log(`naviage to id ${JSON.stringify(item.event)}`);
+    //console.log(`naviage to id ${JSON.stringify(item.event)}`);
     if(item.action=='view')
       this.router.navigateByUrl('/admin/role/' + item.event.id, { state: item.event });
     else if(item.action=='delete')

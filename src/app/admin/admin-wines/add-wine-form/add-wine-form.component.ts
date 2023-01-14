@@ -111,7 +111,7 @@ export class AddWineFormComponent implements OnInit {
     return value;
   }
   onSearchSelection(event:any){
-    console.log("onSearchSelection")
+    //console.log("onSearchSelection")
   }
   onMasterVarietalFilterList(searchText:string){
     return this.mastervarietalService.get(searchText)

@@ -58,7 +58,7 @@ export class AdminReviewComponent implements OnInit {
   }
   onDebug(){
     this.isDebugOn = !this.isDebugOn
-    console.log("here")
+    //console.log("here")
   }
   formatTag(tags:any[]){
     return tags.map(p => <string>p.name.replace("#","")).join(', ')

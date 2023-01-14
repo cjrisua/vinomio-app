@@ -91,14 +91,13 @@ export class AdminVintageFormComponent implements OnInit {
   onSubmit() {
 
     this.removedItemCollection.forEach((i,x) =>{
-      console.log(`removedItemCollection => ${x}, ${i}`)
+      //console.log(`removedItemCollection => ${x}, ${i}`)
       //this.vintageService.delete(this.vintage.id)
-      //.subscribe(()=>console.log("done"))
     })
     //console.log(this.wineVintages)
     this.addedItemCollection.forEach((year,index)=>{
       //if(index+1 == this.addedItemCollection.length)
-      //  console.log("done!")
+      //console.log("done!")
       this.vintageService.add({wineId:this.vintageFromCtrl.value.id, year:year})
       .subscribe(()=>{
         if(index+1 == this.addedItemCollection.length){

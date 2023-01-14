@@ -38,13 +38,13 @@ export class VinomioReviewService {
   add(data:{}){
     return this.baseService.add(this.apiUrl,data).pipe(
       map((res)=>res),
-      catchError((err)=>{console.debug(err); return EMPTY})
+      catchError((err)=>{console.error(err); return EMPTY})
     )
   }
   delete(id:number) {
     return this.baseService.delete(this.apiUrl,id).pipe(
       map((res)=>res),
-      catchError((err)=>{console.debug(err); return EMPTY})
+      catchError((err)=>{console.error(err); return EMPTY})
     )
   }
 }

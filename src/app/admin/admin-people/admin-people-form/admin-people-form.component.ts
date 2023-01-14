@@ -57,7 +57,7 @@ export class AdminPeopleFormComponent implements OnInit {
   onSubmit() {
     this.peopleService.add(this.adminForm.value)
     .pipe(
-      catchError(error => { console.log(error); return EMPTY })
+      catchError(error => { console.error(error); return EMPTY })
     )
     .subscribe((res) => {
       if (res.status == 201) this.router.navigate(['/admin/people']);

@@ -138,7 +138,7 @@ export class AllocationComponent implements OnInit {
     );
   }
   addNewComponent(event: any, data: any) {
-    console.debug(JSON.stringify(data));
+    //console.debug(JSON.stringify(data));
     const row = document.getElementsByClassName('row' + event)[0];
     if (row.hasAttribute('selected')) {
       row.getElementsByClassName('status')[0].innerHTML = 'show';

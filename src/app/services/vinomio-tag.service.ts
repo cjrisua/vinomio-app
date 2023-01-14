@@ -27,7 +27,7 @@ export class VinomioTagService {
   delete(id:number){
     return this.baseService.delete(this.apiUrl,id).pipe(
       map((res)=>res),
-      catchError((err)=>{console.debug(err); return EMPTY})
+      catchError((err)=>{console.error(err); return EMPTY})
     )
   }
 }

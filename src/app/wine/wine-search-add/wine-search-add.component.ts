@@ -140,7 +140,7 @@ export class WineSearchAddComponent implements OnInit {
     return data as FormGroup
   }
   public debug(data:any){
-    console.log(data)
+    //console.log(data)
   }
   public isActive(tabName:string){
     return tabName === this.selectedFormat.id ? true : false
@@ -167,7 +167,7 @@ export class WineSearchAddComponent implements OnInit {
   }
   onDeleteTab(navigationTabEvent:any){
     const navToTab = this.tabNavCollection.filter((i: { size: any; }) => i.size != navigationTabEvent.size ).map((i: { size: any; }) => {return {size:i.size}})[0]
-    console.log(navToTab)
+    //console.log(navToTab)
     const droppedTab = this.formatCollection.controls.findIndex(i => i.value.size == navigationTabEvent.size)
     this.formatCollection.removeAt(droppedTab)
     this.onNavTabClick(navToTab)
@@ -198,9 +198,9 @@ export class WineSearchAddComponent implements OnInit {
        return data;
     })
     if(data.length > 0){
-      console.log(data)
+      //console.log(data)
       this.collectionService.add(data).pipe(
-        catchError((err) => { console.debug(err); return EMPTY})
+        catchError((err) => { console.error(err); return EMPTY})
       )
       .subscribe((resp) => {
         if(resp.status == 201){
@@ -273,11 +273,11 @@ export class WineSearchAddComponent implements OnInit {
     };
   }
   onReviewerFilterList(index:number,id:string){
-    console.log(id)
+    //console.log(id)
     const formGroup:FormGroup = (<FormArray>this.addWineForm.get('formatCollection')).controls.filter(i => i.get('size')?.value === this.selectedFormat.id)[0] as FormGroup
     const locationFormGroup:FormGroup = (<FormArray>formGroup.get('cellarLocationList')).at(index) as FormGroup
     const selectedLocationName = locationFormGroup.get('section')?.value?.id
-    console.log(selectedLocationName)
+    //console.log(selectedLocationName)
     this.partition = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),

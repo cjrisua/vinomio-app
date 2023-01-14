@@ -20,7 +20,7 @@ export class ProfileInfoComponent implements OnInit {
     private authService: AuthService
   ) {
     this.profile = this.authService.getCurrentUser()
-    console.debug(this.profile)
+    //console.debug(this.profile)
    }
 
   ngOnInit(): void {

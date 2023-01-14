@@ -88,7 +88,7 @@ export class AllocationMerchantFormComponent implements OnInit {
                   p.map(p => names.push({name:p.name, producerId:p.id}))
                   return names
                 }),
-                catchError(()=> {console.log("continue.."); return EMPTY}))
+                catchError(()=> {console.error("continue.."); return EMPTY}))
           else if (searchText == "@")
             return of([])
           else

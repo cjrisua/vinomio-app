@@ -27,7 +27,7 @@ export class CellarWineAllocationDeleteComponent implements OnInit {
     this.itemForm = new FormGroup({})
   }
   onNavigateBack(){
-    console.log("onNavigateBack")
+    //console.log("onNavigateBack")
     this.actionEvent.emit({})
   }
   onSubmit() { 
@@ -35,7 +35,7 @@ export class CellarWineAllocationDeleteComponent implements OnInit {
       map((p:any)=> p),
       catchError(()=>EMPTY)
     ).subscribe((e)=>{
-      console.debug("onSubmit")
+      //console.debug("onSubmit")
       this.wine = this.wine.filter((p:any)=> p.id !== this.collectionId)
       this.actionEvent.emit({id:"touched",data:this.wine})
     })

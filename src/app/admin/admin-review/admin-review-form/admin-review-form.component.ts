@@ -95,7 +95,7 @@ export class AdminReviewFormComponent implements OnInit {
         this.vintageService.getByWineName(searchText).subscribe((res:any) => results=res)
         return results
       }),
-      catchError((e)=>{ console.debug(e); return []})
+      catchError((e)=>{ console.error(e); return []})
     )
   }
   resultFormatListValue(value: any) {
@@ -138,6 +138,6 @@ export class AdminReviewFormComponent implements OnInit {
   }
   onAddMe(){
     const user = this.authService.getCurrentUser();
-    console.debug(user)
+    //console.debug(user)
   }
 }

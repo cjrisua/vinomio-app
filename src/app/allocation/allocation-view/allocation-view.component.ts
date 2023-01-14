@@ -192,7 +192,7 @@ export class AllocationViewComponent implements OnInit {
     })
   }
   onViewItem(allocation:any){
-    console.log("onViewItem")
+    //console.log("onViewItem")
     //this.allocationSelection = allocation
     //this.showView = !this.showView
     

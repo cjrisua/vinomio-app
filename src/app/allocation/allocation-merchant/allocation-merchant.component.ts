@@ -122,7 +122,7 @@ export class AllocationMerchantComponent implements OnInit {
     this.showMerchants = !this.showMerchants
   }
   deleteMerchant(merchant:any){
-    this.merchantService.delete(merchant.id).subscribe(()=>console.log("done!"))
+    this.merchantService.delete(merchant.id).subscribe(()=>{})
     this.getUserMerchant();
   }
   updateMerchant(merchant:any){

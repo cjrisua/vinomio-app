@@ -47,9 +47,9 @@ export class AdminMastervarietalFormComponent implements OnInit {
     })
     this.varietiesService.get()
     .subscribe(data => {
-      console.debug(this.mastervarietal)
+      //console.debug(this.mastervarietal)
       if(this.mastervarietal){
-        console.debug("patchValue")
+        //console.debug("patchValue")
         this.mastervarietalForm.patchValue({name:this.mastervarietal.name})
         this.eventsSubject.next(this.mastervarietal.varieties)
       }
@@ -57,7 +57,7 @@ export class AdminMastervarietalFormComponent implements OnInit {
     });
   }
   onSubmit() { 
-    console.debug(this.varietyIdCollection)
+    //console.debug(this.varietyIdCollection)
     //service data object
     const data:{name:string,varieties:number[]} = {
       name: this.mastervarietalForm.value.name.trim(),

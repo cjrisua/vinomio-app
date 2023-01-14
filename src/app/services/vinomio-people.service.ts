@@ -27,7 +27,7 @@ export class VinomioPeopleService {
   getById(id:number){
     return this.get({"id":id}).pipe(
       map((p)=>{
-        console.log(p)
+        //console.log(p)
         return p})
     )
   }
@@ -35,26 +35,26 @@ export class VinomioPeopleService {
     const query_params = {name__iLike:encodeURI((<string>name).trim())}
     return this.baseService.get(this.apiUrl,query_params).pipe(
       map((p)=>{
-        console.log(p)
+        //console.log(p)
         return p})
     )
   }
   add(data:{name:string,role:string,handler:string}) {
     return this.baseService.add(this.apiUrl,data).pipe(
       map((res)=>res),
-      catchError((err)=>{console.debug(err); return EMPTY})
+      catchError((err)=>{console.error(err); return EMPTY})
     )
   }
   put(id:number,data:any) {
     return this.baseService.put(this.apiUrl,id,data).pipe(
       map((res)=>res),
-      catchError((err)=>{console.debug(err); return EMPTY})
+      catchError((err)=>{console.error(err); return EMPTY})
     )
   }
   delete(id:number) {
     return this.baseService.delete(this.apiUrl,id).pipe(
       map((res)=>res),
-      catchError((err)=>{console.debug(err); return EMPTY})
+      catchError((err)=>{console.error(err); return EMPTY})
     )
   }
 }

@@ -120,7 +120,6 @@ export class AllocationPurchaseComponent implements OnInit {
           .pipe(
             map((offers) =>
               offers.forEach((o: any) => {
-                console.debug(o)
                 this.wineOffers.push(o.wine);
                 let offerArray = this.allocationForm.get('offers') as FormArray;
                 offerArray.push(
@@ -185,12 +184,12 @@ export class AllocationPurchaseComponent implements OnInit {
         .add(data)
         .pipe(
           catchError((err) => {
-            console.debug(err);
+            console.error(err);
             return EMPTY;
           })
         )
         .subscribe((resp) => {
-          console.log(resp);
+          //console.log(resp);
           if (resp.status == 201) {
             this.router.navigate(['/allocation/mailing'], {
               queryParams: { action: 'List' },

@@ -44,7 +44,7 @@ export class AllocationEventOfferComponent implements OnInit {
     this.setPriceEvent.emit(this.wineItem)
   }
   public price(event:any){
-    console.log(event)
+    //console.log(event)
     return this.wineItem.price
   }
   onMinimumKeyUp(event:any){

@@ -46,7 +46,7 @@ export class AdminRegionComponent implements OnInit {
     this.getSourceData(keyword)
   }
   public ViewOrDeleteModelItem(wine: any) {
-    console.log(`naviage to id ${JSON.stringify(wine.event)}`);
+    //console.log(`naviage to id ${JSON.stringify(wine.event)}`);
     if(wine.action=='view')
       this.router.navigateByUrl('/admin/region/' + wine.event.id, { state: wine.event });
     else if(wine.action=='delete')

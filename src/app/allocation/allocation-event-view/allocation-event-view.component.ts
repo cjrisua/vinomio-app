@@ -132,7 +132,7 @@ export class AllocationEventViewComponent implements OnInit {
   private getEventOffers(eventid: any) {
     //console.log(`getEventOffers: ${eventid}`);
     this.eventOfferService.getByEvent(eventid).subscribe((res) => {
-      // console.log('eventOfferService...');
+      //console.log('eventOfferService...');
       res.map((i: any) => {
         if (i.wine) {
           const wine = {
@@ -192,7 +192,7 @@ export class AllocationEventViewComponent implements OnInit {
         .filter((p) => p.id == event.id)
         .map((p) => (p.price = event.price));
     }
-    console.debug(this.offerBottleReleasePrices);
+    //console.debug(this.offerBottleReleasePrices);
   }
   onSubmit() {
     const mergeById = (array1: any[], array2: any[]) =>
@@ -211,7 +211,7 @@ export class AllocationEventViewComponent implements OnInit {
       };
       this.eventService
         .put(this.eventForm.value.id, data)
-        .subscribe(() => console.debug('done!'));
+        .subscribe(() => {});
     }
 
     this.eventOfferService

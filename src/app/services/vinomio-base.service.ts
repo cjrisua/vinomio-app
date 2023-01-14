@@ -8,7 +8,10 @@ import { Observable, map } from 'rxjs';
 export class VinomioBaseService {
   count: number = 0;
   pages?: number;
-  private isString = (a:any) => {console.log(typeof a); return typeof a == "string"}
+  private isString = (a:any) => {
+    //console.log(typeof a); 
+    return typeof a == "string"
+  }
   constructor(private http: HttpClient) {
     //console.log(">>>" + this.apiUrl)
   }
@@ -33,7 +36,7 @@ export class VinomioBaseService {
       .map(i => `${i}=${encodeURI(this.isString(query[i]) ? query[i].trim() : query[i])}`).join("&")
       params = params? `?${params}`: ""
     }
-    console.debug(`${apiURL}${params}`);
+    //console.debug(`${apiURL}${params}`);
     return this.http.get<any>(`${apiURL}${params}`).pipe(map((res) => this.map(res)));
   }
   add(apiURL:string,data: any) {

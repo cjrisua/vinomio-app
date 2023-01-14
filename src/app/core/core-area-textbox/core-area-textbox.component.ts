@@ -35,8 +35,8 @@ export class CoreAreaTextboxComponent implements OnInit {
       this.messages.push({id: this.item.id, name:this.item.name })
       this.addOrRemovedClicked.emit({status:'added', id: this.item.id, name:this.item.name });
     }
-    else
-      console.debug("items already exits")
+    //}
+    //console.debug("items already exits")
   }
   initTextArea(data:any){
     this.messages = []

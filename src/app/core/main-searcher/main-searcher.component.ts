@@ -54,7 +54,7 @@ export class MainSearcherComponent implements OnInit {
       );
   }
   wineSelection(value:any){
-    console.debug(value.option.value as Vintage)
+    //console.debug(value.option.value as Vintage)
     this.wineEvent.emit(value.option.value as Vintage)
   }
   //onChange(event:any){

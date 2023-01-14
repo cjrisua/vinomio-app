@@ -115,7 +115,7 @@ export class CellarDashboardComponent implements OnInit {
       filter((item:any) => filterStatus.includes(item.statusId)),
       reduce((r:Map<number,any[]>,a:any) =>this.groupByWineId(r,a), new Map),
       map((m:Map<any,any>) => this.processWineGrouping(m)),
-      catchError(()=> { console.log("ERROR"); return EMPTY})
+      catchError(()=> { console.error("ERROR"); return EMPTY})
     )
     .subscribe((collection:any) =>
     {
@@ -175,7 +175,7 @@ export class CellarDashboardComponent implements OnInit {
     //console.log(event)
     if(keyword.trim().length==0){
       this.getCollection()
-      console.log("Run")
+      //console.log("Run")
     }
     
   }
@@ -192,7 +192,7 @@ export class CellarDashboardComponent implements OnInit {
     this.cellarActiveRoute = CellarDashboardActiveRoute.AddWine
   }
   onActionEvent(action:any){
-    console.debug(action)
+    //console.debug(action)
      if(action.id=="delete"){
       this.cellarActiveRoute = CellarDashboardActiveRoute.DeleteWine
       this._itemCollectionId= action.data.id

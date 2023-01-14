@@ -26,7 +26,7 @@ export class AuthService {
     return this.http
       .post<any>(`${this.authUrl}/login`, user)
       .subscribe((res: any) => {
-        console.log(res)
+        //console.log(res)
         localStorage.setItem('access_token', res.token);
         this.getUserProfile(user).subscribe((res) => {
           this.router.navigate(['cellar']);
@@ -43,7 +43,7 @@ export class AuthService {
         return res || {};
       }),
       catchError((val: any) => {
-        console.debug(`Error: ${val.error.error}`);
+        console.error(`Error: ${val.error.error}`);
         return [];
       })
     );

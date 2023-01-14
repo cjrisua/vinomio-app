@@ -65,7 +65,7 @@ export class WineSearchComponent implements OnInit {
       switchMap((searchText: string ) => {
           return this.wineService.get({name:searchText}).pipe(
           map((w:any) => { return w }),
-          catchError(()=> {console.log("continue.."); return EMPTY}))
+          catchError(()=> {console.error("continue.."); return EMPTY}))
       }),
       catchError((e)=>{ console .log(e); return []})
     )

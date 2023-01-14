@@ -31,7 +31,7 @@ export class AllocationEventItemComponent implements OnInit {
       const name = (<HTMLElement>this.eventName.first.nativeElement).innerHTML;
       const month = (<HTMLElement>this.eventMonth.first.nativeElement).innerHTML;
       const payload = {name:name, month:month}
-      this.aeService.put(data.eventId,payload).subscribe((result)=>console.log("done!"))
+      this.aeService.put(data.eventId,payload).subscribe((result)=>{})
     }
     this.contenteditable = !this.contenteditable
   }

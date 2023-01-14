@@ -134,7 +134,7 @@ export class ProfileCellarComponent implements OnInit {
     const newName = <string>name.trim()
     if(!this.editName && this.cellarForm.get('name')?.value !== newName){
       this.cellarForm.patchValue({'name':newName})
-      this.cellarService.put(this.cellarForm.get('id')?.value,{name:newName}).subscribe(res => console.log("done"))
+      this.cellarService.put(this.cellarForm.get('id')?.value,{name:newName}).subscribe(res =>{})
     }
   }
   getOwner(): User {
@@ -160,13 +160,13 @@ export class ProfileCellarComponent implements OnInit {
   
   onSubmit() {
     const id:number = this.cellarForm.get('id')?.value
-    console.log(this.Attributes.value[0])
+    //console.log(this.Attributes.value[0])
     if(id){
-      console.log(id)
+      //console.log(id)
       const data:{attributes:any} = {attributes:this.Attributes.value[0]}
       this.cellarService.put(id,data).subscribe(resp => {
         if(resp.ok){
-          console.log("done")
+          //console.log("done")
         }
       })
     }
@@ -193,7 +193,7 @@ export class ProfileCellarComponent implements OnInit {
       (<HTMLInputElement>parent).getElementsByClassName('form-check-input')[0]
     )).checked;
 
-    if (isExpanded && isChecked) console.log('expanded found! [checked]');
+    if (isExpanded && isChecked){} //console.log('expanded found! [checked]');
     if (!isExpanded && isChecked) {
       target.classList.toggle('expanded');
       (<HTMLDivElement>child).classList.toggle('d-none');
@@ -230,7 +230,7 @@ export class ProfileCellarComponent implements OnInit {
         }
       }
     else {
-      console.log('???');
+      //console.log('???');
     }
   }
   _onAddRowControl(slug: string, columns: string[]): FormGroup {
@@ -240,7 +240,7 @@ export class ProfileCellarComponent implements OnInit {
       formGroup.addControl(c, new FormControl(c==="id" ? uuidv4() : '', []));
     });
     formArray.push(formGroup);
-    console.log(formGroup);
+    //console.log(formGroup);
     return formGroup;
   }
   onAddDistribution() {
