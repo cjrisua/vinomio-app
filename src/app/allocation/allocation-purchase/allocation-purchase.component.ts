@@ -20,6 +20,7 @@ import { VinomioAllocationEventOfferService } from 'src/app/services/vinomio-all
 import { VinomioAllocationService } from 'src/app/services/vinomio-allocation.service';
 import { VinomioCollectionService } from 'src/app/services/vinomio-collection.service';
 import { VinomioWineService } from 'src/app/services/vinomio-wine.service';
+import { ErrorDialogService } from 'src/app/shared/errors/error-dialog.service';
 
 @Component({
   selector: 'app-allocation-purchase',
@@ -55,6 +56,7 @@ export class AllocationPurchaseComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
+    private errorDialogService: ErrorDialogService,
     @Inject(LOCALE_ID) private locale: string
   ) {
     this.userProfile = this.authService.getCurrentUser();
@@ -183,8 +185,11 @@ export class AllocationPurchaseComponent implements OnInit {
       this.collectionService
         .add(data)
         .pipe(
-          catchError((err) => {
-            console.error(err);
+          catchError((exception) => {
+            this.errorDialogService.openDialog(
+              exception?.error.message  || 'Undefined client error',
+              exception?.status
+            )
             return EMPTY;
           })
         )
