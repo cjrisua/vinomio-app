@@ -187,7 +187,7 @@ export class CellarAddWineComponent implements OnInit {
       price : data.price,
       purchaseNote : data.notes,
       bottleSize : data.format,
-      locationId: 0 ,
+      bottleLocation: 0 ,
       acquiringSourceId: data.source,
       allocationEventId: data.allocationevent?.eventId | 0,
       merchant: this._mapMerchant(),

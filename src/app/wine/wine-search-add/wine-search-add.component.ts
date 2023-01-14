@@ -184,7 +184,7 @@ export class WineSearchAddComponent implements OnInit {
           price: f.value.cost,
           bottleCount: f.value.count,
           bottleSize: f.value.size,
-          bottleLocation:[],
+          bottleLocation: 0,
           purchasedOn: f.value.purchasedDate,
           deliverBy: f.value.deliveryDate,
           statusId:  f.value.status == true ? 'pending' : 'allocated',

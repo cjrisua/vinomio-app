@@ -10,7 +10,7 @@ export class Collection {
         public statusId ?: string,
         public cellarId ?: number,
         public price?: number,
-        public locationId: number = 0,
+        public bottleLocation?: any,
         public acquiringSourceId: number = 0,
         public allocationEventId: number = 0,
         public merchant?: Merchant,
