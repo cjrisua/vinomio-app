@@ -75,7 +75,7 @@ export class AllocationPurchaseComponent implements OnInit {
       //console.debug(params);
       const regExp: RegExp = /^[0-9]+$/g;
       const regExp2: RegExp = /^[0-9]+$/g;
-      console.log('-' + params.get('event') + '-');
+      //console.log('-' + params.get('event') + '-');
       if (
         params.get('event') &&
         regExp.test(params.get('event') || '') &&
@@ -190,7 +190,7 @@ export class AllocationPurchaseComponent implements OnInit {
           })
         )
         .subscribe((resp) => {
-          //console.log(resp);
+          console.log(resp);
           if (resp.status == 201) {
             this.router.navigate(['/allocation/mailing'], {
               queryParams: { action: 'List' },

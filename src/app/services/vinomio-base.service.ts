@@ -8,6 +8,7 @@ import { Observable, map } from 'rxjs';
 export class VinomioBaseService {
   count: number = 0;
   pages?: number;
+  private isString = (a:any) => {console.log(typeof a); return typeof a == "string"}
   constructor(private http: HttpClient) {
     //console.log(">>>" + this.apiUrl)
   }
@@ -21,13 +22,15 @@ export class VinomioBaseService {
       
     let params="";
     if (query){
-      //params = Object.entries(query)
-      //  .map((p) => `${p[0]}=${p[1]}`)
-      //  .filter((p) => p.match('.+?=.+?'))
-      //  .join('&');
       params = Object.keys(query)
-      .filter(f => query[f] &&  query[f].trim().length > 0)
-      .map(i => `${i}=${encodeURI(query[i].trim())}`).join("&")
+      .filter(f => { 
+        if(query[f]){
+          var valueof:any = query[f].toString()
+          return valueof.length > 0
+        }
+        return false
+      })
+      .map(i => `${i}=${encodeURI(this.isString(query[i]) ? query[i].trim() : query[i])}`).join("&")
       params = params? `?${params}`: ""
     }
     console.debug(`${apiURL}${params}`);

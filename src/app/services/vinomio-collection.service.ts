@@ -30,6 +30,7 @@ export class VinomioCollectionService {
   }
 
   add(data:any){
+    console.log(data)
     return this.httpClient
       .post(this.apiUrl, data, {observe : 'response'})
   }
