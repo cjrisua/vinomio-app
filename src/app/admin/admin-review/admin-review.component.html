@@ -17,10 +17,11 @@
       </div>
       <!--<app-admin-model-table *ngIf="dataSource.data && dataSource.data.length > 0" [ModelItems]="dataSource.data"
         [exclusionColumns]="exclusionColumns" (viewOrdeleteEvent)="ViewOrDeleteModelItem($event)"></app-admin-model-table>-->
-        <div class="card my-2" *ngFor="let modelItem of dataSource.data">
+        <div class="card my-2" *ngFor="let keyvalue of dataSource.data  | keyvalue | adminOrderBy">
+         <div class="wrapper" *ngIf="keyvalue.value as modelItem">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-              <div><a class="model-item-title" href="javascript:void(0);"><span>{{$any(modelItem).vintage.year}} {{$any(modelItem).vintage.Wine.name}}</span></a></div>
+              <div><a class="model-item-title" href="javascript:void(0);" [routerLink]="['./',modelItem.id]"><span>{{$any(modelItem).vintage.year}} {{$any(modelItem).vintage.Wine.name}}</span></a></div>
               <div><span class="material-icons-outlined model-delete-button" (click)="onDelete(modelItem.id)">delete_forever</span></div>
             </div>
             
@@ -68,6 +69,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
     </ng-template>
 </div>

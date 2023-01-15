@@ -27,6 +27,14 @@ export class VinomioReviewService {
   getList(filter?:{}):Observable<any>{
     return this.get(filter)
   }
+  getById(wineId:number):Observable<any>{
+    return this.baseService.get(`${this.apiUrl}/${wineId}`).pipe(
+      map(res => {
+        this.count = this.baseService.count;
+        return res
+      })
+    )
+  }
   getListByWine(wineId:number,filter?:{cellarId:number}){
     return this.baseService.get(`${this.apiUrl}/wine/${wineId}`, filter).pipe(
       map((p) => { 

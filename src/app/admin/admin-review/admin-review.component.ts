@@ -23,9 +23,8 @@ export class AdminReviewComponent implements OnInit {
     private reviewService: VinomioReviewService
   ) { 
     this.obs$ =  this.reviewService.getList().pipe(
-      map((reviews:any)=>{
-        this.dataSource = new MatTableDataSource(reviews)
-      }),
+      map((reviews:any) => reviews.sort((a:any,b:any)=> Date.parse(b.updatedAt) -Date.parse(a.updatedAt))),
+      map((reviewsSorted:any)=>this.dataSource = new MatTableDataSource(reviewsSorted)),
       map(()=>true),
       catchError(()=>of([]))
     )

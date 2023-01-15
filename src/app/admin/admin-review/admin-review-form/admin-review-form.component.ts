@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, Observable, OperatorFunction, startWith, Subject } from 'rxjs';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, Observable, OperatorFunction, startWith, Subject } from 'rxjs';
 import { People } from 'src/app/models/People';
+import { Review } from 'src/app/models/Review';
 import { Wine } from 'src/app/models/Wine';
 import { AuthService } from 'src/app/services/auth.service';
 import { VinomioPeopleService } from 'src/app/services/vinomio-people.service';
 import { VinomioReviewService } from 'src/app/services/vinomio-review.service';
-import { VinomioTagService } from 'src/app/services/vinomio-tag.service';
 import { VinomioVintageService } from 'src/app/services/vinomio-vintage.service';
+import { ErrorDialogService } from 'src/app/shared/errors/error-dialog.service';
 
 @Component({
   selector: 'app-admin-review-form',
@@ -27,10 +28,12 @@ export class AdminReviewFormComponent implements OnInit {
 
   constructor(
     private router:Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private vintageService: VinomioVintageService,
     private peopleService: VinomioPeopleService,
     private reviewService: VinomioReviewService,
+    private errorHandlerService: ErrorDialogService
   ) { 
     this.initForm()
     this.routeBack ='/admin/review'
@@ -44,6 +47,24 @@ export class AdminReviewFormComponent implements OnInit {
     })
   }
   ngOnInit(): void {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const regExp: RegExp = /^[0-9]+$/g;
+      if (params.get('id') && regExp.test(params.get('id') || '')) {
+        this.reviewService.getById(Number(params.get('id'))).pipe(
+          catchError(exception => {
+            this.errorHandlerService.openDialog(exception?.error.message  || 'Undefined client error',exception?.status)
+            return EMPTY
+          }))
+          .subscribe((ReviewDao)=> {
+            console.log(ReviewDao)
+             this.adminForm.patchValue({
+              score:ReviewDao.score,
+              review:ReviewDao.review
+            })
+          })
+        } 
+    });
+
     this.subject
     .pipe(debounceTime(500))
     .subscribe((tags:any[]) => {
@@ -118,6 +139,7 @@ export class AdminReviewFormComponent implements OnInit {
     };
   }
   onKeyUp(event:any){
+    /*
     let tagsFound:any[] = []
     if(event.key == "Shift" || <string>event.key.includes("Arrow")) return 
     const content:string = event.target.innerText
@@ -134,7 +156,7 @@ export class AdminReviewFormComponent implements OnInit {
     }
     if(array.length == 0 && this.tags.length > 0)
       this.tags = []
-    this.adminForm.patchValue({review:content})
+    this.adminForm.patchValue({review:content})*/
   }
   onAddMe(){
     const user = this.authService.getCurrentUser();
