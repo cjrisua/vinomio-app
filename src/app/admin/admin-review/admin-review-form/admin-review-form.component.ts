@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, EMPTY, filter, map, Observable, OperatorFunction, startWith, Subject } from 'rxjs';
 import { People } from 'src/app/models/People';
 import { Review } from 'src/app/models/Review';
+import { Tag } from 'src/app/models/Tag';
 import { Wine } from 'src/app/models/Wine';
 import { AuthService } from 'src/app/services/auth.service';
 import { VinomioPeopleService } from 'src/app/services/vinomio-people.service';
@@ -33,17 +34,23 @@ export class AdminReviewFormComponent implements OnInit {
     private vintageService: VinomioVintageService,
     private peopleService: VinomioPeopleService,
     private reviewService: VinomioReviewService,
-    private errorHandlerService: ErrorDialogService
+    private errorHandlerService: ErrorDialogService,
+    private fb: FormBuilder
   ) { 
     this.initForm()
     this.routeBack ='/admin/review'
   }
+  debug(){
+    console.debug(this.adminForm.value)
+  }
   initForm(){
     this.adminForm = new FormGroup({
+      id: new FormControl(),
       publisher : new FormControl(), 
       vintage : new FormControl(),
       review : new FormControl(),
       score: new FormControl(),
+      tags: new FormArray([])
     })
   }
   ngOnInit(): void {
@@ -55,12 +62,15 @@ export class AdminReviewFormComponent implements OnInit {
             this.errorHandlerService.openDialog(exception?.error.message  || 'Undefined client error',exception?.status)
             return EMPTY
           }))
-          .subscribe((ReviewDao)=> {
-            console.log(ReviewDao)
+          .subscribe((ReviewDao:Review)=> {
+             ReviewDao.tags?.map(i => this.fb.group(i)).map(fg => (<FormArray>this.adminForm.get('tags')).push(fg))
              this.adminForm.patchValue({
+              id:ReviewDao.id,
+              publisher:ReviewDao.people,
+              vintage:ReviewDao.vintage,
               score:ReviewDao.score,
-              review:ReviewDao.review
-            })
+              review:ReviewDao.message,
+            });
           })
         } 
     });
@@ -160,6 +170,6 @@ export class AdminReviewFormComponent implements OnInit {
   }
   onAddMe(){
     const user = this.authService.getCurrentUser();
-    //console.debug(user)
+    console.debug(user)
   }
 }

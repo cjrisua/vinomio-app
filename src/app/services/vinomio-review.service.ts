@@ -27,12 +27,14 @@ export class VinomioReviewService {
   getList(filter?:{}):Observable<any>{
     return this.get(filter)
   }
-  getById(wineId:number):Observable<any>{
-    return this.baseService.get(`${this.apiUrl}/${wineId}`).pipe(
-      map(res => {
+  getById(reviewId:number):Observable<any>{
+    return this.baseService.get(`${this.apiUrl}?id=${reviewId}`).pipe(
+      map(p => {
         this.count = this.baseService.count;
-        return res
-      })
+        const serialized:Review[] = p.map((r:any) => plainToClass(Review,r,{excludeExtraneousValues: true}))
+        return serialized[0]
+      }),
+      catchError((exception)=> EMPTY)
     )
   }
   getListByWine(wineId:number,filter?:{cellarId:number}){

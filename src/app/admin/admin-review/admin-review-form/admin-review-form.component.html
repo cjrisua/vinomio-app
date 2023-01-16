@@ -43,10 +43,10 @@
         <div class="form-group my-3">
             <label for="name">Review</label>
             <!--<div class="mb-3" contenteditable="true" style="min-height:25pt;border-style:dotted" (keyup)="onKeyUp($event)"></div>-->
-            <textarea formControlName="review"  class="form-control" (keyup)="onKeyUp($event)"></textarea>
+            <textarea formControlName="review"  class="form-control" (keyup)="onKeyUp($event)" style="height: 150px;"></textarea>
         </div>
         <p class="h5">Tags</p>
-        <div class="mb-3" contenteditable="false" style="min-height:25pt;border-style:dotted">
+        <div class="mb-3" contenteditable="false">
             <li *ngFor="let tag of tags">
                 <span>{{tag|json}}</span>
             </li>
@@ -57,4 +57,5 @@
             <button type="submit" class="btn btn-success" [disabled]="!adminForm.valid">Submit</button>
           </div>
     </form>
+    <button class="btn btn-primary" (click)="debug()">debug</button>
 </div>
