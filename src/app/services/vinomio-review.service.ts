@@ -51,6 +51,12 @@ export class VinomioReviewService {
       catchError((err)=>{console.error(err); return EMPTY})
     )
   }
+  update(id:number,data:{}){
+    return this.baseService.put(this.apiUrl,id,data).pipe(
+      map((res)=>res),
+      catchError((err)=>{console.error(err); return EMPTY})
+    )
+  }
   delete(id:number) {
     return this.baseService.delete(this.apiUrl,id).pipe(
       map((res)=>res),

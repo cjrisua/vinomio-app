@@ -46,16 +46,19 @@
             <textarea formControlName="review"  class="form-control" (keyup)="onKeyUp($event)" style="height: 150px;"></textarea>
         </div>
         <p class="h5">Tags</p>
-        <div class="mb-3" contenteditable="false">
-            <li *ngFor="let tag of tags">
-                <span>{{tag|json}}</span>
-            </li>
+        <div *ngIf=" $any(adminForm.get('tags')).controls && $any(adminForm.get('tags')).controls.length > 0; else elseBlock" class="mb-3 d-flex" contenteditable="false" style="border:1px solid #ced4da;padding:6px 12px" formArrayName="tags">
+            <div *ngFor="let tag of $any(adminForm.get('tags')).controls; index as i">
+                <div class="tag-body"> {{$any(tag.get('name')).value.replace('#','')}} </div>
+            </div>
         </div>
+        <ng-template #elseBlock>
+            <p class="h6">None</p>
+        </ng-template>
         <div class="d-flex justify-content-between">
             <button type="button" [routerLink]="[routeBack]"
               class="btn btn btn-outline-dark">Cancel</button>
             <button type="submit" class="btn btn-success" [disabled]="!adminForm.valid">Submit</button>
           </div>
     </form>
-    <button class="btn btn-primary" (click)="debug()">debug</button>
+    <!--<button class="btn btn-primary" (click)="debug()">debug</button>-->
 </div>

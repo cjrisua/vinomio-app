@@ -24,7 +24,7 @@ export class AdminReviewFormComponent implements OnInit {
   peoplesearcher!: OperatorFunction<string, readonly People[]>;
   routeBack:string
   
-  tags:any[]=[]
+  //tags:any[]=[]
   subject: Subject<any> = new Subject();
 
   constructor(
@@ -45,7 +45,7 @@ export class AdminReviewFormComponent implements OnInit {
   }
   initForm(){
     this.adminForm = new FormGroup({
-      id: new FormControl(),
+      id: new FormControl(0),
       publisher : new FormControl(), 
       vintage : new FormControl(),
       review : new FormControl(),
@@ -63,7 +63,7 @@ export class AdminReviewFormComponent implements OnInit {
             return EMPTY
           }))
           .subscribe((ReviewDao:Review)=> {
-             ReviewDao.tags?.map(i => this.fb.group(i)).map(fg => (<FormArray>this.adminForm.get('tags')).push(fg))
+             ReviewDao.tags?.filter(i => i.id).map(i => this.fb.group(i)).map(fg => (<FormArray>this.adminForm.get('tags')).push(fg))
              this.adminForm.patchValue({
               id:ReviewDao.id,
               publisher:ReviewDao.people,
@@ -79,25 +79,65 @@ export class AdminReviewFormComponent implements OnInit {
     .pipe(debounceTime(500))
     .subscribe((tags:any[]) => {
           tags.forEach((tag) => {
+            /*
             let hashtagItem = this.tags.filter(i=> i.id == tag.id);
             if(hashtagItem.length == 0) this.tags.push(tag)
             else{
               hashtagItem[0].name = tag.name
-            }
+            }*/
+            console.debug(tag)
           })
         }
     );
   }
   onSubmit(){
     const data = {
+      id: Number(this.adminForm.get("id")?.value),
       review: this.adminForm.get("review")?.value,
       publisherId: this.adminForm.get("publisher")?.value.id,
       vintageId: this.adminForm.get("vintage")?.value.id,
-      tags: this.tags.map(i => {return {"name":i.name}}),
-      score: this.adminForm.get("score")?.value
+      tags: this.mapTags(this.adminForm.get('tags') as FormArray),
+      score: Number(this.adminForm.get("score")?.value) || 0
     }
-    //console.debug(data)
-    this.reviewService.add(data).subscribe((p)=>this.router.navigate(['/admin/review']))
+    //console.log(data)
+   if(data?.id)
+      this.reviewService.update(data.id,data).subscribe((p)=>this.router.navigate(['/admin/review']))
+    else
+      this.reviewService.add(data).subscribe((p)=>this.router.navigate(['/admin/review']))
+  }
+  private parseContentForTags(content:string) : {name:string,flag:string,id?:number}[]{
+    var tagsFound:{name:string,flag:string}[] = []
+    const regexp = /\B#[^ !@#$%^&*(),.?":{}|<>]+/g;
+    const array = [...content.matchAll(regexp)];
+    array.forEach((tag,index)=> { 
+      const name:string = tag[0].toString().trim()
+      tagsFound.push({name:name,flag:"new"});
+    })
+    return tagsFound
+  }
+  private mapTags(formArray:FormArray){
+    //get tags form reactive form object
+    const existentTags = formArray.value;
+    //get tags from textarea and assume everything is a new tag
+    const reviewTags = this.parseContentForTags(this.adminForm.get('review')?.value)
+    //mark tags which can be ignored
+    const updatedTags = existentTags.map((i:any) => {
+        const item = reviewTags.find((o:any)=> o.name===i.name) 
+        return {name:i.name, flag:item ? "ignore" : "remove", id:i.id}})
+    //merge objects
+    const results = [...reviewTags,...updatedTags]
+    //reduce data for api with new and remove only 
+    return results.reduce((r:{name:string,flag:string,id?:number}[],a) => { 
+      //console.log(a)
+      const index = r.findIndex((i:any)=>i.name===a.name)
+      if(index == -1)
+        r.push(a)
+      else if(a.flag=="ignore"){
+        r[index].flag = a.flag
+        r[index].id = a.id
+      }
+      return r
+    },[])
   }
   onReviewerFilterList():void{
     let results:any[]=[]
@@ -156,6 +196,7 @@ export class AdminReviewFormComponent implements OnInit {
     const regexp = /\B#[^ !@#$%^&*(),.?":{}|<>]+/g;
     const array = [...content.matchAll(regexp)];
     array.forEach((tag,index)=> { 
+      console.log("?")
       let name = tag[0]
       let tagInfo={id:index,name:name.trim()}
       tagsFound.push(tagInfo);
@@ -166,7 +207,7 @@ export class AdminReviewFormComponent implements OnInit {
     }
     if(array.length == 0 && this.tags.length > 0)
       this.tags = []
-    this.adminForm.patchValue({review:content})*/
+    //this.adminForm.patchValue({review:content})*/
   }
   onAddMe(){
     const user = this.authService.getCurrentUser();
