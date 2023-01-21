@@ -5,16 +5,22 @@ import { People } from '../models/People';
 import { VinomioBaseService } from './vinomio-base.service';
 import { plainToClass } from 'class-transformer';
 import { Review } from '../models/Review';
+import { AuthService } from './auth.service';
+import { Profile } from '../models/Profile';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VinomioReviewService {
   private apiUrl = environment.apiUrl + '/review';
+  private profile!: Profile
   public count!:number;
 
-  constructor(private baseService: VinomioBaseService) { 
-    
+  constructor(
+    private baseService: VinomioBaseService,
+    private authService: AuthService
+    ) { 
+      this.profile = this.authService.getCurrentUser()
   }
   private get(filter?:any):Observable<any>{
     return this.baseService.get(this.apiUrl,filter).pipe(

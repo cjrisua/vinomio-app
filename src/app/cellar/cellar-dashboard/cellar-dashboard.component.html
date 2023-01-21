@@ -87,8 +87,7 @@
                 </div>
               </div>
               <div class="wrapper">
-                <div class="position-relative d-inline mx-3" [routerLink]="['./wine-review']"
-                  [queryParams]="{wine:item.id}">
+                <div class="position-relative d-inline mx-3" [routerLink]="['/review/wine',item.data[0].Vintage.Wine.id]">
                   <span class="material-icons-outlined" style="font-size: 25px;">insert_comment</span>
                   <span class="mt-2 position-absolute start-100 translate-middle badge rounded-pill bg-danger">
                     {{item.comments}}

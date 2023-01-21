@@ -63,7 +63,7 @@ import { CellarWineDetailComponent } from './cellar/cellar-wine-detail/cellar-wi
 import { CellarWineAllocationEditComponent } from './cellar/cellar-wine-allocation/cellar-wine-allocation-edit/cellar-wine-allocation-edit.component';
 import { CellarWineAllocationDeleteComponent } from './cellar/cellar-wine-allocation/cellar-wine-allocation-delete/cellar-wine-allocation-delete.component';
 import { WineReviewViewComponent } from './review/wine-review-view/wine-review-view.component';
-import { WineReviewListComponent } from './review/wine-review-list/wine-review-list.component';
+import { WineReviewItemComponent } from './review/wine-review-item/wine-review-item.component';
 import { Profile } from './models/Profile';
 import { CellarWineReviewComponent } from './cellar/cellar-wine-review/cellar-wine-review.component';
 import { AdminPeopleComponent } from './admin/admin-people/admin-people.component';
@@ -137,7 +137,7 @@ import { AverageScorePipe } from './pipes/average-score.pipe';
     CellarWineAllocationDeleteComponent,
     CellarWineAllocationEditComponent,
     WineReviewViewComponent,
-    WineReviewListComponent,
+    WineReviewItemComponent,
     CellarWineReviewComponent,
     AverageScorePipe
   ],

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WineReviewListComponent } from './wine-review-list.component';
+import { WineReviewItemComponent } from './wine-review-item.component';
 
-describe('WineReviewListComponent', () => {
-  let component: WineReviewListComponent;
-  let fixture: ComponentFixture<WineReviewListComponent>;
+describe('WineReviewItemComponent', () => {
+  let component: WineReviewItemComponent;
+  let fixture: ComponentFixture<WineReviewItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WineReviewListComponent ]
+      declarations: [ WineReviewItemComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WineReviewListComponent);
+    fixture = TestBed.createComponent(WineReviewItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

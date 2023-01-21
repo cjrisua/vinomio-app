@@ -123,6 +123,7 @@ const routes: Routes = [
   {
     path:'review',
     children:[
+      {path:'wine/:id',pathMatch:'full',component:WineReviewViewComponent},
       {path:'',pathMatch:'full',component:WineReviewViewComponent}]
   },
   {
