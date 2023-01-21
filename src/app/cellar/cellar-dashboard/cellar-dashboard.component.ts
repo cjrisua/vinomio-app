@@ -236,4 +236,9 @@ export class CellarDashboardComponent implements OnInit {
   //onKeyUp(){}
   onKeyDown(){}
   onClear(){}
+  onCardClick(data:any){
+    console.log(data[0].Vintage.Wine.id)
+    //alert("Navigate")
+    this.router.navigateByUrl(`/cellar/wine/${data[0].Vintage.Wine.id}`)
+  }
 }
