@@ -7,4 +7,7 @@ export class Vintage{
         public name:string,
         public Wine:Wine
     ){}
+    public test(){
+        return "hello"
+    }
 }

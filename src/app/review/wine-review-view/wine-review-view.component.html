@@ -1,6 +1,18 @@
 <div class="container">
     <div *ngIf="Reviews$ | async;let reviewsDao" class="container mt-4">
-        <app-wine-review-item [Review]="review" *ngFor="let review of reviewsDao" ></app-wine-review-item>
+        <p class="h6">Filters</p>
+        <div *ngIf="FilterCollection && FilterCollection.length > 0; else elseBlock" class="mb-3 d-flex" contenteditable="false" style="border:1px solid #ced4da;padding:6px 12px; flex-wrap: wrap;">
+            <div *ngFor="let tag of FilterCollection; index as i">
+                <div *ngIf="tag" class="tag-body" 
+                (click)="applyFilter(tag,$event.target)"
+                [ngClass]="{'selected':tag.toggle,'':!tag.toggle}"
+                > {{tag.value.replace('#','')}} </div>
+            </div>
+        </div>
+        <ng-template #elseBlock>
+            <p class="h6">None</p>
+        </ng-template>
+        <app-wine-review-item [Review]="review" *ngFor="let review of ReviewCollection" ></app-wine-review-item>
     </div>
     
 </div>

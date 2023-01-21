@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { formatReview } from 'src/app/app.module';
+import { Review } from 'src/app/models/Review';
 
 @Component({
   selector: 'app-wine-review-item',
@@ -7,12 +9,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class WineReviewItemComponent implements OnInit {
 
-  @Input() Review!:any 
-
+  @Input() Review!:Review 
+  userReview!:string
   constructor() { }
 
 
   ngOnInit(): void {
+    this.userReview = formatReview(this.Review.message || "")
   }
 
 }
