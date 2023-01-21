@@ -8,7 +8,7 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { catchError, EMPTY, map } from 'rxjs';
 import { Cellar } from 'src/app/models/Cellar';
 import { AuthService } from 'src/app/services/auth.service';
@@ -29,7 +29,7 @@ import { formatDate } from '@angular/common';
 })
 export class CellarWineDetailComponent implements OnInit {
   //@Input() currentUser!:Profile
-  wine!: any;
+  //wine!: any;
   @Output() actionEvent = new EventEmitter<{}>();
 
   postForm!: FormGroup;
@@ -53,15 +53,18 @@ export class CellarWineDetailComponent implements OnInit {
   profile!: Profile;
   cellar!: Cellar;
 
+  wineId!:number
+
   constructor(
     private cellarService: VinomioCellarService,
     private collectionService: VinomioCollectionService,
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private reviewService: VinomioReviewService,
     @Inject(LOCALE_ID) private locale: string
   ) {
-    this.profile = this.authService.getCurrentUser();
+    this.profile = this.authService.getCurrentUser()
     this.cellarService
       .get(this.profile.cellar || 0)
       .pipe(
@@ -71,6 +74,12 @@ export class CellarWineDetailComponent implements OnInit {
         })
       )
       .subscribe((res) => (this.cellar = res));
+    this.route.paramMap.subscribe((params: ParamMap) => {
+        const regExp: RegExp = /^[0-9]+$/g;
+        if (params.get('id') && regExp.test(params.get('id') || '')) {
+          this.wineId = Number(params.get('id'))
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -81,38 +90,49 @@ export class CellarWineDetailComponent implements OnInit {
       tags: new FormArray([]),
       score: new FormControl('', [Validators.required]),
     });
-    this.wine = <any[]>history.state.data;
-    if (this.wine) {
-      this.cellarItem = this.wine[0].Vintage.Wine;
-      this.wine.reduce((res: any, value: any) => {
-        //console.log(value.Vintage)
-        if (!res[value.Vintage.year]) {
-          res[value.Vintage.year] = {
-            year: value.Vintage.year,
-            id: value.Vintage.id,
-            allocated: [],
-            pending: [],
-          };
-          this.vintages.push(res[value.Vintage.year]);
-        }
-        //res[value.Vintage.year].qty.push(value);
-        //allocated
-        if (value.statusId == 'allocated') {
-          this.showAllocated = true;
-          res[value.Vintage.year].allocated.push(value);
-        } else if (value.statusId == 'pending') {
-          this.showPending = true;
-          res[value.Vintage.year].pending.push(value);
-        }
-        return res;
-      }, {});
-      this.activeYear = this.vintages[0].year;
-      this.onVintageSelection(this.activeYear);
-      //const wineId =
-      const vintageId = this.wine[0].Vintage.id;
-      //console.log(vintageId);
-      this.GetReviews(this.wine[0].Vintage.Wine.id);
+
+    if (this.wineId && this.profile.cellar) {
+      this.collectionService
+        .getCollectionByWineId(this.profile.cellar, this.wineId)
+        .pipe(
+          map((dao) => dao),
+          catchError((err) => EMPTY)
+        )
+        .subscribe((dao:any) => {
+          //console.log(dao)
+          this.cellarItem = dao[0].Vintage.Wine;
+          dao.reduce((res: any, value: any) => {
+            if (!res[value.Vintage.year]) {
+              res[value.Vintage.year] = {
+                year: value.Vintage.year,
+                id: value.Vintage.id,
+                allocated: [],
+                pending: [],
+              };
+              this.vintages.push(res[value.Vintage.year]);
+            }
+            if (value.statusId == 'allocated') {
+              this.activeTab = 0;
+              this.showAllocated = true;
+              res[value.Vintage.year].allocated.push(value);
+            } else if (value.statusId == 'pending') {
+              if (!this.showAllocated) this.activeTab = 1;
+              this.showPending = true;
+              res[value.Vintage.year].pending.push(value);
+            }
+            return res;
+          }, {});
+          this.activeYear = this.vintages[0].year;
+          this.onVintageSelection(this.activeYear);
+          //const wineId =
+          const vintageId = dao[0].Vintage.id;
+          //console.log(vintageId);
+          this.GetReviews(this.wineId);
+        });
     }
+    /*this.wine = <any[]>history.state.data;
+    if (this.wine) {
+    }*/
   }
   GetReviews(wineId: number) {
     if (this.profile.cellar) {
@@ -127,7 +147,7 @@ export class CellarWineDetailComponent implements OnInit {
     }
   }
   PurchasedOn(collectionEvent: any[]) {
-    return collectionEvent.find((i) => i.action === 'PurchasedOn').createdAt;
+    return collectionEvent.find((i) => i.action === 'PurchasedOn')?.createdAt;
   }
   Segment(locationId: string) {
     const value = this.cellar
@@ -188,7 +208,7 @@ export class CellarWineDetailComponent implements OnInit {
       .add(this.postForm.value)
       .pipe(catchError(() => EMPTY))
       .subscribe(() => {
-        this.GetReviews(this.wine[0].Vintage.Wine.id);
+        this.GetReviews(this.wineId);
         note.textContent = '';
       });
   }

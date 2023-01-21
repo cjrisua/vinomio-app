@@ -34,7 +34,7 @@ export class VinomioAllocationService {
   get(userId:any, upcoming:boolean = false):Observable<Allocation[]>{
     if(upcoming)
       return this.http.get<any>(`${this.apiUrl}/events/${userId}`).pipe(map(res => this.map(res)))
-    return this.http.get<any>(this.apiUrl).pipe(map(res => this.map(res)));
+    return this.http.get<any>(`${this.apiUrl}?merchant__userId=${userId}`).pipe(map(res => this.map(res)));
   }
   getLastPurchases(userId:any){
     //https://localhost:3000/api/allocation/cellar/3

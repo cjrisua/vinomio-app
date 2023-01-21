@@ -17,16 +17,19 @@ export class VinomioCollectionService {
     return this.httpClient.get<Collection[]>(this.apiUrl)
   }
 
-  getCollection(id:any,filter?:any) : Observable<Collection[]>{
+  getCollection(cellarid:any,filter?:any) : Observable<Collection[]>{
     let params:any=""
     if(filter)
        params = Object.keys(filter).filter(f => filter[f]).map(i => `${i}=${encodeURI(filter[i].trim())}`).join("&")
-    return this.httpClient.get<Collection[]>(`${this.apiUrl}?cellarId=${id}&${params}`)
+    return this.httpClient.get<Collection[]>(`${this.apiUrl}?cellarId=${cellarid}`+(params.length > 0 ? `&${params}`:''))
     .pipe(
       map((res: Collection[]) => {
         return res || []
       }),
       catchError(()=> of([])))
+  }
+  getCollectionByWineId(cellarId:any,wineId:any){
+    return this.httpClient.post<Collection[]>(`${this.apiUrl}/wine/${wineId}`,{cellarId:cellarId})
   }
 
   add(data:any){

@@ -58,7 +58,7 @@
           <div class="mx-3 text-muted">Last tasted on:<span class="mx-1 fw-light">Dec 31, 2022</span></div>
         </div>
         <div class="d-grid gap-sm-2 my-2 mx-2">
-          <button class="btn btn-outline-secondary" type="button"  [routerLink]="['./wine']" [state]="{data:item.data}">View</button>
+          <button class="btn btn-outline-secondary" type="button"  [routerLink]="['./wine',item.id]" [state]="{data:item.data}">View</button>
         </div>
         <hr class="mx-2 my-3" />
       </div>

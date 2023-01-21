@@ -102,7 +102,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children:[
       {path : '', pathMatch:'full', component: CellarDashboardComponent},
-      {path:'wine', component:CellarWineDetailComponent},
+      {path:'wine/:id', component:CellarWineDetailComponent},
       {path:'wine-review', component:CellarWineReviewComponent }
     ]
   },
